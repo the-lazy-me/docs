@@ -1,0 +1,279 @@
+---
+title: "模型列表"
+description: "查看启航 AI 提供的所有 AI 模型"
+icon: "brain"
+---
+
+## 模型概览
+
+启航 AI 提供多种类型的 AI 模型,涵盖文本聊天、图像生成、语音合成、视频生成等多个领域。
+
+<Note>
+  所有模型都通过统一的 API 接口调用,兼容 OpenAI 标准。
+</Note>
+
+## 文本聊天模型
+
+### OpenAI 系列
+
+<CardGroup cols={2}>
+  <Card title="GPT-5" icon="brain">
+    **模型 ID**: `gpt-5`
+    
+    OpenAI 第五代大语言模型,首个"一体化"AI 系统,采用超级混合架构,参数规模达 52 万亿。
+    
+    **特点**: 多模态交互、深度思考模式、编程能力强
+  </Card>
+  
+  <Card title="GPT-4.1" icon="sparkles">
+    **模型 ID**: `gpt-4.1`
+    
+    OpenAI 旗舰级模型,擅长编码、指令遵循和长上下文理解。
+    
+    **特点**: 高准确性、复杂任务处理
+  </Card>
+  
+  <Card title="GPT-4o" icon="bolt">
+    **模型 ID**: `gpt-4o`
+    
+    多模态旗舰模型,可接受文本、音频、图像组合输入。
+    
+    **特点**: 多模态、快速响应(320ms)
+  </Card>
+  
+  <Card title="O3" icon="brain-circuit">
+    **模型 ID**: `o3`
+    
+    新一代推理模型,接近通用人工智能的表现。
+    
+    **特点**: 强推理能力、数学编程优秀
+  </Card>
+</CardGroup>
+
+### Claude 系列
+
+<CardGroup cols={2}>
+  <Card title="Claude Opus 4" icon="crown">
+    **模型 ID**: `claude-opus-4-20250514`
+    
+    Anthropic 旗舰级混合推理模型,200K 上下文窗口。
+    
+    **特点**: 最佳编码模型、扩展思考模式
+  </Card>
+  
+  <Card title="Claude Sonnet 4" icon="star">
+    **模型 ID**: `claude-sonnet-4-20250514`
+    
+    高性能混合推理模型,支持 1M token 功能。
+    
+    **特点**: 自动纠错、64K 输出
+  </Card>
+</CardGroup>
+
+### 国产模型
+
+<CardGroup cols={2}>
+  <Card title="DeepSeek R1" icon="chart-line">
+    **模型 ID**: `deepseek-r1`
+    
+    DeepSeek 推理模型,支持思维链输出。
+    
+    **特点**: 64K 上下文、函数调用
+  </Card>
+  
+  <Card title="Kimi K2" icon="code">
+    **模型 ID**: `kimi-k2`
+    
+    MoE 架构,总参数 1 万亿,128K 上下文。
+    
+    **特点**: 代码生成强、成本低
+  </Card>
+  
+  <Card title="通义千问 3 Max" icon="message">
+    **模型 ID**: `qwen3-max`
+    
+    通义千问旗舰级模型,36T tokens 预训练数据。
+    
+    **特点**: 工具调用、全球第一梯队
+  </Card>
+  
+  <Card title="智谱 GLM-4.6" icon="sparkle">
+    **模型 ID**: `glm-4.6`
+    
+    智谱 2025 年 9 月开源模型,200K 上下文。
+    
+    **特点**: 多模态生成、全栈开发
+  </Card>
+</CardGroup>
+
+## 图像生成模型
+
+### 绘图(Image 格式)
+
+<CardGroup cols={2}>
+  <Card title="启航绘图 X2 Preview" icon="palette">
+    **模型 ID**: `qh-draw-x2-preview`
+    
+    自研专业级绘图模型 V2.0,综合绘图能力强。
+  </Card>
+  
+  <Card title="DALL-E 3" icon="image">
+    **模型 ID**: `dall-e-3`
+    
+    OpenAI 第三代图像生成模型,8K 分辨率。
+  </Card>
+  
+  <Card title="Nano Banana 2" icon="wand-magic-sparkles">
+    **模型 ID**: `nano-banana-2`
+    
+    Google 图像生成模型,原生 2K 分辨率,可选 4K 超分。
+  </Card>
+  
+  <Card title="即梦 4.0" icon="bolt">
+    **模型 ID**: `即梦4.0`
+    
+    高效生图模型,2K 高清图文生图仅需 1.8 秒。
+  </Card>
+</CardGroup>
+
+### 绘图(Chat 格式)
+
+<CardGroup cols={2}>
+  <Card title="Gemini 2.5 Flash Image" icon="sparkles">
+    **模型 ID**: `gemini-2.5-flash-image-preview`
+    
+    Google 图像生成和编辑模型,支持角色一致性。
+  </Card>
+  
+  <Card title="Gemini 3 Pro Image" icon="crown">
+    **模型 ID**: `gemini-3-pro-image-preview`
+    
+    Nano Banana 2,支持原生 2K 分辨率,生成速度提升 300%。
+  </Card>
+</CardGroup>
+
+## 语音模型
+
+### 文本转语音(TTS)
+
+<Card title="启航 TTS" icon="microphone">
+  **模型 ID**: `qhai-tts`
+  
+  启航 AI 最先进的 TTS 模型,支持 38+ 语音角色。
+  
+  **角色示例**: 可爱少女、御姐、派蒙、温迪、纳西妲等
+  
+  [查看完整角色列表](/api-reference/audio/voices)
+</Card>
+
+### 语音识别(ASR)
+
+<Card title="启航 ASR Lite" icon="ear-listen">
+  **模型 ID**: `qhai-asr-lite`
+  
+  轻量化语音识别模型,快速准确地实现语音转文本。
+</Card>
+
+## 视频生成模型
+
+<CardGroup cols={2}>
+  <Card title="Sora 2" icon="video">
+    **模型 ID**: `sora-2`
+    
+    OpenAI 2025 年 10 月发布的旗舰级音视频生成模型。
+    
+    **特点**: 物理仿真真实、多镜头可控
+  </Card>
+  
+  <Card title="Sora 2 HD" icon="film">
+    **模型 ID**: `sora-2-hd`
+    
+    Sora 2 的高清版本,更高的视频质量。
+  </Card>
+</CardGroup>
+
+## 音乐生成模型
+
+<CardGroup cols={2}>
+  <Card title="Suno V4.5 Plus" icon="music">
+    **模型 ID**: `suno-v4.5-plus`
+    
+    Suno 较新音乐模型,支持人声与器乐分层生成。
+  </Card>
+  
+  <Card title="Suno V5" icon="guitar">
+    **模型 ID**: `suno-v5`
+    
+    Suno 最新音乐生成模型,增强质量和功能。
+  </Card>
+</CardGroup>
+
+## 嵌入模型
+
+<CardGroup cols={2}>
+  <Card title="BGE-M3" icon="vector-square">
+    **模型 ID**: `bge-m3`
+    
+    北京智源研究院文本嵌入模型,支持 100+ 语言,8192 长度。
+  </Card>
+  <Card title="Text Embedding 3 Large" icon="cube">
+    **模型 ID**: `text-embedding-3-large`
+    
+    OpenAI 第三代文本嵌入模型,3072 维向量。
+  </Card>
+</CardGroup>
+
+## 重排序模型
+
+<Card title="BGE Reranker V2 M3" icon="arrows-up-down">
+  **模型 ID**: `bge-reranker-v2-m3`
+  
+  北京智源研究院轻量级重排序模型,专为 RAG 流程优化。
+</Card>
+
+## 联网搜索模型
+
+启航 AI 提供多个模型的联网搜索版本,自动调用搜索引擎获取最新信息:
+
+- `deepseek-chat#search`
+- `deepseek-r1#search`
+- `gemini-2.5-flash#search`
+- `kimi-k2#search`
+
+## 如何选择模型?
+
+<AccordionGroup>
+  <Accordion title="文本聊天场景">
+    - **日常对话**: GPT-4o, Claude Sonnet 4
+    - **复杂推理**: O3, DeepSeek R1, Claude Opus 4
+    - **代码生成**: GPT-5, Kimi K2, Claude Opus 4
+    - **长文本处理**: Kimi K2 (128K), Claude Opus 4 (200K)
+    - **成本优先**: DeepSeek V3, GLM-4.6
+  </Accordion>
+  
+  <Accordion title="图像生成场景">
+    - **高质量绘图**: 启航绘图 X2 Preview, DALL-E 3
+    - **快速生成**: 即梦 4.0, 启航绘图 X1 Flash
+    - **角色一致性**: Nano Banana 2, Gemini 2.5 Flash Image
+    - **特定风格**: qh-draw:韩漫风, qh-draw-3d, qh-draw-4d
+  </Accordion>
+  
+  <Accordion title="语音场景">
+    - **文本转语音**: qhai-tts (38+ 角色可选)
+    - **语音识别**: qhai-asr-lite
+    - **语音克隆**: 使用自定义语音模型创建接口
+  </Accordion>
+</AccordionGroup>
+
+## 获取完整模型列表
+
+您可以通过 API 获取最新的模型列表:
+
+```bash
+curl https://api.qhaigc.net/v1/models \
+  -H "Authorization: Bearer sk-your-api-key-here"
+```
+
+<Card title="查看 API 文档" icon="code" href="/api-reference/other/models">
+  了解如何通过 API 获取模型列表
+</Card>

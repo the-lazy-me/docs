@@ -1,0 +1,99 @@
+---
+title: "创建重排序"
+description: "对多个示例文档根据与查询的相关性进行重新排序"
+openapi: "POST /rerank"
+---
+
+## 功能说明
+
+重排序（Rerank）接口可以将一组文档按照与查询（Query）的相关性进行打分和排序。这通常作为 RAG（检索增强生成）流程的最后一步，用于进一步提高检索结果的准确性。
+
+## 请求参数
+
+| 名称 | 类型 | 必选 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `model` | `string` | 是 | 模型名称，如 `bge-reranker-v2-m3` |
+| `query` | `string` | 是 | 查询文本 |
+| `documents` | `array` | 是 | 待排序的文档列表（字符串数组） |
+| `top_n` | `integer` | 否 | 返回前几个结果 |
+
+## 调用示例
+
+<CodeGroup>
+
+```python Python
+import requests
+
+url = "https://api.qhaigc.net/v1/rerank"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer sk-your-api-key-here"
+}
+
+data = {
+    "model": "bge-reranker-v2-m3",
+    "query": "Organic skincare products for sensitive skin",
+    "top_n": 3,
+    "documents": [
+        "Organic skincare for sensitive skin with aloe vera and chamomile...",
+        "New makeup trends focus on bold colors and innovative techniques...",
+        "Bio-Hautpflege für empfindliche Haut mit Aloe Vera und Kamille..."
+    ]
+}
+
+response = requests.post(url, headers=headers, json=data)
+print(response.json())
+```
+
+```bash cURL
+curl https://api.qhaigc.net/v1/rerank \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -d '{
+    "model": "bge-reranker-v2-m3",
+    "query": "Organic skincare products for sensitive skin",
+    "top_n": 3,
+    "documents": [
+        "Organic skincare for sensitive skin with aloe vera and chamomile...",
+        "New makeup trends focus on bold colors and innovative techniques...",
+        "Bio-Hautpflege für empfindliche Haut mit Aloe Vera und Kamille..."
+    ]
+  }'
+```
+
+</CodeGroup>
+
+## 返回结果
+
+返回每个文档的原始索引和相关性得分（分数越高越相关）。
+
+<CodeGroup>
+
+```json 响应示例
+{
+  "results": [
+    {
+      "index": 0,
+      "relevance_score": 0.985363245010376
+    },
+    {
+      "index": 2,
+      "relevance_score": 0.6773008704185486
+    },
+    {
+      "index": 1,
+      "relevance_score": 0.00001600799623702187
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 77,
+    "total_tokens": 77
+  }
+}
+```
+
+</CodeGroup>
+
+## 相关参考
+
+- [模型列表](/models#重排序模型)

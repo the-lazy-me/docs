@@ -1,0 +1,77 @@
+---
+title: "文本转音频"
+description: "将文本转换为自然流畅的语音"
+openapi: "POST /audio/speech"
+---
+
+## 功能说明
+
+启航 AI 提供先进的文本转语音（TTS）服务，支持多种语音角色和高度拟人化的声音效果。
+
+## 请求参数
+
+| 名称 | 类型 | 必选 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `model` | `string` | 否 | 语音模型名称，默认为 `qhai-tts` |
+| `voice` | `string` | 否 | 语音角色名称，如 "可爱少女"。可以通过 [获取角色列表接口](/api-reference/audio/voices) 获取所有可用角色。 |
+| `input` | `string` | 是 | 要生成音频的文本内容 |
+
+## 调用示例
+
+<CodeGroup>
+
+```python Python
+import openai
+
+client = openai.OpenAI(
+    api_key="sk-your-api-key-here",
+    base_url="https://api.qhaigc.net/v1"
+)
+
+response = client.audio.speech.create(
+    model="qhai-tts",
+    voice="可爱少女",
+    input="启航 AI API 系统是一款聚焦低成本探索 AIGC 无限可能的服务平台。"
+)
+
+response.stream_to_file("output.mp3")
+```
+
+```javascript JavaScript
+import OpenAI from 'openai';
+import fs from 'fs';
+
+const openai = new OpenAI({
+  apiKey: 'sk-your-api-key-here',
+  baseURL: 'https://api.qhaigc.net/v1'
+});
+
+async function main() {
+  const mp3 = await openai.audio.speech.create({
+    model: 'qhai-tts',
+    voice: '可爱少女',
+    input: '启航 AI API 系统是一款聚焦低成本探索 AIGC 无限可能的服务平台。',
+  });
+  const buffer = Buffer.from(await mp3.arrayBuffer());
+  await fs.promises.writeFile("./output.mp3", buffer);
+}
+main();
+```
+
+```bash cURL
+curl https://api.qhaigc.net/v1/audio/speech \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -d '{
+    "model": "qhai-tts",
+    "input": "启航 AI API 系统是一款聚焦低成本探索 AIGC 无限可能的服务平台。",
+    "voice": "可爱少女"
+  }' --output output.mp3
+```
+
+</CodeGroup>
+
+## 相关接口
+
+- [获取角色列表](/api-reference/audio/voices)
+- [创建语音角色（语音克隆）](/api-reference/voice-clone/create-model)

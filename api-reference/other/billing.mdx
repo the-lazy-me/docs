@@ -1,0 +1,65 @@
+---
+title: "获取账户信息"
+description: "查询当前 API Key 的额度、用量和有效期等信息"
+openapi: "GET /dashboard/billing/subscription"
+---
+
+## 功能说明
+
+查询当前所使用的 API Key 的订阅详情、总配额、已使用额度和到期时间。
+
+## 请求方式
+
+`GET /v1/dashboard/billing/subscription`
+
+<Note>
+  该接口专门用于查询账户余额和订阅状态，路径参考了 OpenAI 的管理 API。
+</Note>
+
+## 调用示例
+
+<CodeGroup>
+
+```python Python
+import requests
+
+url = "https://api.qhaigc.net/v1/dashboard/billing/subscription"
+headers = {
+    "Authorization": "Bearer sk-your-api-key-here"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+```bash cURL
+curl https://api.qhaigc.net/v1/dashboard/billing/subscription \
+  -H "Authorization: Bearer sk-your-api-key-here"
+```
+
+</CodeGroup>
+
+## 返回结果
+
+<CodeGroup>
+
+```json 响应示例
+{
+  "object": "billing_subscription",
+  "has_payment_method": true,
+  "canceled": false,
+  "canceled_at": null,
+  "delinquent": null,
+  "access_until": 1761223754,
+  "hard_limit_usd": 100.0,
+  "soft_limit_usd": 80.0,
+  "system_hard_limit_usd": 100.0
+}
+```
+
+</CodeGroup>
+
+## 相关参考
+
+- [认证说明](/authentication)
+- [快速开始](/quickstart)

@@ -1,0 +1,203 @@
+---
+title: "绘图(Image 格式)"
+description: "使用文本描述生成高质量图像"
+openapi: "POST /images/generations"
+---
+
+## 功能说明
+
+使用启航 AI 的图像生成模型,通过文本描述(Prompt)创建高质量的图像。支持多种绘图模型和自定义图像尺寸。
+
+## 支持的模型
+
+<CardGroup cols={2}>
+  <Card title="启航绘图 X2 Preview" icon="palette">
+    **模型 ID**: `qh-draw-x2-preview`
+    
+    自研专业级绘图模型,综合绘图能力强,适合各类场景。
+  </Card>
+  
+  <Card title="启航绘图 X1 Pro" icon="image">
+    **模型 ID**: `qh-draw-x1-pro`
+    
+    基于 SD 开源模型,支持自然语言理解,质量稳定。
+  </Card>
+  
+  <Card title="DALL-E 3" icon="sparkles">
+    **模型 ID**: `dall-e-3`
+    
+    OpenAI 第三代图像生成模型,8K 分辨率,细节丰富。
+  </Card>
+  
+  <Card title="Nano Banana 2" icon="wand-magic-sparkles">
+    **模型 ID**: `nano-banana-2`
+    
+    Google 图像生成模型,原生 2K 分辨率,支持 4K 超分。
+  </Card>
+</CardGroup>
+
+[查看所有绘图模型](/models#图像生成模型)
+
+## 图像尺寸
+
+不同模型支持的尺寸可能不同,常见尺寸包括:
+
+- `720x1280` - 竖屏(9:16)
+- `1280x720` - 横屏(16:9)
+- `1024x1024` - 正方形(1:1)
+- `1024x1792` - 竖屏(9:16,高清)
+- `1792x1024` - 横屏(16:9,高清)
+
+<Tip>
+  建议根据使用场景选择合适的尺寸:
+  - 社交媒体海报: 720x1280
+  - 横版Banner: 1280x720
+  - 头像/图标: 1024x1024
+</Tip>
+
+## Prompt 编写技巧
+
+### 基础结构
+
+一个好的 Prompt 通常包含以下元素:
+
+```
+[主体描述] + [风格] + [质量词] + [细节描述]
+```
+
+### 示例
+
+<CodeGroup>
+
+```text 简单示例
+一只可爱的小猫在花园里玩耍,油画风格,高质量,超详细
+```
+
+```text 详细示例
+一位穿着白色连衣裙的年轻女孩站在樱花树下,阳光透过花瓣洒落,日系动漫风格,柔和的色调,高质量,超详细,8K分辨率,景深效果
+```
+
+```text 专业示例
+赛博朋克风格的未来城市夜景,霓虹灯闪烁,飞行汽车穿梭,高楼林立,雨后湿润的街道反射着灯光,电影级画质,超广角镜头,4K分辨率,HDR
+```
+
+</CodeGroup>
+
+### 提示词建议
+
+**质量词**:
+- 高质量、超详细、8K分辨率、4K分辨率
+- 电影级画质、专业摄影、精美插画
+
+**风格词**:
+- 油画风格、水彩画、素描、动漫风格
+- 赛博朋克、蒸汽朋克、写实风格
+- 日系、韩系、中国风
+
+**光影词**:
+- 柔和光线、戏剧性光影、逆光
+- 黄金时刻、蓝调时刻、霓虹灯光
+
+## 使用示例
+
+<CodeGroup>
+
+```python Python
+import openai
+
+client = openai.OpenAI(
+    api_key="sk-your-api-key-here",
+    base_url="https://api.qhaigc.net/v1"
+)
+
+response = client.images.generate(
+    model="qh-draw-x2-preview",
+    prompt="一只可爱的小猫在花园里玩耍,油画风格,高质量,超详细",
+    size="720x1280",
+    n=1  # 生成图片数量
+)
+
+# 获取图片 URL
+image_url = response.data[0].url
+print(f"图片地址: {image_url}")
+```
+
+```javascript JavaScript
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: 'sk-your-api-key-here',
+  baseURL: 'https://api.qhaigc.net/v1'
+});
+
+const response = await client.images.generate({
+  model: 'qh-draw-x2-preview',
+  prompt: '一只可爱的小猫在花园里玩耍,油画风格,高质量,超详细',
+  size: '720x1280',
+  n: 1
+});
+
+// 获取图片 URL
+const imageUrl = response.data[0].url;
+console.log(`图片地址: ${imageUrl}`);
+```
+
+```bash cURL
+curl https://api.qhaigc.net/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -d '{
+    "model": "qh-draw-x2-preview",
+    "prompt": "一只可爱的小猫在花园里玩耍,油画风格,高质量,超详细",
+    "size": "720x1280",
+    "n": 1
+  }'
+```
+
+</CodeGroup>
+
+## 常见问题
+
+<AccordionGroup>
+  <Accordion title="如何提高图像质量?">
+    1. 使用详细的 Prompt 描述
+    2. 添加质量词如"高质量"、"超详细"、"8K分辨率"
+    3. 选择更高级的模型如 `qh-draw-x2-preview` 或 `dall-e-3`
+    4. 使用更大的图像尺寸
+  </Accordion>
+  
+  <Accordion title="生成的图像可以商用吗?">
+    根据启航 AI 的使用条款,您对生成的图像拥有使用权。但请注意:
+    - 不同模型可能有不同的使用限制
+    - 建议查看具体模型的使用协议
+    - 避免生成侵权或违法内容
+  </Accordion>
+  
+  <Accordion title="如何生成特定风格的图像?">
+    在 Prompt 中明确指定风格关键词:
+    - 动漫风格: "anime style", "日系动漫风格"
+    - 写实风格: "photorealistic", "专业摄影"
+    - 艺术风格: "oil painting", "watercolor", "油画风格"
+    
+    也可以参考特定艺术家或作品的风格。
+  </Accordion>
+  
+  <Accordion title="生成时间需要多久?">
+    - 标准模型: 通常 5-15 秒
+    - 高级模型: 可能需要 15-30 秒
+    - 高分辨率图像: 时间会相应增加
+    
+    具体时间取决于模型、尺寸和服务器负载。
+  </Accordion>
+</AccordionGroup>
+
+## 相关接口
+
+<CardGroup cols={2}>
+  <Card title="改图(Image 格式)" icon="wand-magic-sparkles" href="/api-reference/images/edit">
+    编辑和修改现有图像
+  </Card>
+  <Card title="模型列表" icon="list" href="/models">
+    查看所有可用的绘图模型
+  </Card>
+</CardGroup>

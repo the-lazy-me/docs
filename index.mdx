@@ -1,97 +1,137 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "启航 AI API 文档"
+description: "低成本探索 AIGC 无限可能"
 ---
 
-## Setting up
+## 欢迎使用启航 AI API
 
-Get your documentation site up and running in minutes.
+启航 AI API 系统是一款聚焦低成本探索 AIGC 无限可能的服务平台,提供文本聊天、图像生成、语音合成、视频生成等多种 AI 能力。
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
+<CardGroup cols={2}>
   <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
+    title="快速开始"
+    icon="rocket"
+    href="/quickstart"
   >
-    Edit your docs locally and preview them in real time.
+    5 分钟快速上手启航 AI API
   </Card>
   <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
+    title="API 参考"
+    icon="code"
     href="/api-reference/introduction"
   >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
-
-## Create beautiful pages
-
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
+    浏览完整的 API 接口文档
   </Card>
   <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
+    title="模型列表"
+    icon="brain"
+    href="/models"
   >
-    Add sample code to demonstrate how to use your product.
+    查看所有可用的 AI 模型
   </Card>
   <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
+    title="认证说明"
+    icon="key"
+    href="/authentication"
   >
-    Display images and other media.
+    了解如何使用 API Key
   </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+</CardGroup>
 
-## Need inspiration?
+## 核心特性
+
+<AccordionGroup>
+  <Accordion icon="dollar-sign" title="低成本">
+    提供业界最具竞争力的价格,让更多开发者能够使用先进的 AI 能力。
+  </Accordion>
+  
+  <Accordion icon="plug" title="兼容 OpenAI">
+    完全兼容 OpenAI API 标准,可无缝切换,支持所有主流 SDK 和工具。
+  </Accordion>
+  
+  <Accordion icon="sparkles" title="多模态能力">
+    支持文本、图像、语音、视频、音乐等多种模态的 AI 能力。
+  </Accordion>
+  
+  <Accordion icon="gauge" title="高性能">
+    稳定可靠的服务,快速响应,支持流式输出。
+  </Accordion>
+</AccordionGroup>
+
+## 支持的模型
+
+启航 AI 提供多种类型的 AI 模型:
+
+- **文本聊天**: GPT-5, GPT-4.1, Claude Opus 4, DeepSeek R1, Kimi K2 等
+- **图像生成**: 启航绘图 X2, DALL-E 3, Nano Banana 2, 即梦 4.0 等
+- **语音合成**: 启航 TTS (38+ 语音角色)
+- **视频生成**: Sora 2, Sora 2 HD
+- **音乐生成**: Suno V4.5 Plus, Suno V5
+- **嵌入模型**: BGE-M3, Text Embedding 3 Large
+- **重排序**: BGE Reranker V2 M3
+
+[查看完整模型列表](/models)
+
+## 快速示例
+
+<CodeGroup>
+
+```python Python
+import openai
+
+client = openai.OpenAI(
+    api_key="sk-your-api-key-here",
+    base_url="https://api.qhaigc.net/v1"
+)
+
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {"role": "user", "content": "你好,介绍一下启航 AI"}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+```javascript JavaScript
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: 'sk-your-api-key-here',
+  baseURL: 'https://api.qhaigc.net/v1'
+});
+
+const response = await client.chat.completions.create({
+  model: 'gpt-4o',
+  messages: [
+    { role: 'user', content: '你好,介绍一下启航 AI' }
+  ]
+});
+
+console.log(response.choices[0].message.content);
+```
+
+</CodeGroup>
+
+## 获取 API Key
+
+1. 访问 [启航 AI 控制台](https://api.qhaigc.net)
+2. 注册并登录您的账号
+3. 在 **API 令牌** 页面生成您的 API Key
+4. 开始使用!
 
 <Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
+  title="立即开始"
+  icon="rocket"
+  href="/quickstart"
 >
-  Browse our showcase of exceptional documentation sites.
+  查看完整的快速开始指南
 </Card>
+
+## 需要帮助?
+
+如有任何问题,欢迎通过以下方式联系我们:
+
+- 💬 客服: 加官方 QQ 群 **712747875** 后私信群主
+- 📚 文档: 您正在阅读的文档

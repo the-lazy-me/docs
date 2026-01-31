@@ -1,68 +1,132 @@
 {
   "$schema": "https://mintlify.com/docs.json",
+  "name": "启航 AI",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "favicon": "/favicon.svg",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "/favicon.svg",
+  "navbar": {
+    "links": [
+      {
+        "label": "控制台",
+        "href": "https://www.qhaigc.net"
+      },
+      {
+        "label": "模型定价",
+        "href": "https://www.qhaigc.net/models"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "获取 API Key",
+      "href": "https://www.qhaigc.net/console/apikeys"
+    }
+  },
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "指南",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "快速开始",
+            "icon": "rocket",
             "pages": [
               "index",
               "quickstart",
-              "development"
+              "authentication"
             ]
           },
           {
-            "group": "Customization",
+            "group": "模型",
+            "icon": "brain",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "models"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API 参考",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "概述",
+            "icon": "book",
             "pages": [
               "api-reference/introduction"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "绘图模型",
+            "icon": "image",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/images/generate",
+              "api-reference/images/edit"
+            ]
+          },
+          {
+            "group": "语音生成",
+            "icon": "microphone",
+            "pages": [
+              "api-reference/audio/speech",
+              "api-reference/audio/voices"
+            ]
+          },
+          {
+            "group": "视频生成",
+            "icon": "video",
+            "pages": [
+              "api-reference/video/sora"
+            ]
+          },
+          {
+            "group": "语音克隆",
+            "icon": "clone",
+            "pages": [
+              "api-reference/voice-clone/create-model"
+            ]
+          },
+          {
+            "group": "嵌入模型",
+            "icon": "vector-square",
+            "pages": [
+              "api-reference/embeddings/create"
+            ]
+          },
+          {
+            "group": "重排序模型",
+            "icon": "arrows-up-down",
+            "pages": [
+              "api-reference/rerank/create"
+            ]
+          },
+          {
+            "group": "语音识别",
+            "icon": "ear-listen",
+            "pages": [
+              "api-reference/audio/transcriptions"
+            ]
+          },
+          {
+            "group": "音乐生成",
+            "icon": "music",
+            "pages": [
+              "api-reference/music/generate",
+              "api-reference/music/query"
+            ]
+          },
+          {
+            "group": "其他接口",
+            "icon": "ellipsis",
+            "pages": [
+              "api-reference/other/models",
+              "api-reference/other/billing"
             ]
           }
         ]
@@ -71,52 +135,36 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "首页",
+          "href": "https://www.qhaigc.net",
+          "icon": "gauge"
         }
       ]
     }
   },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+  "footer": {
+    "socials": {
+      "website": "https://www.qhaigc.net"
+    }
   },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+  "feedback": {
+    "suggestEdit": true,
+    "raiseIssue": true
+  },
+  "support": {
+    "email": "",
+    "chat": {
+      "type": "custom",
+      "message": "加官方 QQ 群 712747875 后私信群主"
     }
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "cursor"
+    ]
   }
 }

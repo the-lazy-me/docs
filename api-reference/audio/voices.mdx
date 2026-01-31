@@ -1,0 +1,69 @@
+---
+title: "获取角色列表"
+description: "获取所有可用的语音角色名称和描述"
+openapi: "GET /voice/models/list"
+---
+
+## 功能说明
+
+用于查询当前账号下所有可用的语音角色，包括系统内置角色和用户自定义克隆的角色。
+
+## 请求方式
+
+`GET /v1/voice/models/list`
+
+## 调用示例
+
+<CodeGroup>
+
+```python Python
+import requests
+
+url = "https://api.qhaigc.net/v1/voice/models/list"
+headers = {
+    "Authorization": "sk-your-api-key-here"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+```bash cURL
+curl https://api.qhaigc.net/v1/voice/models/list \
+  -H "Authorization: sk-your-api-key-here"
+```
+
+</CodeGroup>
+
+## 返回结果
+
+成功返回角色列表和总数。
+
+<CodeGroup>
+
+```json 响应示例
+{
+  "success": true,
+  "voice_characters": [
+    {
+      "name": "可爱少女",
+      "public": "public",
+      "description": "元气可爱的少女声音"
+    },
+    {
+      "name": "御姐",
+      "public": "public",
+      "description": "成熟稳重的女性声音"
+    }
+    // ... 更多角色
+  ],
+  "total": 38
+}
+```
+
+</CodeGroup>
+
+## 相关接口
+
+- [文本转音频](/api-reference/audio/speech)
+- [创建语音角色（语音克隆）](/api-reference/voice-clone/create-model)

@@ -1,80 +1,181 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: "快速开始"
+description: "5 分钟快速上手启航 AI API"
+icon: "rocket"
 ---
 
-## Get started in three steps
+## 欢迎使用启航 AI API
 
-Get your documentation site running locally and make your first customization.
+启航 AI API 系统是一款聚焦低成本探索 AIGC 无限可能的服务平台,提供文本聊天、图像生成、语音合成、视频生成等多种 AI 能力。
 
-### Step 1: Set up your local environment
+## 获取 API Key
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+1. 访问 [启航 AI 控制台](https://api.qhaigc.net)
+2. 注册并登录您的账号
+3. 在 **API 令牌** 页面生成您的 API Key
+4. 妥善保管您的 API Key,不要泄露给他人
 
-### Step 2: Deploy your changes
+<Warning>
+  API Key 具有完全的账户权限,请务必保密。如果不慎泄露,请立即在控制台重新生成。
+</Warning>
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+## 快速调用示例
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+### 文本聊天
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+<CodeGroup>
 
-### Step 3: Go live
+```python Python
+import openai
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+client = openai.OpenAI(
+    api_key="sk-your-api-key-here",
+    base_url="https://api.qhaigc.net/v1"
+)
 
-## Next steps
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {"role": "user", "content": "你好,介绍一下启航 AI"}
+    ]
+)
 
-Now that you have your docs running, explore these key features:
+print(response.choices[0].message.content)
+```
+
+```javascript JavaScript
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: 'sk-your-api-key-here',
+  baseURL: 'https://api.qhaigc.net/v1'
+});
+
+const response = await client.chat.completions.create({
+  model: 'gpt-4o',
+  messages: [
+    { role: 'user', content: '你好,介绍一下启航 AI' }
+  ]
+});
+
+console.log(response.choices[0].message.content);
+```
+
+```bash cURL
+curl https://api.qhaigc.net/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -d '{
+    "model": "gpt-4o",
+    "messages": [
+      {"role": "user", "content": "你好,介绍一下启航 AI"}
+    ]
+  }'
+```
+
+</CodeGroup>
+
+### 图像生成
+
+<CodeGroup>
+
+```python Python
+import openai
+
+client = openai.OpenAI(
+    api_key="sk-your-api-key-here",
+    base_url="https://api.qhaigc.net/v1"
+)
+
+response = client.images.generate(
+    model="qh-draw-x1-pro",
+    prompt="一只可爱的小猫在花园里玩耍,油画风格,高质量,超详细",
+    size="720x1280"
+)
+
+print(response.data[0].url)
+```
+
+```javascript JavaScript
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: 'sk-your-api-key-here',
+  baseURL: 'https://api.qhaigc.net/v1'
+});
+
+const response = await client.images.generate({
+  model: 'qh-draw-x1-pro',
+  prompt: '一只可爱的小猫在花园里玩耍,油画风格,高质量,超详细',
+  size: '720x1280'
+});
+
+console.log(response.data[0].url);
+```
+
+```bash cURL
+curl https://api.qhaigc.net/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -d '{
+    "model": "qh-draw-x1-pro",
+    "prompt": "一只可爱的小猫在花园里玩耍,油画风格,高质量,超详细",
+    "size": "720x1280"
+  }'
+```
+
+</CodeGroup>
+
+## 下一步
 
 <CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
+  <Card title="认证说明" icon="key" href="/authentication">
+    了解如何在请求中使用 API Key
+  </Card>
+  <Card title="模型列表" icon="brain" href="/models">
+    查看所有可用的 AI 模型
+  </Card>
+  <Card title="API 参考" icon="code" href="/api-reference/introduction">
+    浏览完整的 API 接口文档
+  </Card>
+  <Card title="定价说明" icon="dollar-sign" href="https://api.qhaigc.net/pricing">
+    了解 API 调用费用
+  </Card>
 </CardGroup>
 
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>
+## 常见问题
+
+<AccordionGroup>
+  <Accordion title="如何处理 API 错误?">
+    启航 AI API 使用标准的 HTTP 状态码。常见错误包括:
+    - `401 Unauthorized`: API Key 无效或未提供
+    - `429 Too Many Requests`: 请求频率超限
+    - `500 Internal Server Error`: 服务器错误
+    
+    建议在代码中添加错误处理和重试逻辑。
+  </Accordion>
+  
+  <Accordion title="支持哪些编程语言?">
+    启航 AI API 兼容 OpenAI 接口标准,支持所有主流编程语言:
+    - Python (推荐使用 `openai` 库)
+    - JavaScript/TypeScript (推荐使用 `openai` npm 包)
+    - Java, Go, PHP, Ruby 等
+    
+    也可以使用标准的 HTTP 客户端直接调用。
+  </Accordion>
+  
+  <Accordion title="如何控制成本?">
+    - 选择合适的模型(不同模型价格不同)
+    - 设置 `max_tokens` 限制输出长度
+    - 使用流式响应及时中断不需要的内容
+    - 在控制台设置预算提醒
+  </Accordion>
+</AccordionGroup>
+
+## 需要帮助?
+
+如有任何问题,欢迎通过以下方式联系我们:
+
+- 📧 邮箱: support@qhaigc.net
+- 💬 在线客服: [访问控制台](https://api.qhaigc.net)
+- 📚 文档: 您正在阅读的文档

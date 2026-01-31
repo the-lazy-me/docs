@@ -1,0 +1,83 @@
+---
+title: "创建音乐生成任务"
+description: "使用 Suno 模型创建自定义或非自定义音乐生成任务"
+openapi: "POST /music/generations"
+---
+
+## 功能说明
+
+通过 Suno 最新模型生成高质量的音乐。支持非自定义（根据提示词生成）和自定义模式（提供歌词、风格等）。
+
+## 请求参数
+
+| 名称 | 类型 | 必选 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `prompt` | `string` | 是 | 音乐描述（非自定义模式）或歌词（自定义模式） |
+| `model` | `string` | 否 | 模型型号，如 `suno-v4.5-plus`（默认）、`suno-v5` 等 |
+| `custom_mode` | `boolean` | 否 | 是否启用自定义模式，默认为 `false` |
+| `style` | `string` | 否 | 音乐风格（自定义模式必填） |
+| `title` | `string` | 否 | 音乐标题（自定义模式必填） |
+| `instrumental` | `boolean` | 否 | 是否生成纯音乐，默认为 `false` |
+| `vocal_gender` | `string` | 否 | 人声性别，`"m"`（男）或 `"f"`（女） |
+
+## 调用示例
+
+<CodeGroup>
+
+```python Python
+import requests
+
+url = "https://api.qhaigc.net/v1/music/generations"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer sk-your-api-key-here"
+}
+
+# 非自定义模式
+data = {
+    "prompt": "一首关于春天的轻快 J-Pop 歌曲",
+    "model": "suno-v4.5-plus",
+    "custom_mode": false
+}
+
+response = requests.post(url, headers=headers, json=data)
+print(response.json())
+```
+
+```bash cURL
+curl https://api.qhaigc.net/v1/music/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -d '{
+    "prompt": "一首关于春天的轻快 J-Pop 歌曲",
+    "model": "suno-v4.5-plus",
+    "custom_mode": false
+  }'
+```
+
+</CodeGroup>
+
+## 返回结果
+
+成功创建任务后返回任务 ID。音乐生成需要几分钟时间，请使用任务 ID 进行查询。
+
+<CodeGroup>
+
+```json 响应示例
+{
+  "created": 1755616949,
+  "data": [
+    {
+      "id": "task_123456789",
+      "status": "processing"
+    }
+  ]
+}
+```
+
+</CodeGroup>
+
+## 相关接口
+
+- [查询音乐生成任务](/api-reference/music/query)
+- [模型列表](/models#音乐生成模型)

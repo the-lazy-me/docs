@@ -1,94 +1,156 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
+    "title": "启航 AI API",
+    "version": "1.0.0",
+    "description": "启航 AI API 文档，支持绘图、语音生成、视频生成、音乐生成等多种 AIGC 接口。"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://api.qhaigc.net/v1",
+      "description": "生产服务器"
     }
   ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
   "security": [
     {
       "bearerAuth": []
     }
   ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+    "/images/generations": {
+      "post": {
+        "summary": "绘图",
+        "description": "使用文本描述生成图像",
+        "tags": [
+          "绘图模型"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "prompt": {
+                    "type": "string",
+                    "description": "所需图像的文本描述"
+                  },
+                  "model": {
+                    "type": "string",
+                    "description": "模型名称"
+                  },
+                  "size": {
+                    "type": "string",
+                    "description": "生成图像的大小，格式为“长x宽”"
+                  }
+                },
+                "required": [
+                  "prompt",
+                  "model",
+                  "size"
+                ]
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "成功响应",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
+                  "type": "object",
+                  "properties": {
+                    "created": {
+                      "type": "integer"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
             }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+          }
+        }
+      }
+    },
+    "/images/edits": {
+      "post": {
+        "summary": "改图",
+        "description": "基于原图和文本描述进行图像编辑",
+        "tags": [
+          "绘图模型"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "待修改的原图文件"
+                  },
+                  "model": {
+                    "type": "string",
+                    "description": "模型名称"
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "description": "修改描述"
+                  }
+                },
+                "required": [
+                  "image",
+                  "model",
+                  "prompt"
+                ]
               }
             }
           }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
         },
         "responses": {
           "200": {
-            "description": "plant response",
+            "description": "成功响应",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "type": "object",
+                  "properties": {
+                    "created": {
+                      "type": "integer"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -96,121 +158,564 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/audio/speech": {
+      "post": {
+        "summary": "文本转音频",
+        "description": "将文本转换为自然流畅的语音",
+        "tags": [
+          "语音生成"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "description": "语音模型名称"
+                  },
+                  "voice": {
+                    "type": "string",
+                    "description": "语音角色名称"
+                  },
+                  "input": {
+                    "type": "string",
+                    "description": "要生成音频的文本"
+                  }
+                },
+                "required": [
+                  "input"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "音频文件流"
+          }
+        }
+      }
+    },
+    "/voice/models/list": {
+      "get": {
+        "summary": "获取角色列表",
+        "description": "获取所有可用的语音角色名称和描述",
+        "tags": [
+          "语音生成"
+        ],
+        "responses": {
+          "200": {
+            "description": "角色列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "voice_characters": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "public": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/completions": {
+      "post": {
+        "summary": "对话补全 (Sora 视频生成)",
+        "description": "使用 Sora 模型根据文本或对话生成视频进度",
+        "tags": [
+          "视频生成"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "description": "模型名称"
+                  },
+                  "messages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "role": {
+                          "type": "string"
+                        },
+                        "content": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "stream": {
+                    "type": "boolean",
+                    "description": "是否流式"
+                  }
+                },
+                "required": [
+                  "model",
+                  "messages"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功响应 (流式)"
+          }
+        }
+      }
+    },
+    "/voice/model": {
+      "post": {
+        "summary": "创建语音角色",
+        "description": "上传音频文件克隆自定义语音模型",
+        "tags": [
+          "语音克隆"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "语音模型名称"
+                  },
+                  "audio_files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "音频文件"
+                  },
+                  "reference_texts": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "参考文本"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "模型描述"
+                  },
+                  "public": {
+                    "type": "string",
+                    "description": "是否公开"
+                  },
+                  "contact_email": {
+                    "type": "string",
+                    "description": "联系邮箱"
+                  }
+                },
+                "required": [
+                  "name",
+                  "audio_files",
+                  "reference_texts",
+                  "public"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功响应",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "model_name": {
+                      "type": "string"
+                    },
+                    "public": {
+                      "type": "boolean"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/embeddings": {
+      "post": {
+        "summary": "创建嵌入",
+        "description": "将文本转换为高维向量表示",
+        "tags": [
+          "嵌入模型"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "description": "模型名称"
+                  },
+                  "input": {
+                    "type": "string",
+                    "description": "要转化的文本"
+                  }
+                },
+                "required": [
+                  "model",
+                  "input"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功响应",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "object": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "embedding": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            }
+                          },
+                          "index": {
+                            "type": "integer"
+                          },
+                          "object": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "model": {
+                      "type": "string"
+                    },
+                    "usage": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rerank": {
+      "post": {
+        "summary": "创建重排序",
+        "description": "对多个示例文档根据与查询的相关性进行重新排序",
+        "tags": [
+          "重排序模型"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string"
+                  },
+                  "query": {
+                    "type": "string"
+                  },
+                  "top_n": {
+                    "type": "integer"
+                  },
+                  "documents": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "model",
+                  "query",
+                  "documents"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功响应",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "index": {
+                            "type": "integer"
+                          },
+                          "relevance_score": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/audio/transcriptions": {
+      "post": {
+        "summary": "音频转文本",
+        "description": "将语音文件识别并转换为文本内容",
+        "tags": [
+          "语音识别"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "response_format": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功响应",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/music/generations": {
+      "post": {
+        "summary": "创建音乐生成任务",
+        "description": "使用 Suno 模型创建自定义或非自定义场景的音乐生成任务",
+        "tags": [
+          "音乐生成"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "prompt": {
+                    "type": "string"
+                  },
+                  "model": {
+                    "type": "string"
+                  },
+                  "custom_mode": {
+                    "type": "boolean"
+                  },
+                  "style": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "instrumental": {
+                    "type": "boolean"
+                  },
+                  "vocal_gender": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "prompt"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功响应",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "created": {
+                      "type": "integer"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/music/tasks/{task_id}": {
+      "get": {
+        "summary": "查询音乐生成任务",
+        "description": "根据任务 ID 查询音乐生成的进度和结果",
+        "tags": [
+          "音乐生成"
+        ],
         "parameters": [
           {
-            "name": "id",
+            "name": "task_id",
             "in": "path",
-            "description": "ID of plant to delete",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
+          "200": {
+            "description": "成功响应",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "type": "object",
+                  "properties": {
+                    "created": {
+                      "type": "integer"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
                 }
               }
             }
           }
         }
       }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
-        },
+    },
+    "/models": {
+      "get": {
+        "summary": "获取模型列表",
+        "tags": [
+          "其他接口"
+        ],
         "responses": {
           "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
+            "description": "模型列表"
           }
         }
       }
     },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
+    "/dashboard/billing/subscription": {
+      "get": {
+        "summary": "获取账户信息",
+        "tags": [
+          "其他接口"
+        ],
+        "responses": {
+          "200": {
+            "description": "账户信息"
+          }
+        }
       }
     }
   }

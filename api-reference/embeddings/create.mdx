@@ -1,0 +1,102 @@
+---
+title: "创建嵌入"
+description: "将文本转换为高维向量表示，用于搜索和聚类"
+openapi: "POST /embeddings"
+---
+
+## 功能说明
+
+将输入的文本转换为向量（Embeddings），适用于语义搜索、推荐系统、分类和聚类等场景。
+
+## 请求参数
+
+| 名称 | 类型 | 必选 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `model` | `string` | 是 | 模型名称，如 `bge-m3` 或 `text-embedding-3-large` |
+| `input` | `string` | 是 | 要转换为向量的文本内容 |
+
+## 调用示例
+
+<CodeGroup>
+
+```python Python
+import openai
+
+client = openai.OpenAI(
+    api_key="sk-your-api-key-here",
+    base_url="https://api.qhaigc.net/v1"
+)
+
+response = client.embeddings.create(
+    model="bge-m3",
+    input="启航 AI API 系统是一款聚焦低成本探索 AIGC 无限可能的服务平台"
+)
+
+print(response.data[0].embedding)
+```
+
+```javascript JavaScript
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+  apiKey: 'sk-your-api-key-here',
+  baseURL: 'https://api.qhaigc.net/v1'
+});
+
+async function main() {
+  const embedding = await openai.embeddings.create({
+    model: 'bge-m3',
+    input: '启航 AI API 系统是一款聚焦低成本探索 AIGC 无限可能的服务平台',
+  });
+
+  console.log(embedding.data[0].embedding);
+}
+main();
+```
+
+```bash cURL
+curl https://api.qhaigc.net/v1/embeddings \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -d '{
+    "model": "bge-m3",
+    "input": "启航 AI API 系统是一款聚焦低成本探索 AIGC 无限可能的服务平台"
+  }'
+```
+
+</CodeGroup>
+
+## 返回结果
+
+返回包含向量数据的对象。
+
+<CodeGroup>
+
+```json 响应示例
+{
+  "object": "list",
+  "data": [
+    {
+      "embedding": [
+        -0.06332587,
+        -0.019955011,
+        -0.03361425,
+        // ... 共 1024 或更多维度
+      ],
+      "index": 0,
+      "object": "embedding"
+    }
+  ],
+  "model": "bge-m3",
+  "usage": {
+    "prompt_tokens": 21,
+    "total_tokens": 21
+  }
+}
+```
+
+</CodeGroup>
+
+## 相关参考
+
+- [模型列表](/models#嵌入模型)

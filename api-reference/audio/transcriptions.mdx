@@ -1,0 +1,86 @@
+---
+title: "音频转文本"
+description: "将语音文件识别并转换为文本内容"
+openapi: "POST /audio/transcriptions"
+---
+
+## 功能说明
+
+使用启航 AI 的语音识别（ASR）模型，快速准确地将音频文件转换为文本。
+
+## 请求参数
+
+| 名称 | 类型 | 必选 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `model` | `string` | 否 | 模型名称，默认为 `qhai-asr-lite` |
+| `file` | `file` | 是 | 待识别的音频文件（支持 mp3, wav, m4a 等格式） |
+| `response_format` | `string` | 否 | 响应格式，默认为 `json` |
+
+## 调用示例
+
+<CodeGroup>
+
+```python Python
+import openai
+
+client = openai.OpenAI(
+    api_key="sk-your-api-key-here",
+    base_url="https://api.qhaigc.net/v1"
+)
+
+audio_file = open("path/to/file.mp3", "rb")
+transcription = client.audio.transcriptions.create(
+    model="qhai-asr-lite",
+    file=audio_file
+)
+
+print(transcription.text)
+```
+
+```javascript JavaScript
+import OpenAI from 'openai';
+import fs from 'fs';
+
+const openai = new OpenAI({
+  apiKey: 'sk-your-api-key-here',
+  baseURL: 'https://api.qhaigc.net/v1'
+});
+
+async function main() {
+  const transcription = await openai.audio.transcriptions.create({
+    model: 'qhai-asr-lite',
+    file: fs.createReadStream("path/to/file.mp3"),
+  });
+
+  console.log(transcription.text);
+}
+main();
+```
+
+```bash cURL
+curl https://api.qhaigc.net/v1/audio/transcriptions \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -F "model=qhai-asr-lite" \
+  -F "file=@/path/to/file.mp3"
+```
+
+</CodeGroup>
+
+## 返回结果
+
+成功返回识别后的文本。
+
+<CodeGroup>
+
+```json 响应示例
+{
+  "text": "你好，这是启航 AI 的语音识别服务测试。"
+}
+```
+
+</CodeGroup>
+
+## 相关内容
+
+- [文本转音频](/api-reference/audio/speech)
+- [模型列表](/models#语音模型)

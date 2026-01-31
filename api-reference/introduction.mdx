@@ -1,33 +1,286 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "API 参考概述"
+description: "启航 AI API 接口文档总览"
+icon: "code"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## 欢迎使用启航 AI API
 
-## Welcome
+启航 AI API 提供强大的人工智能能力,兼容 OpenAI 接口标准,支持多种编程语言和开发框架。
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+## Base URL
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
+所有 API 请求的基础 URL:
+
+```
+https://api.qhaigc.net/v1
+```
+
+## 认证方式
+
+所有 API 请求都需要在请求头中包含 API Key:
+
+```bash
+Authorization: Bearer sk-your-api-key-here
+```
+
+<Card title="查看认证详情" icon="key" href="/authentication">
+  了解如何获取和使用 API Key
 </Card>
 
-## Authentication
+## API 分类
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+### 文本聊天
+
+使用大语言模型进行对话、文本生成、代码编写等任务。
+
+<CardGroup cols={2}>
+  <Card title="聊天补全" icon="comments" href="/api-reference/chat/completions">
+    与 AI 进行多轮对话
+  </Card>
+  <Card title="联网搜索" icon="globe" href="/api-reference/chat/search">
+    使用联网搜索模型获取最新信息
+  </Card>
+</CardGroup>
+
+### 图像生成
+
+<CardGroup cols={2}>
+  <Card title="绘图(Image 格式)" icon="image" href="/api-reference/images/generate">
+    使用文本描述生成图像
+  </Card>
+  <Card title="改图(Image 格式)" icon="wand-magic-sparkles" href="/api-reference/images/edit">
+    编辑和修改现有图像
+  </Card>
+</CardGroup>
+
+### 语音处理
+
+<CardGroup cols={2}>
+  <Card title="文本转语音" icon="microphone" href="/api-reference/audio/speech">
+    将文本转换为自然语音
+  </Card>
+  <Card title="语音识别" icon="ear-listen" href="/api-reference/audio/transcriptions">
+    将音频转换为文本
+  </Card>
+  <Card title="获取角色列表" icon="users" href="/api-reference/audio/voices">
+    查看所有可用的语音角色
+  </Card>
+  <Card title="创建语音角色" icon="user-plus" href="/api-reference/voice-clone/create-model">
+    克隆自定义语音模型
+  </Card>
+</CardGroup>
+
+### 视频生成
+
+<Card title="Sora 视频生成" icon="video" href="/api-reference/video/sora">
+  使用 Sora 模型生成视频内容
+</Card>
+
+### 音乐生成
+
+<CardGroup cols={2}>
+  <Card title="创建音乐任务" icon="music" href="/api-reference/music/generate">
+    使用 Suno 模型生成音乐
+  </Card>
+  <Card title="查询音乐任务" icon="magnifying-glass" href="/api-reference/music/query">
+    查询音乐生成任务状态
+  </Card>
+</CardGroup>
+
+### 嵌入与重排序
+
+<CardGroup cols={2}>
+  <Card title="创建嵌入" icon="vector-square" href="/api-reference/embeddings/create">
+    将文本转换为向量表示
+  </Card>
+  <Card title="创建重排序" icon="arrows-up-down" href="/api-reference/rerank/create">
+    对搜索结果进行重新排序
+  </Card>
+</CardGroup>
+
+### 其他接口
+
+<CardGroup cols={2}>
+  <Card title="获取模型列表" icon="list" href="/api-reference/other/models">
+    查看所有可用模型
+  </Card>
+  <Card title="获取账户信息" icon="user" href="/api-reference/other/billing">
+    查询 API Key 相关信息
+  </Card>
+</CardGroup>
+
+## 请求格式
+
+所有 API 请求都使用 JSON 格式:
+
+```bash
+curl https://api.qhaigc.net/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -d '{
+    "model": "gpt-4o",
+    "messages": [
+      {"role": "user", "content": "Hello"}
+    ]
+  }'
+```
+
+## 响应格式
+
+API 响应也使用 JSON 格式:
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
+{
+  "id": "chatcmpl-123",
+  "object": "chat.completion",
+  "created": 1677652288,
+  "model": "gpt-4o",
+  "choices": [{
+    "index": 0,
+    "message": {
+      "role": "assistant",
+      "content": "Hello! How can I help you today?"
+    },
+    "finish_reason": "stop"
+  }],
+  "usage": {
+    "prompt_tokens": 9,
+    "completion_tokens": 12,
+    "total_tokens": 21
   }
-]
+}
 ```
+
+## 错误处理
+
+API 使用标准的 HTTP 状态码:
+
+| 状态码 | 说明 |
+|--------|------|
+| 200 | 请求成功 |
+| 400 | 请求参数错误 |
+| 401 | 认证失败(API Key 无效) |
+| 429 | 请求频率超限 |
+| 500 | 服务器错误 |
+
+错误响应示例:
+
+```json
+{
+  "error": {
+    "message": "Invalid API key provided",
+    "type": "invalid_request_error",
+    "code": "invalid_api_key"
+  }
+}
+```
+
+## 流式响应
+
+大多数文本生成接口支持流式响应,实时返回生成的内容:
+
+```python
+client = openai.OpenAI(
+    api_key="sk-your-api-key-here",
+    base_url="https://api.qhaigc.net/v1"
+)
+
+stream = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": "讲个故事"}],
+    stream=True
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="")
+```
+
+## 速率限制
+
+为保证服务质量,API 设有速率限制:
+
+- 每分钟请求数(RPM)
+- 每天请求数(RPD)
+- 每分钟 Token 数(TPM)
+
+具体限制根据您的账户等级而定。如需提高限制,请联系客服。
+
+## SDK 和工具
+
+### 官方 SDK
+
+启航 AI API 兼容 OpenAI SDK,可直接使用:
+
+<CodeGroup>
+
+```bash Python
+pip install openai
+```
+
+```bash JavaScript
+npm install openai
+```
+
+</CodeGroup>
+
+### 第三方工具
+
+- **LangChain**: 支持启航 AI API
+- **LlamaIndex**: 支持启航 AI API
+- **Dify**: 可配置启航 AI 作为模型提供商
+
+## 最佳实践
+
+<AccordionGroup>
+  <Accordion title="错误重试">
+    建议实现指数退避的重试机制:
+    
+    ```python
+    import time
+    from openai import OpenAI
+    
+    def call_api_with_retry(max_retries=3):
+        for i in range(max_retries):
+            try:
+                response = client.chat.completions.create(...)
+                return response
+            except Exception as e:
+                if i == max_retries - 1:
+                    raise
+                time.sleep(2 ** i)  # 指数退避
+    ```
+  </Accordion>
+  
+  <Accordion title="成本控制">
+    - 设置 `max_tokens` 限制输出长度
+    - 使用流式响应及时中断
+    - 选择合适的模型(不同模型价格不同)
+    - 在控制台设置预算提醒
+  </Accordion>
+  
+  <Accordion title="性能优化">
+    - 使用流式响应提升用户体验
+    - 合理设置超时时间
+    - 考虑使用缓存减少重复请求
+    - 批量处理多个请求
+  </Accordion>
+</AccordionGroup>
+
+## 需要帮助?
+
+<CardGroup cols={2}>
+  <Card title="快速开始" icon="rocket" href="/quickstart">
+    查看快速开始指南
+  </Card>
+  <Card title="模型列表" icon="brain" href="/models">
+    浏览所有可用模型
+  </Card>
+  <Card title="认证说明" icon="key" href="/authentication">
+    了解如何使用 API Key
+  </Card>
+  <Card title="联系支持" icon="headset" href="mailto:support@qhaigc.net">
+    获取技术支持
+  </Card>
+</CardGroup>

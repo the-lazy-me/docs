@@ -1,0 +1,74 @@
+---
+title: "Sora 视频生成"
+description: "使用 Sora 模型根据文本或对话生成视频"
+openapi: "POST /chat/completions"
+---
+
+## 功能说明
+
+使用 OpenAI 旗舰级视频生成模型 Sora 2 生成高保真、长达一分钟的视频。
+
+<Note>
+  视频生成通常需要较长时间（120秒以上），请使用流式请求以获取生成进度。
+</Note>
+
+## 请求参数
+
+| 名称 | 类型 | 必选 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `model` | `string` | 是 | 模型名称，如 `sora-2` 或 `sora-2-hd` |
+| `messages` | `array` | 是 | 对话格式的消息列表，用于描述视频内容 |
+| `stream` | `boolean` | 否 | 是否启用流式响应（推荐设置为 `true`） |
+
+## 调用示例
+
+<CodeGroup>
+
+```python Python
+import openai
+
+client = openai.OpenAI(
+    api_key="sk-your-api-key-here",
+    base_url="https://api.qhaigc.net/v1"
+)
+
+response = client.chat.completions.create(
+    model="sora-2",
+    messages=[
+        {"role": "user", "content": "一只可爱的小猫在草地上奔跑"}
+    ],
+    stream=True
+)
+
+for chunk in response:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="")
+```
+
+```bash cURL
+curl https://api.qhaigc.net/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -d '{
+    "model": "sora-2",
+    "messages": [
+      {"role": "user", "content": "一只可爱的小猫在草地上奔跑"}
+    ],
+    "stream": true
+  }'
+```
+
+</CodeGroup>
+
+## 响应流程
+
+流式响应会实时返回任务进度，成功后提供视频下载链接：
+
+1. `⌛️ 任务正在队列中，请耐心等待...`
+2. `🏃 进度：36.0%`
+3. ...
+4. `✅ 视频生成成功，[点击这里](https://...) 查看视频~~~`
+
+## 相关参考
+
+- [模型列表](/models#视频生成模型)

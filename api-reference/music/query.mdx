@@ -1,0 +1,68 @@
+---
+title: "查询音乐生成任务"
+description: "根据任务 ID 查询音乐生成的进度和结果"
+openapi: "GET /music/tasks/{task_id}"
+---
+
+## 功能说明
+
+查询之前创建的音乐生成任务状态。如果任务完成，将返回音频 URL、歌词、标题和封面等信息。
+
+## 请求方式
+
+`GET /v1/music/tasks/{task_id}`
+
+## 调用示例
+
+<CodeGroup>
+
+```python Python
+import requests
+
+task_id = "task_123456789"
+url = f"https://api.qhaigc.net/v1/music/tasks/{task_id}"
+headers = {
+    "Authorization": "Bearer sk-your-api-key-here"
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+```bash cURL
+curl https://api.qhaigc.net/v1/music/tasks/task_123456789 \
+  -H "Authorization: Bearer sk-your-api-key-here"
+```
+
+</CodeGroup>
+
+## 返回结果
+
+成功查询且任务已完成时的结果：
+
+<CodeGroup>
+
+```json 响应示例
+{
+  "created": 1755616949,
+  "data": [
+    {
+      "id": "task_123456789",
+      "url": "https://example.com/audio.mp3",
+      "lyrics": "[00:00.00] 歌词内容...",
+      "title": "春天的呼唤",
+      "cover_url": "https://example.com/cover.jpg",
+      "audio_url": "https://example.com/audio.mp3",
+      "duration": 192.92,
+      "tags": "J-Pop, anime, upbeat",
+      "model": "suno-v4.5-plus"
+    }
+  ]
+}
+```
+
+</CodeGroup>
+
+## 相关接口
+
+- [创建音乐生成任务](/api-reference/music/generate)

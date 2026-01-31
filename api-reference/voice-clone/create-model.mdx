@@ -1,0 +1,78 @@
+---
+title: "创建语音角色"
+description: "上传音频文件克隆自定义语音模型"
+openapi: "POST /voice/model"
+---
+
+## 功能说明
+
+通过上传 2-3 个样音文件，克隆出一个专属的自定义语音模型，可用于文本转语音（TTS）任务。
+
+## 请求方式
+
+`POST /v1/voice/model`
+
+数据格式：`multipart/form-data`
+
+## 请求参数
+
+### 必填字段
+
+| 字段名 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `name` | `string` | 语音模型名称（如 "私人助手"），用于后续 TTS 的 `voice` 参数 |
+| `audio_files` | `file[]` | 2-3 个 `.wav` 音频文件（采样率建议 16kHz 或 24kHz，单声道） |
+| `reference_texts` | `string[]` | 与 `audio_files` 一一对应的文本内容 |
+
+### 可选字段
+
+| 字段名 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `description` | `string` | 模型描述 |
+| `public` | `string` | `"true"` 为公开，`"false"` 为私有（仅自己可用），默认为 `"false"` |
+| `contact_email` | `string` | **当 `public=false` 时必填**，用于联系模型所有者 |
+
+## 调用示例
+
+<CodeGroup>
+
+```python Python
+import requests
+from pathlib import Path
+
+url = "https://api.qhaigc.net/v1/voice/model"
+headers = {"Authorization": "sk-your-api-key-here"}
+
+files = [
+    ("audio_files", ("sample1.wav", open("sample1.wav", "rb"), "audio/wav")),
+    ("audio_files", ("sample2.wav", open("sample2.wav", "rb"), "audio/wav"))
+]
+
+data = {
+    "name": "私人助手",
+    "description": "仅限本人使用的语音模型",
+    "reference_texts": ["你好，我是你的语音助手", "有什么可以帮你的"],
+    "public": "false",
+    "contact_email": "user@example.com"
+}
+
+response = requests.post(url, headers=headers, files=files, data=data)
+print(response.json())
+```
+
+</CodeGroup>
+
+## 响应成功
+
+```json
+{
+  "model_name": "私人助手",
+  "public": false,
+  "description": "仅限本人使用的语音模型"
+}
+```
+
+## 相关接口
+
+- [文本转音频](/api-reference/audio/speech)
+- [获取角色列表](/api-reference/audio/voices)

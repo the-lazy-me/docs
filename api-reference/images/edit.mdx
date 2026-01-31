@@ -1,0 +1,73 @@
+---
+title: "改图(Image 格式)"
+description: "基于原图和文本描述进行图像编辑"
+openapi: "POST /images/edits"
+---
+
+## 功能说明
+
+使用启航 AI 的图像编辑模型，通过上传原图并提供文本描述（Prompt）来修改图像内容。
+
+## 请求参数
+
+| 名称 | 类型 | 必选 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `model` | `string` | 是 | 模型名称，如 `nano-banana-1` |
+| `image` | `file` | 是 | 待修改的原图文件（binary） |
+| `prompt` | `string` | 是 | 修改描述，如 "改成白色背景" |
+
+## 调用示例
+
+<CodeGroup>
+
+```python Python
+import requests
+
+url = "https://api.qhaigc.net/v1/images/edits"
+headers = {
+    "Authorization": "Bearer sk-your-api-key-here"
+}
+
+files = {
+    "image": open("original_image.png", "rb")
+}
+data = {
+    "model": "nano-banana-1",
+    "prompt": "改成白色背景"
+}
+
+response = requests.post(url, headers=headers, files=files, data=data)
+print(response.json())
+```
+
+```bash cURL
+curl https://api.qhaigc.net/v1/images/edits \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -F "model=nano-banana-1" \
+  -F "image=@/path/to/your/image.png" \
+  -F "prompt=改成白色背景"
+```
+
+</CodeGroup>
+
+## 返回结果
+
+<CodeGroup>
+
+```json 成功响应
+{
+  "created": 1761223754,
+  "data": [
+    {
+      "url": "https://images.qhaigc.net/img/edited_image.webp"
+    }
+  ]
+}
+```
+
+</CodeGroup>
+
+## 相关参考
+
+- [绘图(Image 格式)](/api-reference/images/generate)
+- [模型列表](/models#图像生成模型)

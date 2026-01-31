@@ -1,0 +1,90 @@
+---
+title: "获取模型列表"
+description: "查询当前可调用的所有 AI 模型及其详细信息"
+openapi: "GET /models"
+---
+
+## 功能说明
+
+获取当前 API Key 有权访问的所有模型列表，包括模型 ID、创建时间、所属厂商和功能标签等信息。
+
+## 请求方式
+
+`GET /v1/models`
+
+## 调用示例
+
+<CodeGroup>
+
+```python Python
+import openai
+
+client = openai.OpenAI(
+    api_key="sk-your-api-key-here",
+    base_url="https://api.qhaigc.net/v1"
+)
+
+models = client.models.list()
+for model in models:
+    print(f"ID: {model.id}, Group: {model.group}")
+```
+
+```javascript JavaScript
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+  apiKey: 'sk-your-api-key-here',
+  baseURL: 'https://api.qhaigc.net/v1'
+});
+
+async function main() {
+  const list = await openai.models.list();
+
+  for await (const model of list) {
+    console.log(model);
+  }
+}
+main();
+```
+
+```bash cURL
+curl https://api.qhaigc.net/v1/models \
+  -H "Authorization: Bearer sk-your-api-key-here"
+```
+
+</CodeGroup>
+
+## 返回结果
+
+返回包含模型对象的列表。
+
+<CodeGroup>
+
+```json 响应示例
+{
+  "data": [
+    {
+      "id": "gpt-4o",
+      "object": "model",
+      "created": 1626777600,
+      "group": "openai",
+      "tags": ["文本聊天"],
+      "description": "OpenAI 旗舰级多模态模型..."
+    },
+    {
+      "id": "qh-draw-x2-preview",
+      "object": "model",
+      "created": 1626777600,
+      "group": "qh-draw",
+      "tags": ["绘图(Image格式)"],
+      "description": "自研专业级绘图模型..."
+    }
+  ]
+}
+```
+
+</CodeGroup>
+
+## 相关页面
+
+- [模型概览](/models)
