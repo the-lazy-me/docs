@@ -247,10 +247,10 @@
     },
     "/chat/completions": {
       "post": {
-        "summary": "对话补全 (Sora 视频生成)",
-        "description": "使用 Sora 模型根据文本或对话生成视频进度",
+        "summary": "对话补全",
+        "description": "使用大语言模型进行对话交互",
         "tags": [
-          "视频生成"
+          "聊天模型"
         ],
         "requestBody": {
           "required": true,

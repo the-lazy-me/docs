@@ -1,6 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "name": "启航 AI",
+  "openapi": "api-reference/openapi.json",
   "theme": "mint",
   "logo": {
     "light": "/logo/light.svg",
@@ -63,6 +64,13 @@
             ]
           },
           {
+            "group": "聊天模型",
+            "icon": "comments",
+            "pages": [
+              "api-reference/chat/create"
+            ]
+          },
+          {
             "group": "绘图模型",
             "icon": "image",
             "pages": [
@@ -89,7 +97,8 @@
             "group": "语音克隆",
             "icon": "clone",
             "pages": [
-              "api-reference/voice-clone/create-model"
+              "api-reference/voice-clone/create-model",
+              "api-reference/voice-clone/web"
             ]
           },
           {
@@ -122,11 +131,19 @@
             ]
           },
           {
+            "group": "聚合 API",
+            "icon": "list-check",
+            "pages": [
+              "api-reference/other/cheatsheet"
+            ]
+          },
+          {
             "group": "其他接口",
             "icon": "ellipsis",
             "pages": [
               "api-reference/other/models",
-              "api-reference/other/billing"
+              "api-reference/other/billing",
+              "api-reference/other/contact"
             ]
           }
         ]

@@ -1,0 +1,62 @@
+---
+title: '聊天请求'
+openapi: 'POST /chat/completions'
+---
+
+## 接口描述
+
+该接口用于创建聊天补全任务，支持文本和图片输入（多模态）。
+
+## 鉴权
+
+需要使用 API Key 进行鉴权。在 Header 中添加 `Authorization: Bearer <your-api-key>`。
+
+## 请求参数
+
+| 参数名 | 类型 | 必填 | 描述 |
+| :--- | :--- | :--- | :--- |
+| model | string | 是 | 模型名称，例如 `gpt-5-mini` |
+| messages | array | 是 | 聊天上下文信息 |
+| stream | boolean | 否 | 是否开启流式输出，默认为 `false` |
+| stream_options | object | 否 | 流式输出选项 |
+
+### Messages 参数说明
+
+`messages` 数组中的每个元素包含：
+
+| 参数名 | 类型 | 描述 |
+| :--- | :--- | :--- |
+| role | string | 角色，可以是 `user`, `assistant`, `system` |
+| content | string/array | 内容。如果是多模态输入，可以使用数组格式。 |
+
+## 示例代码
+
+```bash
+curl --location --request POST 'https://api.qhaigc.net/v1/chat/completions' \
+--header 'Authorization: Bearer <YOUR_API_KEY>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "model": "gpt-5-mini",
+    "messages": [
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "这张图片有什么"
+                },
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": "https://github.com/dianping/cat/raw/master/cat-home/src/main/webapp/images/logo/cat_logo03.png"
+                    }
+                }
+            ]
+        }
+    ],
+    "stream": true,
+    "stream_options": {
+        "include_usage": true
+    }
+}'
+```
