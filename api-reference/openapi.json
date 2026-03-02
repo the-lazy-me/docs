@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://api.qhaigc.net/v1",
+      "url": "https://api.qhaigc.net",
       "description": "生产服务器"
     }
   ],
@@ -25,7 +25,7 @@
     }
   ],
   "paths": {
-    "/images/generations": {
+    "/v1/images/generations": {
       "post": {
         "summary": "绘图",
         "description": "使用文本描述生成图像",
@@ -91,7 +91,7 @@
         }
       }
     },
-    "/images/edits": {
+    "/v1/images/edits": {
       "post": {
         "summary": "改图",
         "description": "基于原图和文本描述进行图像编辑",
@@ -158,7 +158,7 @@
         }
       }
     },
-    "/audio/speech": {
+    "/v1/audio/speech": {
       "post": {
         "summary": "文本转音频",
         "description": "将文本转换为自然流畅的语音",
@@ -199,7 +199,7 @@
         }
       }
     },
-    "/voice/models/list": {
+    "/v1/voice/models/list": {
       "get": {
         "summary": "获取角色列表",
         "description": "获取所有可用的语音角色名称和描述",
@@ -245,7 +245,7 @@
         }
       }
     },
-    "/chat/completions": {
+    "/v1/chat/completions": {
       "post": {
         "summary": "对话补全",
         "description": "使用大语言模型进行对话交互",
@@ -297,7 +297,7 @@
         }
       }
     },
-    "/voice/model": {
+    "/v1/voice/model": {
       "post": {
         "summary": "创建语音角色",
         "description": "上传音频文件克隆自定义语音模型",
@@ -378,7 +378,7 @@
         }
       }
     },
-    "/embeddings": {
+    "/v1/embeddings": {
       "post": {
         "summary": "创建嵌入",
         "description": "将文本转换为高维向量表示",
@@ -454,7 +454,7 @@
         }
       }
     },
-    "/rerank": {
+    "/v1/rerank": {
       "post": {
         "summary": "创建重排序",
         "description": "对多个示例文档根据与查询的相关性进行重新排序",
@@ -526,7 +526,7 @@
         }
       }
     },
-    "/audio/transcriptions": {
+    "/v1/audio/transcriptions": {
       "post": {
         "summary": "音频转文本",
         "description": "将语音文件识别并转换为文本内容",
@@ -574,7 +574,7 @@
         }
       }
     },
-    "/music/generations": {
+    "/v1/music/generations": {
       "post": {
         "summary": "创建音乐生成任务",
         "description": "使用 Suno 模型创建自定义或非自定义场景的音乐生成任务",
@@ -650,7 +650,7 @@
         }
       }
     },
-    "/music/tasks/{task_id}": {
+    "/v1/music/tasks/{task_id}": {
       "get": {
         "summary": "查询音乐生成任务",
         "description": "根据任务 ID 查询音乐生成的进度和结果",
@@ -692,7 +692,7 @@
         }
       }
     },
-    "/models": {
+    "/v1/models": {
       "get": {
         "summary": "获取模型列表",
         "tags": [
@@ -705,7 +705,7 @@
         }
       }
     },
-    "/dashboard/billing/subscription": {
+    "/v1/dashboard/billing/subscription": {
       "get": {
         "summary": "获取账户信息",
         "tags": [

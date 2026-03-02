@@ -1,34 +1,943 @@
 ---
 title: '聚合 API 接口'
-description: '聚合第三方 API 接口及 SDK 方法速查'
+description: '聚合第三方 API 接口速查，涵盖资讯、热搜榜单、实用工具等'
+icon: 'list-check'
 ---
 
-## 常用资源
+## Base URL
 
-- **API 博客**: [https://blog.thelazy.top/archives/1760954580336](https://blog.thelazy.top/archives/1760954580336)
+所有聚合 API 的基础请求地址：
 
-## 接口/方法列表
+```
+https://api.qhaigc.net/v2/apis
+```
 
-以下是一些常用的接口标识或 SDK 方法名：
+<Note>
+  所有接口均支持通过 `encoding` 参数指定返回格式：`json`（默认）、`text`（纯文本）、`markdown`（AI 友好）。
+</Note>
 
-| 标识 | 说明 |
-| :--- | :--- |
-| `eventHistory` | 历史事件 |
-| `eventHistoryGet` | 获取历史事件 |
-| `eventHistorySearch` | 搜索历史事件 |
-| `musicSearch` | 音乐搜索 |
-| `musicDetail` | 音乐详情 |
-| `musicUrl` | 音乐链接 |
-| `musicLyric` | 音乐歌词 |
-| `musicCommentHot` | 音乐热评 |
-| `musicPlaylist` | 歌单信息 |
-| `tianqi` | 天气信息 |
-| `tianqiSeven` | 七天天气 |
-| `wbtop` | 微博热搜 |
-| `zaobao` | 早报 |
-| `zhihu` | 知乎热榜 |
-| `zhihuGet` | 获取知乎内容 |
-| `zhihuNews` | 知乎新闻 |
-| `zhihuShortComments` | 知乎短评 |
+## 调用示例
 
-> **注意**：具体参数请参考各模块详细文档。
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/60s?date&encoding&force-update'
+```
+
+---
+
+## 🕘 周期资讯
+
+<AccordionGroup>
+
+<Accordion title="每天 60 秒读懂世界" icon="clock">
+
+`GET /v2/apis/60s`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `date` | string | 否 | 指定日期，格式如 `2025-03-01` |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` / `image` / `image-proxy` |
+| `force-update` | boolean | 否 | 强制刷新数据源缓存 |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/60s?encoding=json'
+```
+
+<Tip>
+  如果需要 RSS 订阅，可以使用 `GET /v2/apis/60s/rss` 端点。
+</Tip>
+
+</Accordion>
+
+<Accordion title="AI 资讯快报" icon="robot">
+
+`GET /v2/apis/ai-news`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `date` | string | 否 | 新闻日期，格式如 `2025-11-11` |
+| `all` | string | 否 | 设为 `1` 拉取全部日期数据 |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/ai-news?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="必应每日壁纸" icon="image">
+
+`GET /v2/apis/bing`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `image` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/bing?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="当日货币汇率" icon="money-bill">
+
+`GET /v2/apis/exchange-rate`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `currency` | string | 否 | 基准货币，默认 `CNY` |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/exchange-rate?currency=CNY&encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="历史上的今天" icon="calendar-days">
+
+`GET /v2/apis/today-in-history`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `date` | string | 否 | 指定日期，格式 `YYYY-MM-DD` |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/today-in-history?encoding=json'
+```
+
+数据来源于百度百科。
+
+</Accordion>
+
+<Accordion title="Epic Games 每周免费游戏" icon="gamepad">
+
+`GET /v2/apis/epic`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/epic?encoding=json'
+```
+
+</Accordion>
+
+</AccordionGroup>
+
+---
+
+## 🍱 实用功能
+
+<AccordionGroup>
+
+<Accordion title="实时天气" icon="cloud-sun">
+
+`GET /v2/apis/weather`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `query` | string | 否 | 查询地区名称 |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/weather?query=北京&encoding=json'
+```
+
+天气数据来源于腾讯天气。
+
+</Accordion>
+
+<Accordion title="天气预报" icon="cloud-sun-rain">
+
+`GET /v2/apis/weather/forecast`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `query` | string | 否 | 查询地区名称 |
+| `days` | integer | 否 | 预报天数，最大 8 天 |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/weather/forecast?query=上海&days=3&encoding=json'
+```
+
+天气数据来源于腾讯天气。
+
+</Accordion>
+
+<Accordion title="摸鱼日报" icon="fish">
+
+`GET /v2/apis/moyu`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/moyu?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="歌词搜索" icon="music">
+
+`GET /v2/apis/lyric`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `query` | string | 是 | 歌曲名称 |
+| `clean` | boolean | 否 | 是否隐藏附加信息 |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/lyric?query=晴天&encoding=json'
+```
+
+歌曲、歌词数据来自 QQ 音乐。
+
+</Accordion>
+
+<Accordion title="在线翻译（支持 109 种语言）" icon="language">
+
+`GET /v2/apis/fanyi`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `text` | string | 是 | 源文本 |
+| `from` | string | 否 | 源语言，默认 `auto` |
+| `to` | string | 否 | 目标语言，默认 `auto` |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/fanyi?text=你好世界&to=en&encoding=json'
+```
+
+数据来源于有道翻译。查询支持的语言列表：`GET /v2/apis/fanyi/langs`
+
+</Accordion>
+
+<Accordion title="百度百科词条" icon="book">
+
+`GET /v2/apis/baike`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `word` | string | 是 | 词条名称 |
+| `encoding` | string | 否 | 返回格式 |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/baike?word=西游记&encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="Whois 查询" icon="globe">
+
+`GET /v2/apis/whois`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `domain` | string | 是 | 查询域名 |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/whois?domain=example.com&encoding=json'
+```
+
+优先使用 RDAP 协议数据，降级到常规 Whois 本地递归查询。
+
+</Accordion>
+
+<Accordion title="生成二维码" icon="qrcode">
+
+`GET /v2/apis/qrcode`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `text` | string | 否 | URL 或文本内容 |
+| `size` | integer | 否 | 尺寸，默认 `256` |
+| `level` | string | 否 | 容错等级：`L` / `M` / `Q` / `H`，默认 `M` |
+| `encoding` | string | 否 | 返回格式 |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/qrcode?text=https://qhaigc.net&size=256'
+```
+
+</Accordion>
+
+<Accordion title="公网 IP 地址" icon="network-wired">
+
+`GET /v2/apis/ip`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/ip?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="链接 OG 信息" icon="link">
+
+`GET /v2/apis/og`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `url` | string | 是 | 目标链接 |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/og?url=https://github.com'
+```
+
+</Accordion>
+
+<Accordion title="哈希/解压/压缩" icon="hashtag">
+
+`GET /v2/apis/hash`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `content` | string | 是 | 待处理的文本内容 |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/hash?content=你好👋'
+```
+
+</Accordion>
+
+<Accordion title="身体健康分析" icon="heart-pulse">
+
+`GET /v2/apis/health`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `height` | integer | 是 | 身高（cm） |
+| `weight` | integer | 是 | 体重（kg） |
+| `age` | integer | 是 | 年龄 |
+| `gender` | string | 是 | 性别：`male` / `female` |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/health?height=175&weight=70&age=25&gender=male&encoding=json'
+```
+
+多维度分析身体健康状态，包括 BMI、理想体重、预估体脂、预估三围、健康建议等。
+
+</Accordion>
+
+<Accordion title="密码生成器" icon="key">
+
+`GET /v2/apis/password`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `length` | integer | 否 | 密码长度 |
+| `numbers` | string | 否 | 是否包含数字 |
+| `uppercase` | string | 否 | 是否包含大写字母 |
+| `lowercase` | string | 否 | 是否包含小写字母 |
+| `symbols` | string | 否 | 是否包含特殊字符 |
+| `exclude_similar` | string | 否 | 排除相似字符 |
+| `exclude_ambiguous` | string | 否 | 排除模糊字符 |
+| `encoding` | string | 否 | 返回格式 |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/password?length=16&encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="密码强度检测" icon="shield-halved">
+
+`GET /v2/apis/password/check`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `password` | string | 是 | 待检测密码 |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/password/check?password=MyP@ss123&encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="随机颜色/颜色转换" icon="palette">
+
+`GET /v2/apis/color/random`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `color` | string | 否 | 指定颜色值，如 `#33AAFF` |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `html` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/color/random?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="配色方案/色彩搭配" icon="swatchbook">
+
+`GET /v2/apis/color/palette`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `color` | string | 否 | 基础颜色值，如 `#33AAFF` |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `html` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/color/palette?color=%2333AAFF&encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="黄金价格" icon="coins">
+
+`GET /v2/apis/gold-price`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/gold-price?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="汽油价格" icon="gas-pump">
+
+`GET /v2/apis/fuel-price`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `region` | string | 否 | 查询地区 |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/fuel-price?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="奥运奖牌榜" icon="medal">
+
+`GET /v2/apis/olympics`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `id` | string | 否 | 奥运赛事 ID，默认当前最新赛事 |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/olympics?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="农历信息（开发中）" icon="moon">
+
+`GET /v2/apis/lunar`
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/lunar'
+```
+
+<Warning>
+  该接口目前仍在开发中，功能可能不完整。
+</Warning>
+
+</Accordion>
+
+</AccordionGroup>
+
+---
+
+## 🔥 热门榜单
+
+<AccordionGroup>
+
+<Accordion title="抖音热搜" icon="fire">
+
+`GET /v2/apis/douyin`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/douyin?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="小红书热点" icon="fire">
+
+`GET /v2/apis/rednote`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/rednote?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="微博热搜" icon="fire">
+
+`GET /v2/apis/weibo`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/weibo?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="哔哩哔哩热搜" icon="fire">
+
+`GET /v2/apis/bili`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/bili?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="知乎话题榜" icon="fire">
+
+`GET /v2/apis/zhihu`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/zhihu?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="头条热搜榜" icon="fire">
+
+`GET /v2/apis/toutiao`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/toutiao?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="百度实时热搜" icon="fire">
+
+`GET /v2/apis/baidu/hot`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/baidu/hot?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="百度电视剧榜" icon="tv">
+
+`GET /v2/apis/baidu/teleplay`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/baidu/teleplay?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="百度贴吧话题榜" icon="comments">
+
+`GET /v2/apis/baidu/tieba`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/baidu/tieba?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="夸克热点" icon="fire">
+
+`GET /v2/apis/quark`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/quark?encoding=json'
+```
+
+数据来自夸克 7x24 小时实时热点。
+
+</Accordion>
+
+<Accordion title="懂车帝热搜" icon="car">
+
+`GET /v2/apis/dongchedi`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/dongchedi?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="网易云榜单列表" icon="list-ol">
+
+`GET /v2/apis/ncm-rank/list`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/ncm-rank/list?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="网易云榜单详情" icon="music">
+
+`GET /v2/apis/ncm-rank/{id}`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `id` | string | 是 | 排行榜 ID，如热歌榜为 `3778678` |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/ncm-rank/3778678?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="Hacker News 热帖" icon="fire">
+
+`GET /v2/apis/hacker-news/{type}`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `type` | string | 是 | 类型：`new` / `top` / `best` |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/hacker-news/top?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="猫眼全球票房总榜" icon="ranking-star">
+
+`GET /v2/apis/maoyan/all/movie`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/maoyan/all/movie?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="猫眼电影实时票房" icon="film">
+
+`GET /v2/apis/maoyan/realtime/movie`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/maoyan/realtime/movie?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="猫眼电视收视排行" icon="tv">
+
+`GET /v2/apis/maoyan/realtime/tv`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/maoyan/realtime/tv?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="猫眼网剧实时热度" icon="clapperboard">
+
+`GET /v2/apis/maoyan/realtime/web`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/maoyan/realtime/web?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="豆瓣全球口碑电影榜" icon="star">
+
+`GET /v2/apis/douban/weekly/movie`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/douban/weekly/movie?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="豆瓣华语口碑剧集榜" icon="star">
+
+`GET /v2/apis/douban/weekly/tv_chinese`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/douban/weekly/tv_chinese?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="豆瓣全球口碑剧集榜" icon="star">
+
+`GET /v2/apis/douban/weekly/tv_global`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/douban/weekly/tv_global?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="豆瓣华语口碑综艺榜" icon="star">
+
+`GET /v2/apis/douban/weekly/show_chinese`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/douban/weekly/show_chinese?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="豆瓣全球口碑综艺榜" icon="star">
+
+`GET /v2/apis/douban/weekly/show_global`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/douban/weekly/show_global?encoding=json'
+```
+
+</Accordion>
+
+</AccordionGroup>
+
+---
+
+## 🎤 消遣娱乐
+
+<AccordionGroup>
+
+<Accordion title="随机一言" icon="quote-left">
+
+`GET /v2/apis/hitokoto`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/hitokoto?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="随机运势" icon="star">
+
+`GET /v2/apis/luck`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/luck?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="随机搞笑段子" icon="face-laugh-squint">
+
+`GET /v2/apis/duanzi`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/duanzi?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="随机冷笑话" icon="snowflake">
+
+`GET /v2/apis/dad-joke`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/dad-joke?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="随机发病文学" icon="heart-crack">
+
+`GET /v2/apis/fabing`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `name` | string | 否 | 对象名字，默认"主人" |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/fabing?name=启航&encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="随机答案之书" icon="book-open">
+
+`GET /v2/apis/answer`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/answer?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="随机 KFC 文案" icon="utensils">
+
+`GET /v2/apis/kfc`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/kfc?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="随机 JS 趣味题" icon="js">
+
+`GET /v2/apis/awesome-js`
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `encoding` | string | 否 | 返回格式：`text` / `json` / `markdown` |
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/awesome-js?encoding=json'
+```
+
+</Accordion>
+
+<Accordion title="随机唱歌音频" icon="microphone">
+
+`GET /v2/apis/changya`
+
+无需参数，直接返回音频。
+
+```bash
+curl --location --request GET 'https://api.qhaigc.net/v2/apis/changya'
+```
+
+</Accordion>
+
+</AccordionGroup>
+
+---
+
+## 通用返回格式
+
+所有接口（除特殊格式外）统一使用以下 JSON 结构返回：
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    // 具体数据内容
+  }
+}
+```
+
+<Note>
+  时间戳字段提供两种格式：带 `_at` 后缀的为 13 位毫秒时间戳（如 `updated_at`），不带后缀的为日期时间字符串（如 `updated`）。链接字段统一命名为 `link`，封面图字段统一命名为 `cover`。
+</Note>
