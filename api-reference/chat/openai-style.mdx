@@ -1,0 +1,37 @@
+---
+title: 'OpenAI 风格'
+description: '使用 OpenAI Chat Completions 风格返回结果'
+openapi: 'POST /v1/chat/completions'
+---
+
+## 接口说明
+
+该页面演示如何使用 OpenAI 风格调用聊天接口。
+
+- `style` 固定为 `openai`
+- 适合使用 OpenAI SDK 或兼容 OpenAI 返回结构的应用
+
+## 请求示例
+
+```bash
+curl --location --request POST 'https://api.qhaigc.net/v1/chat/completions' \
+--header 'Authorization: Bearer <YOUR_API_KEY>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "model": "gpt-5-mini",
+    "style": "openai",
+    "messages": [
+        {
+            "role": "user",
+            "content": "请用三句话介绍 RAG"
+        }
+    ],
+    "stream": false
+}'
+```
+
+## 相关页面
+
+- [聊天请求（总览）](/api-reference/chat/create)
+- [Claude 风格](/api-reference/chat/claude-style)
+- [Gemini 风格](/api-reference/chat/gemini-style)

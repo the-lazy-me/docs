@@ -67,7 +67,9 @@
             "group": "聊天模型",
             "icon": "comments",
             "pages": [
-              "api-reference/chat/create"
+              "api-reference/chat/openai-style",
+              "api-reference/chat/claude-style",
+              "api-reference/chat/gemini-style"
             ]
           },
           {
@@ -144,6 +146,30 @@
               "api-reference/other/models",
               "api-reference/other/billing",
               "api-reference/other/contact"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "教程",
+        "groups": [
+          {
+            "group": "教程中心",
+            "icon": "graduation-cap",
+            "pages": [
+              "tutorials/index"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "工具",
+        "groups": [
+          {
+            "group": "检测与排查",
+            "icon": "screwdriver-wrench",
+            "pages": [
+              "claude-api-checker"
             ]
           }
         ]

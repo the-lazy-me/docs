@@ -1,0 +1,87 @@
+---
+title: 'Claude 风格'
+description: 'Claude Messages API 风格（原生字段结构）'
+openapi: 'POST /v1/messages'
+---
+
+## Base URL
+
+- `https://api.qhaigc.net`
+- `https://api-hk.qhaigc.net`
+
+## Endpoint
+
+`POST /v1/messages`
+
+## 鉴权与请求头
+
+| Header | 是否必填 | 说明 |
+| :--- | :--- | :--- |
+| `Authorization: Bearer <YOUR_API_KEY>` | 是 | 启航 API Key |
+| `anthropic-version: 2023-06-01` | 是 | Claude Messages 版本头 |
+| `Content-Type: application/json` | 是 | JSON 请求体 |
+
+## 请求体格式（Claude 原生）
+
+| 字段 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `model` | string | 是 | 例如 `claude-sonnet-4-5` |
+| `max_tokens` | integer | 是 | 最大输出 token 数 |
+| `messages` | array | 是 | 对话消息数组 |
+| `system` | string | 否 | 系统提示词 |
+| `temperature` | number | 否 | 采样温度 |
+| `stream` | boolean | 否 | 是否流式 |
+
+## 请求示例
+
+```bash
+curl --location --request POST 'https://api.qhaigc.net/v1/messages' \
+--header 'Authorization: Bearer <YOUR_API_KEY>' \
+--header 'anthropic-version: 2023-06-01' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "model": "claude-sonnet-4-5",
+  "max_tokens": 1024,
+  "system": "你是一个简洁的技术助手。",
+  "messages": [
+    {
+      "role": "user",
+      "content": "用 3 点总结量子计算的核心价值"
+    }
+  ],
+  "temperature": 0.3,
+  "stream": false
+}'
+```
+
+## 响应结构示例
+
+```json
+{
+  "id": "msg_01ABCDEF",
+  "type": "message",
+  "role": "assistant",
+  "model": "claude-sonnet-4-5",
+  "content": [
+    {
+      "type": "text",
+      "text": "1) ... 2) ... 3) ..."
+    }
+  ],
+  "stop_reason": "end_turn",
+  "usage": {
+    "input_tokens": 33,
+    "output_tokens": 86
+  }
+}
+```
+
+## 官方格式参考
+
+- [Anthropic Messages API](https://docs.anthropic.com/en/api/messages)
+- [Using the Messages API](https://docs.anthropic.com/en/api/messages-examples)
+
+## 相关页面
+
+- [OpenAI 风格](/api-reference/chat/openai-style)
+- [Gemini 风格](/api-reference/chat/gemini-style)

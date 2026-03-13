@@ -1,0 +1,91 @@
+---
+title: 'Gemini 风格'
+description: 'Gemini generateContent 风格（原生字段结构）'
+openapi: 'POST /v1beta/models/{model}:generateContent'
+---
+
+## Base URL
+
+- `https://api.qhaigc.net`
+- `https://api-hk.qhaigc.net`
+
+## Endpoint
+
+`POST /v1beta/models/{model}:generateContent`
+
+示例模型：`gemini-2.5-pro`、`gemini-2.5-flash`
+
+## 鉴权与请求头
+
+| Header | 是否必填 | 说明 |
+| :--- | :--- | :--- |
+| `Authorization: Bearer <YOUR_API_KEY>` | 是 | 启航 API Key |
+| `Content-Type: application/json` | 是 | JSON 请求体 |
+
+## 请求体格式（Gemini 原生）
+
+| 字段 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `contents` | array | 是 | 对话内容，包含 `role` 与 `parts` |
+| `generationConfig` | object | 否 | 生成参数（如 `temperature`、`maxOutputTokens`） |
+| `safetySettings` | array | 否 | 安全策略 |
+| `tools` | array | 否 | 工具定义 |
+
+## 请求示例
+
+```bash
+curl --location --request POST 'https://api.qhaigc.net/v1beta/models/gemini-2.5-pro:generateContent' \
+--header 'Authorization: Bearer <YOUR_API_KEY>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "contents": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "text": "请用简洁中文解释 RAG 的工作流程"
+        }
+      ]
+    }
+  ],
+  "generationConfig": {
+    "temperature": 0.4,
+    "maxOutputTokens": 512
+  }
+}'
+```
+
+## 响应结构示例
+
+```json
+{
+  "candidates": [
+    {
+      "content": {
+        "role": "model",
+        "parts": [
+          {
+            "text": "RAG 的流程通常分为检索、增强、生成三步..."
+          }
+        ]
+      },
+      "finishReason": "STOP"
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 18,
+    "candidatesTokenCount": 76,
+    "totalTokenCount": 94
+  }
+}
+```
+
+## 官方格式参考
+
+- [Gemini API - Generate content](https://ai.google.dev/gemini-api/docs/text-generation)
+- [Gemini API Reference - generateContent](https://ai.google.dev/api/generate-content)
+
+## 相关页面
+
+- [OpenAI 风格](/api-reference/chat/openai-style)
+- [Claude 风格](/api-reference/chat/claude-style)

@@ -1,0 +1,363 @@
+---
+title: "Claude API 检测"
+description: "检测中转站是否真正兼容 Claude Native Tools"
+icon: "shield-check"
+---
+
+## 用途
+
+这个页面提供一个完整的检测脚本，用于判断某个中转接口是否真正支持 Claude Native Tools（`/v1/messages` + `tool_use`），并识别常见的 OpenAI 兼容层伪装痕迹。
+
+## 使用步骤
+
+1. 安装依赖：`pip install requests`
+2. 将脚本中的 `API_URL`、`API_KEY`、`MODEL` 改为你的实际值
+3. 运行脚本：`python claude_api_checker.py`
+4. 查看终端输出中的 `Claude Native Compatibility Report`
+
+<Warning>
+  请不要在公开仓库提交真实 API Key。建议通过环境变量注入密钥。
+</Warning>
+
+## 检测脚本
+
+```python
+# pip install requests
+import requests
+import json
+import time
+from typing import Dict, Any, Optional, Tuple
+
+# ================= 配置区 =================
+# 必须是 Claude / Anthropic Messages 路径
+API_URL = "https://api.qhaigc.net/v1/messages"
+API_KEY = "sk-XXXXXXXXXXXXXXXXXXXX"
+
+# 建议填你实际要测的模型
+MODEL = "claude-haiku-4-5-20251001"
+
+# 官方 Claude API 版本头
+ANTHROPIC_VERSION = "2023-06-01"
+
+TIMEOUT = 20
+# ==========================================
+
+
+def pretty(obj: Any) -> str:
+    return json.dumps(obj, indent=2, ensure_ascii=False)
+
+
+def build_headers_x_api_key() -> Dict[str, str]:
+    return {
+        "x-api-key": API_KEY,
+        "anthropic-version": ANTHROPIC_VERSION,
+        "content-type": "application/json",
+    }
+
+
+def build_headers_bearer() -> Dict[str, str]:
+    return {
+        "Authorization": f"Bearer {API_KEY}",
+        "anthropic-version": ANTHROPIC_VERSION,
+        "content-type": "application/json",
+    }
+
+
+def build_tool_definition(strict: bool = False) -> Dict[str, Any]:
+    tool = {
+        "name": "get_weather",
+        "description": "Get the current weather in a given location",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "location": {
+                    "type": "string",
+                    "description": "The city and state, e.g. San Francisco, CA",
+                }
+            },
+            "required": ["location"],
+            "additionalProperties": False,
+        },
+    }
+
+    # 有些兼容层支持 strict，有些不支持，所以单独测
+    if strict:
+        tool["strict"] = True
+
+    return tool
+
+
+def build_payload(force_tool: bool = True, strict: bool = False) -> Dict[str, Any]:
+    payload = {
+        "model": MODEL,
+        "max_tokens": 256,
+        "messages": [
+            {
+                "role": "user",
+                "content": (
+                    "What's the weather like in San Francisco? "
+                    "Please use the get_weather tool and do not answer from memory."
+                ),
+            }
+        ],
+        "tools": [build_tool_definition(strict=strict)],
+    }
+
+    # 强制触发工具调用，减少“模型自己没调工具”的误判
+    if force_tool:
+        payload["tool_choice"] = {
+            "type": "tool",
+            "name": "get_weather",
+        }
+
+    return payload
+
+
+def safe_json(resp: requests.Response) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    try:
+        return resp.json(), None
+    except json.JSONDecodeError:
+        return None, resp.text
+
+
+def find_tool_use(resp_json: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    for block in resp_json.get("content", []):
+        if isinstance(block, dict) and block.get("type") == "tool_use":
+            return block
+    return None
+
+
+def classify_error(error_text: str) -> str:
+    s = error_text.lower()
+
+    if "chat.completions" in s:
+        return "疑似底层仍在走 OpenAI chat.completions 接口。"
+
+    if "tools[0].type" in s or "type is required" in s:
+        return "疑似 OpenAI 风格 tools 校验，不是真正的 Claude Native Tools。"
+
+    if "parameters" in s or "function" in s or "function_call" in s:
+        return "疑似兼容层在按 OpenAI function calling 逻辑处理请求。"
+
+    if "authorization" in s or "bearer" in s:
+        return "可能要求 Authorization: Bearer，鉴权存在兼容层包装。"
+
+    if "x-api-key" in s:
+        return "可能要求 x-api-key，鉴权更接近原生 Claude。"
+
+    if "anthropic-version" in s:
+        return "中转可能未正确透传 anthropic-version。"
+
+    if "model" in s and any(k in s for k in ["not found", "invalid", "unsupported", "does not exist"]):
+        return "模型名不存在、未接入，或被中转拦截。"
+
+    if "strict" in s:
+        return "基础 tools 可能可用，但 strict schema 可能不兼容。"
+
+    return "未能自动归类，请查看原始报错。"
+
+
+def detect_openai_style_artifacts(result: Dict[str, Any]) -> bool:
+    """
+    只有在响应/报错里真的出现 OpenAI 风格痕迹时，才判定存在伪装嫌疑。
+    不能因为 Bearer 可用就误判。
+    """
+    if not result:
+        return False
+
+    if result.get("json") is not None:
+        blob = json.dumps(result["json"], ensure_ascii=False).lower()
+    else:
+        blob = (result.get("raw_text") or "").lower()
+
+    keywords = [
+        "chat.completions",
+        '"type":"function"',
+        '"type": "function"',
+        "function_call",
+        "tool_calls",
+        "tools[0].type",
+        "parameters",
+    ]
+    return any(k in blob for k in keywords)
+
+
+def do_request(name: str, headers: Dict[str, str], payload: Dict[str, Any]) -> Dict[str, Any]:
+    print(f"\n===== {name} =====")
+    print("请求头:")
+    print(pretty(headers))
+    print("请求体:")
+    print(pretty(payload))
+
+    started = time.time()
+    try:
+        resp = requests.post(API_URL, headers=headers, json=payload, timeout=TIMEOUT)
+        elapsed = round(time.time() - started, 3)
+    except requests.exceptions.RequestException as e:
+        return {
+            "ok": False,
+            "network_error": str(e),
+            "phase": name,
+        }
+
+    resp_json, raw_text = safe_json(resp)
+
+    result = {
+        "ok": resp.status_code == 200,
+        "status_code": resp.status_code,
+        "elapsed_sec": elapsed,
+        "phase": name,
+        "json": resp_json,
+        "raw_text": raw_text,
+        "headers_sent": headers,
+        "payload_sent": payload,
+    }
+
+    if resp_json:
+        tool_use = find_tool_use(resp_json)
+        result["stop_reason"] = resp_json.get("stop_reason")
+        result["tool_use"] = tool_use
+
+    return result
+
+
+def print_phase_result(result: Dict[str, Any]) -> None:
+    if result.get("network_error"):
+        print(f"❌ 网络异常: {result['network_error']}")
+        return
+
+    print(f"📡 HTTP 状态码: {result.get('status_code')}")
+    print(f"⏱️ 耗时: {result.get('elapsed_sec')} 秒")
+
+    if result.get("json") is not None:
+        print("📦 JSON 响应:")
+        print(pretty(result["json"]))
+    else:
+        print("📦 非 JSON 响应:")
+        print(result.get("raw_text"))
+
+    if result.get("ok") and result.get("tool_use"):
+        block = result["tool_use"]
+        print("✅ 检测到原生 tool_use")
+        print(f"🛠️ 工具名: {block.get('name')}")
+        print(f"📥 工具参数: {pretty(block.get('input'))}")
+    elif result.get("ok"):
+        print(f"⚠️ 请求成功，但未检测到 tool_use，stop_reason={result.get('stop_reason')}")
+    else:
+        error_blob = pretty(result["json"]) if result.get("json") else (result.get("raw_text") or "")
+        print("❌ 请求失败")
+        print("💡 诊断:", classify_error(error_blob))
+
+
+def has_tool_use(result: Optional[Dict[str, Any]]) -> bool:
+    return bool(result and result.get("ok") and result.get("tool_use"))
+
+
+def summarize(results: Dict[str, Dict[str, Any]]) -> None:
+    print("\n" + "=" * 60)
+    print("Claude Native Compatibility Report")
+    print("=" * 60)
+
+    basic = results.get("native_basic")
+    strict = results.get("native_strict")
+    bearer = results.get("bearer_probe")
+
+    print(f"API_URL: {API_URL}")
+    print(f"MODEL:   {MODEL}")
+    print()
+
+    # 1. 原生 tools 能力
+    if has_tool_use(basic):
+        print("✅ 原生 Claude Tools: 支持")
+    else:
+        print("❌ 原生 Claude Tools: 不支持或存在兼容性问题")
+
+    # 2. strict schema 能力
+    if has_tool_use(strict):
+        print("✅ Strict Tool Schema: 支持")
+    elif strict and strict.get("ok"):
+        print("⚠️ Strict Tool Schema: 请求成功，但未正确触发 tool_use")
+    else:
+        print("⚠️ Strict Tool Schema: 不支持或中转未完整透传")
+
+    # 3. 鉴权行为
+    x_ok = bool(basic and basic.get("ok"))
+    bearer_ok = bool(bearer and bearer.get("ok"))
+
+    if x_ok and not bearer_ok:
+        print("✅ 鉴权模式: 更接近原生 Claude（x-api-key 正常，Bearer 不通或不必要）")
+    elif (not x_ok) and bearer_ok:
+        print("⚠️ 鉴权模式: 更像兼容层包装（Bearer 可用，x-api-key 异常）")
+    elif x_ok and bearer_ok:
+        print("⚠️ 鉴权模式: x-api-key / Bearer 都可用，像是中转层做了兼容包装")
+    else:
+        print("❌ 鉴权模式: 两种方式都异常，优先排查 URL / Key / 上游配置")
+
+    # 4. 是否真的发现 OpenAI 风格伪装痕迹
+    openai_artifact_found = any(
+        detect_openai_style_artifacts(r)
+        for r in results.values()
+        if r
+    )
+
+    # 5. 最终结论：证据优先，不再因 Bearer 可用而误报
+    if has_tool_use(basic) and has_tool_use(strict):
+        if openai_artifact_found:
+            print("⚠️ 结论: 该接口可兼容 Claude Native Tools，但响应/报错中出现了 OpenAI 风格兼容层痕迹。")
+        else:
+            print("🎉 结论: 该中转站兼容 Claude Native Tools，且当前未发现明显的 OpenAI 风格伪装痕迹。")
+    elif has_tool_use(basic):
+        if openai_artifact_found:
+            print("⚠️ 结论: 基础 Claude Native Tools 可用，但存在兼容层痕迹，兼容性可能不完整。")
+        else:
+            print("✅ 结论: 基础 Claude Native Tools 可用，但 strict 或其他能力可能不完整。")
+    else:
+        if openai_artifact_found:
+            print("🚨 结论: 高度怀疑底层是 OpenAI 兼容层伪装，且未正确支持 Claude Native Tools。")
+        else:
+            print("❌ 结论: 未确认支持 Claude Native Tools，请检查中转实现或上游配置。")
+
+    print("=" * 60)
+
+
+def main():
+    print("🔍 [检测开始] 正在测试当前中转站是否支持真正的 Claude Native Tools 格式...")
+
+    results = {}
+
+    # Phase 1: 原生 Claude 头 + 原生 tools
+    results["native_basic"] = do_request(
+        name="Phase 1 - Native Claude Tools",
+        headers=build_headers_x_api_key(),
+        payload=build_payload(force_tool=True, strict=False),
+    )
+    print_phase_result(results["native_basic"])
+
+    # Phase 2: 原生 Claude 头 + strict schema
+    results["native_strict"] = do_request(
+        name="Phase 2 - Native Claude Tools (strict schema)",
+        headers=build_headers_x_api_key(),
+        payload=build_payload(force_tool=True, strict=True),
+    )
+    print_phase_result(results["native_strict"])
+
+    # Phase 3: Bearer 探针，仅用来判断是否有兼容层包装
+    results["bearer_probe"] = do_request(
+        name="Phase 3 - Bearer Auth Probe",
+        headers=build_headers_bearer(),
+        payload=build_payload(force_tool=True, strict=False),
+    )
+    print_phase_result(results["bearer_probe"])
+
+    summarize(results)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+## 如何判读结果
+
+- `✅ 原生 Claude Tools: 支持`：说明已检测到 `content[].type=tool_use`
+- `⚠️ Strict Tool Schema`：通常表示 strict 兼容性不足，但基础 tools 可能仍可用
+- `🚨 高度怀疑底层是 OpenAI 兼容层伪装`：说明在报错/响应中检测到强 OpenAI 风格特征且未成功触发原生 `tool_use`
