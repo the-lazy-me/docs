@@ -125,6 +125,10 @@ curl -fsSL "https://opendoc.qhaigc.net/openclaw/install.sh" | bash
 
 ![](https://img.thelazy.top/2026/03/14/image-20260314184119336.png)
 
+<Warning>
+  根据实测，这一步需要先完成一次发布，再回到终端填写飞书凭证。否则后续流程可能无法正常生效。
+</Warning>
+
 ## 第七步：回到终端填写飞书凭证
 
 回到飞书应用的 **凭证与基础信息** 页面，复制以下信息并依次粘贴到终端：
@@ -144,7 +148,11 @@ curl -fsSL "https://opendoc.qhaigc.net/openclaw/install.sh" | bash
 
 ![](https://img.thelazy.top/2026/03/14/image-20260314194443176.png)
 
-## 第八步：在飞书中完成配对
+## 第八步：保存变更并再次发布飞书应用
+
+填写完 `App ID` 和 `App Secret` 后，请再次进入 **版本管理与发布** 页面，保存当前变更并重新发布，确保最新配置已经生效。
+
+## 第九步：在飞书中完成配对
 
 打开飞书客户端，新建一个群聊，将刚创建的机器人加入群内，然后发送一条测试消息，例如“你好”。
 
@@ -180,6 +188,12 @@ openclaw pairing approve feishu URPJSW9K
   <Accordion title="macOS 和 Linux 用户从哪一步开始？">
     直接从“第一步：执行安装脚本”开始即可，无需处理 WSL。
   </Accordion>
+  <Accordion title="怎么判断 OpenClaw 是否安装成功？">
+    安装完成后，终端会出现明确的成功提示，并继续进入 API Key 或后续配置流程；如果安装失败，终端也会直接输出错误提示信息。
+  </Accordion>
+  <Accordion title="飞书应用什么时候发布？">
+    实测建议分两次处理：先完成机器人和事件订阅等基础配置后先发布一次；填写 `App ID` 和 `App Secret` 后，再进入“版本管理与发布”页面保存并重新发布一次，最后再去飞书里完成配对。
+  </Accordion>
   <Accordion title="为什么首次发送消息后返回的是英文命令？">
     这是 OpenClaw 的安全配对流程。按照返回的 `openclaw pairing approve feishu ...` 命令在终端执行一次即可完成授权。
   </Accordion>
@@ -187,4 +201,3 @@ openclaw pairing approve feishu URPJSW9K
     在终端执行 `openclaw uninstall` 即可。
   </Accordion>
 </AccordionGroup>
-
