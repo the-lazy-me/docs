@@ -157,7 +157,8 @@
             "group": "教程中心",
             "icon": "graduation-cap",
             "pages": [
-              "tutorials/index"
+              "tutorials/index",
+              "tutorials/openclaw-feishu"
             ]
           }
         ]

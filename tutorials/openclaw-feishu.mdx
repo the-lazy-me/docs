@@ -1,0 +1,190 @@
+---
+title: "一键安装 OpenClaw 并接入飞书"
+description: "使用一键脚本安装 OpenClaw，并完成飞书机器人接入"
+icon: "bot"
+---
+
+## 教程说明
+
+本教程适用于使用一键脚本安装 OpenClaw，并将其接入飞书的场景，支持 Windows WSL、macOS 和 Linux。
+
+安装命令如下：
+
+```bash
+curl -fsSL "https://opendoc.qhaigc.net/openclaw/install.sh" | bash
+```
+
+<Info>
+  Windows 用户需要先完成 WSL 安装。macOS 和 Linux 用户可以直接从“第一步：执行安装脚本”开始。
+</Info>
+
+## Windows 前置操作
+
+适用于 Windows 10 2004+（Build 19041）或 Windows 11。
+
+请先确认已开启 CPU 虚拟化，可在“任务管理器 > 性能 > CPU”中查看。若未开启，可参考：[开启 CPU 虚拟化教程](https://www.doubao.com/thread/w0b54e883ab684dd0)
+
+![检查 CPU 虚拟化](https://img.thelazy.top/2026/03/14/image-20260314144609572.png)
+
+打开以下链接安装 Ubuntu：
+
+[在 Microsoft Store 中打开 Ubuntu](ms-windows-store://pdp/?ProductId=9PN20MSR04DW)
+
+安装完成后，首次启动会提示设置 Linux 用户名和密码。密码输入时不会显示，输入完成后直接回车即可。
+
+![](https://img.thelazy.top/2026/03/14/image-20260314190023003.png)
+
+## 第一步：执行安装脚本
+
+打开终端后，执行以下命令：
+
+```bash
+curl -fsSL "https://opendoc.qhaigc.net/openclaw/install.sh" | bash
+```
+
+如果系统提示输入密码，直接输入当前系统密码并回车即可，终端中同样不会显示字符。
+
+![](https://img.thelazy.top/2026/03/14/image-20260314190117013.png)
+
+安装过程通常需要几分钟到十几分钟，请耐心等待。
+
+## 第二步：输入启航 AI API Key
+
+安装脚本执行过程中，会提示输入启航 AI 的 API Key。
+
+![](https://img.thelazy.top/2026/03/14/image-20260314194048556.png)
+
+可前往 [启航 AI API Key 页面](https://www.qhaigc.net/console/apikeys) 创建并复制 API Key，然后粘贴到终端中回车确认。
+
+## 第三步：创建飞书应用
+
+访问 [飞书开放平台](https://open.feishu.cn/app)，使用飞书账号登录后创建“企业自建应用”。
+
+填写应用名称和描述后完成创建。
+
+![创建企业自建应用](https://img.thelazy.top/2026/03/14/feishu-step2-create-app.png)
+
+## 第四步：配置飞书权限
+
+在飞书应用的 **权限管理** 页面，点击 **批量导入**，粘贴以下 JSON 一键导入所需权限：
+
+```json
+{
+  "scopes": {
+    "tenant": [
+      "aily:file:read",
+      "aily:file:write",
+      "application:application.app_message_stats.overview:readonly",
+      "application:application:self_manage",
+      "application:bot.menu:write",
+      "cardkit:card:write",
+      "contact:user.employee_id:readonly",
+      "corehr:file:download",
+      "docs:document.content:read",
+      "event:ip_list",
+      "im:chat",
+      "im:chat.access_event.bot_p2p_chat:read",
+      "im:chat.members:bot_access",
+      "im:message",
+      "im:message.group_at_msg:readonly",
+      "im:message.group_msg",
+      "im:message.p2p_msg:readonly",
+      "im:message:readonly",
+      "im:message:send_as_bot",
+      "im:resource",
+      "sheets:spreadsheet",
+      "wiki:wiki:readonly"
+    ],
+    "user": [
+      "aily:file:read",
+      "aily:file:write",
+      "im:chat.access_event.bot_p2p_chat:read"
+    ]
+  }
+}
+```
+
+![配置应用权限](https://img.thelazy.top/2026/03/14/feishu-step4-permissions.png)
+
+## 第五步：启用机器人和事件订阅
+
+在 **应用能力 > 机器人** 页面中启用机器人能力，并设置机器人名称。
+
+![启用机器人能力](https://img.thelazy.top/2026/03/14/feishu-step5-bot-capability.png)
+
+然后进入 **事件与回调** 页面：
+
+- 选择 **使用长连接接收事件（WebSocket 模式）**
+- 添加事件 `im.message.receive_v1`
+
+![配置事件订阅](https://img.thelazy.top/2026/03/14/feishu-step6-event-subscription.png)
+
+## 第六步：发布飞书应用
+
+进入 **版本管理与发布** 页面，创建版本后提交审核并发布。
+
+![](https://img.thelazy.top/2026/03/14/image-20260314184119336.png)
+
+## 第七步：回到终端填写飞书凭证
+
+回到飞书应用的 **凭证与基础信息** 页面，复制以下信息并依次粘贴到终端：
+
+1. `App ID`
+2. `App Secret`
+
+![](https://img.thelazy.top/2026/03/14/image-20260314194156206.png)
+
+填写完成后，OpenClaw 就会完成飞书接入配置。
+
+![](https://img.thelazy.top/2026/03/14/image-20260314194324980.png)
+
+此时终端会输出 WebUI 的访问地址和令牌，复制到浏览器中打开即可进入配置页面。
+
+![](https://img.thelazy.top/2026/03/14/image-20260314194402225.png)
+
+![](https://img.thelazy.top/2026/03/14/image-20260314194443176.png)
+
+## 第八步：在飞书中完成配对
+
+打开飞书客户端，新建一个群聊，将刚创建的机器人加入群内，然后发送一条测试消息，例如“你好”。
+
+进入群聊设置，打开 **群机器人**，找到你的机器人并点击 **发送消息**。
+
+![](https://img.thelazy.top/2026/03/14/image-20260314184834282.png)
+
+首次发送消息时，机器人通常会返回一段英文提示，其中会包含类似下面的命令：
+
+```bash
+openclaw pairing approve feishu URPJSW9K
+```
+
+![](https://img.thelazy.top/2026/03/14/image-20260314194751725.png)
+
+复制该命令，回到安装 OpenClaw 的终端中执行：
+
+![](https://img.thelazy.top/2026/03/14/image-20260314194518584.png)
+
+![](https://img.thelazy.top/2026/03/14/image-20260314194633917.png)
+
+执行成功后，即表示飞书配对完成。
+
+![](https://img.thelazy.top/2026/03/14/image-20260314194645802.png)
+
+此后再次向机器人发送消息，就可以正常得到回复。
+
+![](https://img.thelazy.top/2026/03/14/Screenshot_2026-03-14-19-48-29-098_com.ss.android.jpg)
+
+## 常见说明
+
+<AccordionGroup>
+  <Accordion title="macOS 和 Linux 用户从哪一步开始？">
+    直接从“第一步：执行安装脚本”开始即可，无需处理 WSL。
+  </Accordion>
+  <Accordion title="为什么首次发送消息后返回的是英文命令？">
+    这是 OpenClaw 的安全配对流程。按照返回的 `openclaw pairing approve feishu ...` 命令在终端执行一次即可完成授权。
+  </Accordion>
+  <Accordion title="如何卸载 OpenClaw？">
+    在终端执行 `openclaw uninstall` 即可。
+  </Accordion>
+</AccordionGroup>
+
