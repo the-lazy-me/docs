@@ -901,19 +901,48 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "created": {
-                      "type": "integer"
+                    "code": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": ""
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "status": {
-                            "type": "string"
+                      "type": "object",
+                      "properties": {
+                        "task_id": {
+                          "type": "string"
+                        },
+                        "action": {
+                          "type": "string",
+                          "example": "GENERATIONS"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "PENDING"
+                        },
+                        "fail_reason": {
+                          "type": "string"
+                        },
+                        "submit_time": {
+                          "type": "integer"
+                        },
+                        "start_time": {
+                          "type": "integer"
+                        },
+                        "finish_time": {
+                          "type": "integer"
+                        },
+                        "progress": {
+                          "type": "string",
+                          "example": "0%"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
                           }
                         }
                       }
@@ -951,13 +980,91 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "created": {
-                      "type": "integer"
+                    "code": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": ""
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
+                      "type": "object",
+                      "properties": {
+                        "task_id": {
+                          "type": "string"
+                        },
+                        "action": {
+                          "type": "string",
+                          "example": "GENERATIONS"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "SUCCESS"
+                        },
+                        "fail_reason": {
+                          "type": "string"
+                        },
+                        "submit_time": {
+                          "type": "integer"
+                        },
+                        "start_time": {
+                          "type": "integer"
+                        },
+                        "finish_time": {
+                          "type": "integer"
+                        },
+                        "progress": {
+                          "type": "string",
+                          "example": "100%"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "tags": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "prompt": {
+                                "type": "string"
+                              },
+                              "audioUrl": {
+                                "type": "string"
+                              },
+                              "duration": {
+                                "type": "number"
+                              },
+                              "imageUrl": {
+                                "type": "string"
+                              },
+                              "modelName": {
+                                "type": "string"
+                              },
+                              "createTime": {
+                                "type": "integer"
+                              },
+                              "sourceAudioUrl": {
+                                "type": "string"
+                              },
+                              "sourceImageUrl": {
+                                "type": "string"
+                              },
+                              "streamAudioUrl": {
+                                "type": "string"
+                              },
+                              "sourceStreamAudioUrl": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }

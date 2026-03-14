@@ -59,19 +59,25 @@ curl https://api.qhaigc.net/v1/music/generations \
 
 ## 返回结果
 
-成功创建任务后返回任务 ID。音乐生成需要几分钟时间，请使用任务 ID 进行查询。
+成功创建任务后返回任务对象。音乐生成需要几分钟时间，请使用返回的 `task_id` 轮询查询接口。
 
 <CodeGroup>
 
 ```json 响应示例
 {
-  "created": 1755616949,
-  "data": [
-    {
-      "id": "task_123456789",
-      "status": "processing"
-    }
-  ]
+  "code": "success",
+  "message": "",
+  "data": {
+    "task_id": "750ced71bcdde0f6b7677c967722b888",
+    "action": "GENERATIONS",
+    "status": "PENDING",
+    "fail_reason": "",
+    "submit_time": 1773486571,
+    "start_time": 0,
+    "finish_time": 0,
+    "progress": "0%",
+    "data": []
+  }
 }
 ```
 

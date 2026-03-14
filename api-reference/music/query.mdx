@@ -6,7 +6,7 @@ openapi: "GET /v1/music/tasks/{task_id}"
 
 ## 功能说明
 
-查询之前创建的音乐生成任务状态。如果任务完成，将返回音频 URL、歌词、标题和封面等信息。
+查询之前创建的音乐生成任务状态。该接口返回任务级状态信息，以及任务成功后生成的 2 首歌曲结果。
 
 ## 请求方式
 
@@ -44,20 +44,50 @@ curl https://api.qhaigc.net/v1/music/tasks/task_123456789 \
 
 ```json 响应示例
 {
-  "created": 1755616949,
-  "data": [
-    {
-      "id": "task_123456789",
-      "url": "https://example.com/audio.mp3",
-      "lyrics": "[00:00.00] 歌词内容...",
-      "title": "春天的呼唤",
-      "cover_url": "https://example.com/cover.jpg",
-      "audio_url": "https://example.com/audio.mp3",
-      "duration": 192.92,
-      "tags": "J-Pop, anime, upbeat",
-      "model": "suno-v4.5-plus"
-    }
-  ]
+  "code": "success",
+  "message": "",
+  "data": {
+    "task_id": "750ced71bcdde0f6b7677c967722b888",
+    "action": "GENERATIONS",
+    "status": "SUCCESS",
+    "fail_reason": "",
+    "submit_time": 1773486571,
+    "start_time": 0,
+    "finish_time": 1773486652,
+    "progress": "100%",
+    "data": [
+      {
+        "id": "6ea663c2-0e79-4aad-8c97-3c344cde3d42",
+        "tags": "pop, Bright, uptempo J-Pop groove at 150 BPM, female vocals, j-pop",
+        "title": "春天转圈圈",
+        "prompt": "[Verse 1]\\n闹钟还在打喷嚏...",
+        "audioUrl": "https://tempfile.aiquickdraw.com/r/4676fa10852c46feac6cd00c7bb86d59.mp3",
+        "duration": 180.4,
+        "imageUrl": "https://musicfile.removeai.ai/NmVhNjYzYzItMGU3OS00YWFkLThjOTctM2MzNDRjZGUzZDQy.jpeg",
+        "modelName": "chirp-bluejay",
+        "createTime": 1773486651435,
+        "sourceAudioUrl": "https://cdn1.suno.ai/6ea663c2-0e79-4aad-8c97-3c344cde3d42.mp3",
+        "sourceImageUrl": "https://cdn2.suno.ai/image_6ea663c2-0e79-4aad-8c97-3c344cde3d42.jpeg",
+        "streamAudioUrl": "https://musicfile.removeai.ai/NmVhNjYzYzItMGU3OS00YWFkLThjOTctM2MzNDRjZGUzZDQy",
+        "sourceStreamAudioUrl": "https://cdn1.suno.ai/6ea663c2-0e79-4aad-8c97-3c344cde3d42.mp3"
+      },
+      {
+        "id": "0b5ff5be-5209-460d-b346-cc2fc186a240",
+        "tags": "pop, Bright, uptempo J-Pop groove at 150 BPM, female vocals, j-pop",
+        "title": "春天转圈圈",
+        "prompt": "[Verse 1]\\n闹钟还在打喷嚏...",
+        "audioUrl": "https://tempfile.aiquickdraw.com/r/ea9409e9726141a686bb6a44409ed647.mp3",
+        "duration": 180.36,
+        "imageUrl": "https://musicfile.removeai.ai/MGI1ZmY1YmUtNTIwOS00NjBkLWIzNDYtY2MyZmMxODZhMjQw.jpeg",
+        "modelName": "chirp-bluejay",
+        "createTime": 1773486651435,
+        "sourceAudioUrl": "https://cdn1.suno.ai/0b5ff5be-5209-460d-b346-cc2fc186a240.mp3",
+        "sourceImageUrl": "https://cdn2.suno.ai/image_0b5ff5be-5209-460d-b346-cc2fc186a240.jpeg",
+        "streamAudioUrl": "https://musicfile.removeai.ai/MGI1ZmY1YmUtNTIwOS00NjBkLWIzNDYtY2MyZmMxODZhMjQw",
+        "sourceStreamAudioUrl": "https://cdn1.suno.ai/0b5ff5be-5209-460d-b346-cc2fc186a240.mp3"
+      }
+    ]
+  }
 }
 ```
 
