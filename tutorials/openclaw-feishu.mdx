@@ -66,6 +66,8 @@ curl -fsSL "https://opendoc.qhaigc.net/openclaw/install.sh" | bash
 
 ## 第四步：配置飞书权限
 
+![配置应用权限](https://img.thelazy.top/2026/03/14/feishu-step4-permissions.png)
+
 在飞书应用的 **权限管理** 页面，点击 **批量导入**，粘贴以下 JSON 一键导入所需权限：
 
 ```json
@@ -104,8 +106,6 @@ curl -fsSL "https://opendoc.qhaigc.net/openclaw/install.sh" | bash
 }
 ```
 
-![配置应用权限](https://img.thelazy.top/2026/03/14/feishu-step4-permissions.png)
-
 ## 第五步：首次发布飞书应用
 
 进入 **版本管理与发布** 页面，创建版本后提交审核并发布。
@@ -135,13 +135,9 @@ curl -fsSL "https://opendoc.qhaigc.net/openclaw/install.sh" | bash
 
 ![](https://img.thelazy.top/2026/03/14/image-20260314194443176.png)
 
-## 第七步：启用机器人和事件订阅
+## 第七步：配置事件订阅
 
-回到飞书应用后台后，在 **应用能力 > 机器人** 页面中启用机器人能力，并设置机器人名称。
-
-![启用机器人能力](https://img.thelazy.top/2026/03/14/feishu-step5-bot-capability.png)
-
-然后进入 **事件与回调** 页面：
+进入 **事件与回调** 页面：
 
 - 选择 **使用长连接接收事件（WebSocket 模式）**
 - 添加事件 `im.message.receive_v1`
@@ -150,7 +146,7 @@ curl -fsSL "https://opendoc.qhaigc.net/openclaw/install.sh" | bash
 
 ## 第八步：保存变更并再次发布飞书应用
 
-完成机器人和事件订阅配置后，请再次进入 **版本管理与发布** 页面，保存当前变更并重新发布，确保最新配置已经生效。
+完成事件订阅配置后，请再次进入 **版本管理与发布** 页面，保存当前变更并重新发布，确保最新配置已经生效。
 
 ## 第九步：在飞书中完成配对
 
