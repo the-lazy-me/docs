@@ -157,7 +157,70 @@
             "group": "教程中心",
             "icon": "graduation-cap",
             "pages": [
-              "tutorials/index",
+              "tutorials/index"
+            ]
+          },
+          {
+            "group": "AI工作流平台",
+            "icon": "workflow",
+            "pages": [
+              "tutorials/dify",
+              "tutorials/n8n",
+              "tutorials/flowise",
+              "tutorials/langflow",
+              "tutorials/botpress"
+            ]
+          },
+          {
+            "group": "编程工具",
+            "icon": "code",
+            "pages": [
+              "tutorials/cline",
+              "tutorials/continue",
+              "tutorials/claude-code",
+              "tutorials/roo-code",
+              "tutorials/kilo-code",
+              "tutorials/opencode",
+              "tutorials/monkey-code"
+            ]
+          },
+          {
+            "group": "AI聊天客户端",
+            "icon": "message-circle",
+            "pages": [
+              "tutorials/lobechat",
+              "tutorials/cherry-studio",
+              "tutorials/chatbox",
+              "tutorials/sillytavern"
+            ]
+          },
+          {
+            "group": "知识库/RAG",
+            "icon": "book-open",
+            "pages": [
+              "tutorials/anythingllm",
+              "tutorials/ragflow"
+            ]
+          },
+          {
+            "group": "AI Bot平台",
+            "icon": "bot",
+            "pages": [
+              "tutorials/astrbot",
+              "tutorials/langbot"
+            ]
+          },
+          {
+            "group": "API分发平台",
+            "icon": "server",
+            "pages": [
+              "tutorials/newapi"
+            ]
+          },
+          {
+            "group": "其他工具",
+            "icon": "tool",
+            "pages": [
               "tutorials/openclaw-feishu"
             ]
           }

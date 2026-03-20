@@ -1,0 +1,193 @@
+---
+title: Flowise 接入启航AI教程
+description: 在 Flowise 中配置启航AI作为LLM节点
+---
+
+# Flowise 接入启航AI教程
+
+[Flowise](https://flowiseai.com) 是低代码 LLM 工作流构建工具，拖拽式操作。本教程介绍如何接入启航AI。
+
+## 前置要求
+
+- Flowise（Docker 或 npm 部署）
+- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+
+## 部署 Flowise
+
+### Docker 部署
+
+```bash
+docker run -d -p 3000:3000 \
+  -e FLOWISE_USERNAME=admin \
+  -e FLOWISE_PASSWORD=password \
+  flowiseai/flowise
+```
+
+### NPM 安装
+
+```bash
+npm install -g flowise
+npx flowise start
+```
+
+## 配置步骤
+
+### 1. 打开 Flowise
+
+访问 `http://localhost:3000`。
+
+### 2. 添加凭证
+
+点击左侧 **Credentials** → **Add Credential**。
+
+### 3. 选择 OpenAI
+
+搜索并选择 **ChatOpenAI**。
+
+### 4. 填写配置
+
+| 配置项 | 值 |
+|--------|-----|
+| Credential Name | 启航AI |
+| OpenAI Api Key | 你的启航AI API Key |
+| OpenAI Base Path | `https://api.qhaigc.net/v1` |
+
+### 5. 保存凭证
+
+点击 **Add** 保存。
+
+## 在工作流中使用
+
+### 1. 创建新工作流
+
+点击 **+ New Chatflow**。
+
+### 2. 添加 ChatOpenAI 节点
+
+从左侧拖入 **ChatOpenAI** 节点到画布。
+
+### 3. 配置节点
+
+点击节点，在右侧配置：
+
+| 配置项 | 值 |
+|--------|-----|
+| Credential | 选择刚才创建的「启航AI」 |
+| Model Name | 选择模型，如 `gpt-4o` |
+| Temperature | 0.7（默认） |
+| Max Tokens | 根据需求设置 |
+
+### 4. 连接其他节点
+
+连接输入节点（如 Chat Prompt）和输出节点（如 Chat Output）。
+
+### 5. 保存并测试
+
+点击 **Save Chatflow**，然后点击 **Test** 验证。
+
+## 常用工作流示例
+
+### 示例1：简单聊天机器人
+
+```
+[Chat Prompt] → [ChatOpenAI] → [Chat Output]
+```
+
+### 示例2：带知识库的问答
+
+```
+[Chat Prompt] → [Vector Store Retriever] → [ChatOpenAI] → [Chat Output]
+```
+
+### 示例3：多模型对比
+
+```
+[Input] → [ChatOpenAI-1] → [Output-1]
+        → [ChatOpenAI-2] → [Output-2]
+```
+
+## 支持的模型
+
+Flowise 支持启航AI的所有模型：
+
+| 模型 | 配置值 |
+|------|--------|
+| GPT-4o | `gpt-4o` |
+| GPT-4o-mini | `gpt-4o-mini` |
+| Claude 3.5 Sonnet | `claude-3-5-sonnet` |
+| Claude 3 Haiku | `claude-3-haiku` |
+
+## 高级配置
+
+### 流式输出
+
+在节点配置中启用 **Streaming**，可实现逐字输出效果。
+
+### 函数调用
+
+使用 **OpenAI Function** 节点实现工具调用：
+
+1. 添加 **OpenAI Function** 节点
+2. 定义函数 schema
+3. 连接工具执行节点
+
+### 多代理工作流
+
+使用 **Agent** 节点创建多代理系统：
+
+```
+[Supervisor Agent]
+    ├── [Research Agent]
+    ├── [Writing Agent]
+    └── [Review Agent]
+```
+
+## 导出和部署
+
+### 导出工作流
+
+点击 **Export** 可导出为 JSON 文件。
+
+### API 部署
+
+点击 **API** 可获取工作流的 REST API：
+
+```bash
+curl -X POST http://localhost:3000/api/v1/prediction/your-workflow-id \
+  -H "Content-Type: application/json" \
+  -d '{"question": "你好"}'
+```
+
+### 嵌入部署
+
+点击 **Embed** 可获取 iframe 嵌入代码。
+
+## 常见问题
+
+**Q: 节点显示红色错误？**
+
+A: 检查：
+- 凭证是否正确配置
+- 节点连接是否正确
+- 必填参数是否填写
+
+**Q: 模型连接失败？**
+
+A: 检查：
+- OpenAI Base Path 是否包含 `/v1`
+- API Key 是否正确
+- 网络连接是否正常
+
+**Q: 如何查看 Token 消耗？**
+
+A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看。
+
+## 相关链接
+
+- [Flowise 官网](https://flowiseai.com)
+- [Flowise GitHub](https://github.com/FlowiseAI/Flowise)
+- [启航AI官网](https://api.qhaigc.net)
+
+---
+
+*最后更新：2026年3月*

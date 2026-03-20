@@ -1,0 +1,122 @@
+---
+title: Dify 接入启航AI教程
+description: 在 Dify 中配置启航AI API，实现低门槛接入全网AI大模型
+---
+
+# Dify 接入启航AI教程
+
+[Dify](https://dify.ai) 是国内最流行的开源 LLM 应用开发平台，支持 RAG、Agent、工作流编排。本教程介绍如何在 Dify 中接入启航AI API。
+
+## 前置要求
+
+- Dify 账号（社区版/云版均可）
+- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+
+## 配置步骤
+
+### 1. 登录 Dify
+
+访问 [Dify 控制台](https://cloud.dify.ai) 或本地部署的 Dify 实例。
+
+### 2. 进入模型设置
+
+点击右上角头像 → **设置** → **模型供应商**。
+
+### 3. 添加 OpenAI 兼容模型
+
+在模型供应商列表中找到 **OpenAI**（或 **OpenAI Compatible**），点击 **配置**。
+
+### 4. 填写启航AI配置
+
+| 配置项 | 值 |
+|--------|-----|
+| 模型名称 | 自定义，如 `启航AI` |
+| API Key | 你的启航AI API Key |
+| API Base URL | `https://api.qhaigc.net/v1` |
+
+### 5. 选择模型
+
+配置完成后，在模型列表中可以看到启航AI提供的模型：
+
+- `gpt-4o` - 最强多模态模型
+- `gpt-4o-mini` - 高性价比
+- `claude-3-5-sonnet` - Claude最强模型
+- `claude-3-haiku` - Claude快速模型
+- `gemini-pro` - Google模型
+- 以及更多...
+
+### 6. 测试连接
+
+点击 **测试** 按钮，验证配置是否成功。
+
+## 在应用中使用
+
+### 创建聊天应用
+
+1. 点击 **创建空白应用** → 选择 **聊天助手**
+2. 在 **编排** 页面，选择 **模型** 下拉框
+3. 选择已配置的启航AI模型
+4. 开始对话测试
+
+### 创建 Agent 应用
+
+1. 创建 **Agent** 类型应用
+2. 在 **模型** 设置中选择启航AI模型
+3. 配置工具、知识库等
+4. 发布使用
+
+### 创建工作流
+
+1. 创建 **工作流** 类型应用
+2. 在 LLM 节点中选择启航AI模型
+3. 编排你的工作流逻辑
+
+## 高级配置
+
+### 自定义模型列表
+
+如需显示特定模型，可在配置时指定模型名称列表：
+
+```
+gpt-4o
+gpt-4o-mini
+claude-3-5-sonnet-20241022
+claude-3-haiku-20240307
+gemini-1.5-pro
+```
+
+### 多模型对比
+
+Dify 支持同时配置多个启航AI模型，方便在不同场景下选择：
+
+- **复杂任务**：gpt-4o / claude-3-5-sonnet
+- **快速响应**：gpt-4o-mini / claude-3-haiku
+- **代码任务**：claude-3-5-sonnet
+- **多语言**：gemini-pro
+
+## 常见问题
+
+**Q: 连接测试失败怎么办？**
+
+A: 检查以下几点：
+- API Key 是否正确（不要包含空格）
+- API Base URL 是否完整（需包含 `/v1`）
+- 网络是否能访问 `api.qhaigc.net`
+
+**Q: 模型列表不显示？**
+
+A: 确保在配置时启用了 **自定义模型** 选项，并手动输入模型名称。
+
+**Q: 如何查看用量和余额？**
+
+A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看实时用量和余额。
+
+## 相关链接
+
+- [Dify 官方文档](https://docs.dify.ai)
+- [启航AI官网](https://api.qhaigc.net)
+- [获取 API Key](https://api.qhaigc.net)
+
+---
+
+*最后更新：2026年3月*

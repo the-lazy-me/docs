@@ -1,0 +1,177 @@
+---
+title: Botpress 接入启航AI教程
+description: 在 Botpress 中配置启航AI作为AI引擎
+---
+
+# Botpress 接入启航AI教程
+
+[Botpress](https://botpress.com) 是企业级对话机器人构建平台。本教程介绍如何接入启航AI。
+
+## 前置要求
+
+- Botpress 账号（云版或自托管）
+- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+
+## 云版配置
+
+### 1. 登录 Botpress
+
+访问 [Botpress Cloud](https://app.botpress.cloud)。
+
+### 2. 进入集成设置
+
+点击左侧 **Integrations** → **AI**。
+
+### 3. 配置 OpenAI
+
+找到 **OpenAI** 集成，点击 **Configure**。
+
+### 4. 填写配置
+
+| 配置项 | 值 |
+|--------|-----|
+| API Key | 你的启航AI API Key |
+| API Base URL | `https://api.qhaigc.net/v1` |
+| Model | `gpt-4o` 或其他模型 |
+
+### 5. 保存配置
+
+点击 **Save**。
+
+## 自托管配置
+
+### 1. 编辑配置文件
+
+在 Botpress 安装目录中，编辑 `botpress.config.json`：
+
+```json
+{
+  "integrations": {
+    "openai": {
+      "apiKey": "your-api-key",
+      "baseUrl": "https://api.qhaigc.net/v1",
+      "model": "gpt-4o"
+    }
+  }
+}
+```
+
+### 2. 重启服务
+
+```bash
+./bp restart
+```
+
+## 在机器人中使用
+
+### 1. 创建新机器人
+
+点击 **Create Bot**。
+
+### 2. 添加 AI 节点
+
+在工作流编辑器中，添加 **AI Task** 或 **AI Generate** 节点。
+
+### 3. 配置节点
+
+选择已配置的启航AI集成，设置：
+
+- **Prompt**：输入提示词
+- **Model**：选择模型
+- **Temperature**：创造性参数
+
+### 4. 连接工作流
+
+将 AI 节点连接到对话流程中。
+
+## 支持的模型
+
+Botpress 支持启航AI的所有模型：
+
+| 模型 | 用途 |
+|------|------|
+| gpt-4o | 复杂对话 |
+| gpt-4o-mini | 快速响应 |
+| claude-3-5-sonnet | 深度推理 |
+| claude-3-haiku | 简单问答 |
+
+## 高级功能
+
+### 知识库集成
+
+1. 创建 **Knowledge Base**
+2. 上传文档
+3. 在 AI 节点中启用知识库检索
+
+### 多语言支持
+
+使用启航AI的多语言模型：
+
+- `gpt-4o`：支持 50+ 语言
+- `claude-3-5-sonnet`：多语言能力强
+
+### 情感分析
+
+在 AI 节点中添加情感分析提示词：
+
+```
+分析用户消息的情感倾向：
+用户消息：{{event.preview}}
+
+回复格式：
+- 情感：正面/负面/中性
+- 置信度：0-1
+```
+
+### 意图识别
+
+```
+识别用户意图，从以下选项中选择：
+- 查询产品
+- 技术支持
+- 投诉建议
+- 其他
+
+用户消息：{{event.preview}}
+```
+
+## API 调用
+
+Botpress 提供 REST API：
+
+```bash
+curl -X POST https://your-botpress-instance.com/api/v1/bots/your-bot-id/converse \
+  -H "Authorization: Bearer your-token" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "text",
+    "text": "你好"
+  }'
+```
+
+## 常见问题
+
+**Q: AI 节点不响应？**
+
+A: 检查：
+- 集成配置是否正确
+- API Key 是否有效
+- 网络连接是否正常
+
+**Q: 如何查看 Token 消耗？**
+
+A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看。
+
+**Q: 响应速度慢？**
+
+A: 尝试使用更快的模型，如 `gpt-4o-mini` 或 `claude-3-haiku`。
+
+## 相关链接
+
+- [Botpress 官网](https://botpress.com)
+- [Botpress 文档](https://botpress.com/docs)
+- [启航AI官网](https://api.qhaigc.net)
+
+---
+
+*最后更新：2026年3月*

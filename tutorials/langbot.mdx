@@ -1,0 +1,215 @@
+---
+title: LangBot 接入启航AI教程
+description: 在 LangBot 中配置启航AI作为LLM提供商
+---
+
+# LangBot 接入启航AI教程
+
+[LangBot](https://github.com/RockChinQ/LangBot) 是基于 LangChain 的多平台 AI Bot。本教程介绍如何接入启航AI。
+
+## 前置要求
+
+- Python 3.9+
+- LangBot
+- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+
+## 安装 LangBot
+
+```bash
+# 克隆仓库
+git clone https://github.com/RockChinQ/LangBot.git
+cd LangBot
+
+# 安装依赖
+pip install -r requirements.txt
+
+# 复制配置文件
+cp config-template.yaml config.yaml
+```
+
+## 配置步骤
+
+### 1. 编辑配置文件
+
+编辑 `config.yaml`：
+
+```yaml
+# LLM 配置
+llm:
+  provider: openai
+  api_key: "your-api-key"
+  base_url: "https://api.qhaigc.net/v1"
+  model: "gpt-4o"
+  max_tokens: 2048
+  temperature: 0.7
+```
+
+### 2. 配置多模型（可选）
+
+```yaml
+llm:
+  models:
+    default:
+      provider: openai
+      api_key: "your-api-key"
+      base_url: "https://api.qhaigc.net/v1"
+      model: "gpt-4o"
+    
+    fast:
+      provider: openai
+      api_key: "your-api-key"
+      base_url: "https://api.qhaigc.net/v1"
+      model: "gpt-4o-mini"
+    
+    coding:
+      provider: openai
+      api_key: "your-api-key"
+      base_url: "https://api.qhaigc.net/v1"
+      model: "claude-3-5-sonnet"
+```
+
+### 3. 配置平台适配器
+
+#### QQ 配置
+
+```yaml
+platforms:
+  - type: qq
+    enable: true
+    qq: 123456789
+    password: "your-password"
+```
+
+#### 微信配置
+
+```yaml
+  - type: wechat
+    enable: true
+    token: "your-token"
+```
+
+#### Telegram 配置
+
+```yaml
+  - type: telegram
+    enable: true
+    token: "your-bot-token"
+```
+
+### 4. 启动 LangBot
+
+```bash
+python main.py
+```
+
+## 支持的模型
+
+LangBot 支持启航AI的所有模型：
+
+| 模型 | 配置值 | 用途 |
+|------|--------|------|
+| GPT-4o | `gpt-4o` | 综合对话 |
+| GPT-4o-mini | `gpt-4o-mini` | 快速响应 |
+| Claude 3.5 Sonnet | `claude-3-5-sonnet` | 复杂任务 |
+| Claude 3 Haiku | `claude-3-haiku` | 简单问答 |
+
+## 使用方式
+
+### 基础对话
+
+在 QQ/微信/Telegram 中直接发送消息，LangBot 会自动调用启航AI回复。
+
+### 切换模型
+
+发送命令切换模型：
+
+```
+/model gpt-4o
+/model claude-3-5-sonnet
+```
+
+### 系统提示词
+
+发送命令设置系统提示词：
+
+```
+/system 你是一个专业的编程助手
+```
+
+### 清空对话
+
+```
+/reset
+```
+
+### 查看帮助
+
+```
+/help
+```
+
+## 高级功能
+
+### 插件系统
+
+LangBot 支持插件扩展：
+
+```python
+# plugins/my_plugin.py
+from langbot.plugin import Plugin
+
+class MyPlugin(Plugin):
+    def on_message(self, message):
+        # 调用启航AI
+        response = self.llm.chat(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": message}]
+        )
+        return response
+```
+
+### 知识库
+
+配置本地知识库：
+
+```yaml
+knowledge:
+  enabled: true
+  path: "./knowledge"
+  embedding:
+    provider: openai
+    api_key: "your-api-key"
+    base_url: "https://api.qhaigc.net/v1"
+    model: "text-embedding-3-small"
+```
+
+### 多轮对话
+
+LangBot 默认支持多轮对话，保持上下文连贯。
+
+## 常见问题
+
+**Q: 连接失败？**
+
+A: 检查：
+- `base_url` 是否包含 `/v1`
+- `api_key` 是否正确
+- 网络能否访问 `api.qhaigc.net`
+
+**Q: QQ 登录失败？**
+
+A: 检查 QQ 账号和密码，或尝试扫码登录。
+
+**Q: 如何查看 Token 消耗？**
+
+A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看。
+
+## 相关链接
+
+- [LangBot GitHub](https://github.com/RockChinQ/LangBot)
+- [LangBot 文档](https://docs.langbot.app)
+- [启航AI官网](https://api.qhaigc.net)
+
+---
+
+*最后更新：2026年3月*

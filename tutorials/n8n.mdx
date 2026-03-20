@@ -1,0 +1,164 @@
+---
+title: n8n 接入启航AI教程
+description: 在 n8n 工作流中使用启航AI，实现AI驱动的自动化
+---
+
+# n8n 接入启航AI教程
+
+[n8n](https://n8n.io) 是最流行的开源自动化工作流平台，类 Zapier。本教程介绍如何在 n8n 中使用启航AI的模型。
+
+## 前置要求
+
+- n8n 实例（云版或自托管）
+- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+
+## 配置步骤
+
+### 1. 进入凭证设置
+
+在 n8n 中，点击左侧 **Settings**（设置）→ **Credentials**（凭证）。
+
+### 2. 添加 OpenAI 凭证
+
+点击 **Add Credential**，搜索并选择 **OpenAI**。
+
+### 3. 填写启航AI配置
+
+| 配置项 | 值 |
+|--------|-----|
+| Name | 启航AI |
+| API Key | 你的启航AI API Key |
+| Base URL | `https://api.qhaigc.net/v1` |
+
+> ⚠️ 注意：必须填写 Base URL，否则默认使用 OpenAI 官方 API。
+
+### 4. 保存凭证
+
+点击 **Save** 保存配置。
+
+## 在工作流中使用
+
+### 创建 AI 工作流
+
+1. 点击 **Add Workflow** 创建新工作流
+2. 添加触发节点（如 Webhook、Schedule、Manual Trigger）
+3. 添加 **OpenAI** 节点
+
+### 配置 OpenAI 节点
+
+1. 在节点设置中，**Credential** 选择刚才创建的「启航AI」
+2. **Resource** 选择 **Chat**
+3. **Operation** 选择 **Create**
+4. **Model** 选择你要使用的模型：
+   - `gpt-4o`
+   - `gpt-4o-mini`
+   - `claude-3-5-sonnet`
+   - `claude-3-haiku`
+5. **Messages** 配置对话内容
+
+### 示例：AI 内容生成工作流
+
+```
+[Schedule Trigger] → [OpenAI: gpt-4o] → [Email]
+```
+
+**OpenAI 节点配置：**
+
+```json
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "你是一个专业的内容创作者"
+    },
+    {
+      "role": "user",
+      "content": "=Write a blog post about {{$json.topic}}"
+    }
+  ]
+}
+```
+
+## 常用场景
+
+### 场景1：智能客服回复
+
+```
+[Webhook: 收到用户消息] 
+  → [OpenAI: 生成回复] 
+  → [HTTP Request: 发送回复]
+```
+
+### 场景2：内容审核
+
+```
+[Trigger: 新内容提交]
+  → [OpenAI: 审核内容]
+  → [IF: 判断是否通过]
+  → [通过: 发布] / [不通过: 人工审核]
+```
+
+### 场景3：数据摘要
+
+```
+[Schedule: 每天9点]
+  → [HTTP Request: 获取数据]
+  → [OpenAI: 生成摘要]
+  → [Slack/Email: 发送摘要]
+```
+
+## 高级用法
+
+### 使用 Claude 模型
+
+在 Model 字段直接输入模型名称：
+
+```
+claude-3-5-sonnet-20241022
+```
+
+### 流式输出
+
+OpenAI 节点支持流式输出，适合长文本生成场景。
+
+### 函数调用 (Function Calling)
+
+1. 在节点中启用 **Functions**
+2. 定义函数 schema
+3. AI 会根据需要调用函数
+
+## 成本优化建议
+
+| 场景 | 推荐模型 | 原因 |
+|------|---------|------|
+| 简单任务 | gpt-4o-mini | 成本最低 |
+| 复杂推理 | claude-3-5-sonnet | 推理能力强 |
+| 长文本 | claude-3-haiku | 速度快 |
+| 多模态 | gpt-4o | 支持图片分析 |
+
+## 常见问题
+
+**Q: 节点显示 "Connection failed"？**
+
+A: 检查：
+- 凭证中的 Base URL 是否正确（必须包含 `/v1`）
+- API Key 是否有效
+- n8n 实例能否访问外网
+
+**Q: 模型列表为空？**
+
+A: n8n 的模型列表是固定的，直接在 Model 字段手动输入模型名称即可。
+
+**Q: 如何查看 Token 消耗？**
+
+A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看实时用量。
+
+## 相关链接
+
+- [n8n 官方文档](https://docs.n8n.io)
+- [n8n OpenAI 节点文档](https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.openai/)
+- [启航AI官网](https://api.qhaigc.net)
+
+---
+
+*最后更新：2026年3月*

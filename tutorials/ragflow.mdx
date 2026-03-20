@@ -1,0 +1,168 @@
+---
+title: RAGFlow 接入启航AI教程
+description: 在 RAGFlow 中配置启航AI作为LLM提供商
+---
+
+# RAGFlow 接入启航AI教程
+
+[RAGFlow](https://ragflow.io) 是深度文档理解的 RAG 引擎，企业知识库首选。本教程介绍如何接入启航AI。
+
+## 前置要求
+
+- RAGFlow（Docker 部署或云版）
+- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+
+## Docker 部署
+
+### 1. 克隆仓库
+
+```bash
+git clone https://github.com/infiniflow/ragflow.git
+cd ragflow
+```
+
+### 2. 修改配置
+
+编辑 `docker/.env`：
+
+```env
+# LLM 配置
+LLM_BASE_URL=https://api.qhaigc.net/v1
+LLM_API_KEY=your-api-key
+```
+
+### 3. 启动服务
+
+```bash
+cd docker
+docker-compose up -d
+```
+
+## 云版配置
+
+### 1. 登录 RAGFlow
+
+访问你的 RAGFlow 实例。
+
+### 2. 进入系统设置
+
+点击右上角 **System** → **Model Providers**。
+
+### 3. 添加 OpenAI 兼容提供商
+
+点击 **Add Model Provider**，选择 **OpenAI Compatible**。
+
+### 4. 填写配置
+
+| 配置项 | 值 |
+|--------|-----|
+| Name | 启航AI |
+| Base URL | `https://api.qhaigc.net/v1` |
+| API Key | 你的启航AI API Key |
+| Models | gpt-4o, claude-3-5-sonnet 等 |
+
+### 5. 保存并测试
+
+点击 **Save**，然后点击 **Test** 验证连接。
+
+## 支持的模型
+
+RAGFlow 支持启航AI的所有模型：
+
+| 模型 | 适用场景 |
+|------|---------|
+| gpt-4o | 复杂问答 |
+| claude-3-5-sonnet | 深度文档分析 |
+| claude-3-haiku | 快速响应 |
+
+## 创建知识库
+
+### 1. 新建知识库
+
+点击 **Create Knowledge Base**。
+
+### 2. 配置解析
+
+选择文档解析方式：
+
+- **General**：通用文档
+- **Resume**：简历
+- **Q&A**：问答对
+- **Paper**：学术论文
+- **Book**：书籍
+
+### 3. 选择模型
+
+在 **Chat Model** 中选择启航AI模型。
+
+### 4. 上传文档
+
+支持的格式：
+
+- PDF
+- Word (.doc, .docx)
+- TXT
+- Markdown
+- Excel (.xls, .xlsx)
+- HTML
+
+### 5. 开始对话
+
+文档解析完成后，点击 **Chat** 开始问答。
+
+## 高级功能
+
+### 多轮对话
+
+RAGFlow 支持多轮对话，保持上下文连贯。
+
+### 引用溯源
+
+回答会标注引用来源，点击可查看原文。
+
+### 对话管理
+
+支持创建多个对话会话，分别管理不同主题。
+
+### API 访问
+
+RAGFlow 提供 REST API：
+
+```bash
+curl -X POST http://localhost:9380/api/conversation \
+  -H "Content-Type: application/json" \
+  -d '{
+    "kb_id": "your-kb-id",
+    "question": "你的问题"
+  }'
+```
+
+## 常见问题
+
+**Q: 文档解析失败？**
+
+A: 检查：
+- 文档格式是否支持
+- 文档是否损坏
+- 系统资源是否充足
+
+**Q: 模型连接失败？**
+
+A: 检查：
+- Base URL 是否包含 `/v1`
+- API Key 是否正确
+- 网络连接是否正常
+
+**Q: 如何查看 Token 消耗？**
+
+A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看。
+
+## 相关链接
+
+- [RAGFlow 官网](https://ragflow.io)
+- [RAGFlow GitHub](https://github.com/infiniflow/ragflow)
+- [启航AI官网](https://api.qhaigc.net)
+
+---
+
+*最后更新：2026年3月*

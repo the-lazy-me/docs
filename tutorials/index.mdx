@@ -1,43 +1,124 @@
 ---
-title: "教程中心"
-description: "将启航接入第三方 AI 项目，以及启航 AI 官方教程合集"
-icon: "graduation-cap"
+title: 启航AI 生态接入文档索引
+description: 启航AI与各大平台的接入教程汇总
 ---
 
-## 教程中心
+# 启航AI 生态接入文档索引
 
-本页用于统一收录两类教程：
+欢迎来到启航AI生态接入文档中心。本文档汇总了启航AI与各大主流平台的接入教程。
 
-- 将启航接入第三方 AI 项目的集成教程
-- 启航 AI 官方发布的功能与实践教程
+## 🚀 快速开始
 
-## 第三方项目接入教程
+所有平台接入都需要：
 
-<CardGroup cols={2}>
-  <Card title="一键安装 OpenClaw 并接入飞书" icon="bot" href="/tutorials/openclaw-feishu">
-    使用一键脚本安装 OpenClaw，并完成飞书机器人接入与配对。
-  </Card>
-  <Card title="迁移指南（待补充）" icon="shuffle">
-    用于收录从其他 API 服务迁移到启航 API 的步骤、注意事项与最佳实践。
-  </Card>
-</CardGroup>
+1. **获取 API Key**：[https://api.qhaigc.net](https://api.qhaigc.net)
+2. **配置 Base URL**：`https://api.qhaigc.net/v1`
+3. **选择模型**：gpt-4o / claude-3-5-sonnet 等
 
-## 启航 AI 官方教程
+## 📊 平台分类
 
-<CardGroup cols={2}>
-  <Card title="新功能教程（待补充）" icon="sparkles">
-    用于发布启航 AI 新能力的上手教程、参数说明和示例代码。
-  </Card>
-  <Card title="场景实践（待补充）" icon="book-open">
-    用于沉淀典型业务场景的落地实践，如客服、创作、自动化流程等。
-  </Card>
-</CardGroup>
+### 🔧 AI工作流平台
 
-## 贡献说明
+| 平台 | 类型 | 优先级 | 文档 |
+|------|------|--------|------|
+| Dify | LLM应用开发平台 | ⭐⭐⭐⭐⭐ | [查看](./dify.mdx) |
+| n8n | 自动化工作流 | ⭐⭐⭐⭐⭐ | [查看](./n8n.mdx) |
+| Flowise | 低代码LLM工作流 | ⭐⭐⭐⭐ | [查看](./flowise.mdx) |
+| Langflow | LangChain工作流 | ⭐⭐⭐⭐ | [查看](./langflow.mdx) |
+| Botpress | 对话机器人平台 | ⭐⭐⭐⭐ | [查看](./botpress.mdx) |
 
-如需新增教程，建议按以下结构编写：
+### 💻 编程工具
 
-1. 适用对象与前置条件
-2. 完整接入步骤
-3. 可直接运行的示例代码
-4. 常见问题与排查方法
+| 平台 | 类型 | 优先级 | 文档 |
+|------|------|--------|------|
+| Cline | VS Code AI编程 | ⭐⭐⭐⭐⭐ | [查看](./cline.mdx) |
+| Continue | VS Code/JetBrains AI助手 | ⭐⭐⭐⭐⭐ | [查看](./continue.mdx) |
+| Claude Code | 终端AI编程 | ⭐⭐⭐⭐⭐ | [查看](./claude-code.mdx) |
+| Roo Code | VS Code AI编程(Cline分支) | ⭐⭐⭐⭐ | [查看](./roo-code.mdx) |
+| Kilo Code | VS Code AI编程(Cline分支) | ⭐⭐⭐⭐ | [查看](./kilo-code.mdx) |
+| OpenCode | 终端AI编程 | ⭐⭐⭐ | [查看](./opencode.mdx) |
+| Monkey Code | 国产AI编程工具 | ⭐⭐⭐ | [查看](./monkey-code.mdx) |
+
+### 💬 AI聊天客户端
+
+| 平台 | 类型 | 优先级 | 文档 |
+|------|------|--------|------|
+| LobeChat | 开源AI聊天界面 | ⭐⭐⭐⭐⭐ | [查看](./lobechat.mdx) |
+| Cherry Studio | 国产AI桌面客户端 | ⭐⭐⭐⭐⭐ | [查看](./cherry-studio.mdx) |
+| Chatbox | 跨平台AI客户端 | ⭐⭐⭐⭐⭐ | [查看](./chatbox.mdx) |
+| SillyTavern | AI角色扮演 | ⭐⭐⭐⭐⭐ | [查看](./sillytavern.mdx) |
+
+### 📚 知识库/RAG
+
+| 平台 | 类型 | 优先级 | 文档 |
+|------|------|--------|------|
+| AnythingLLM | 本地AI知识库 | ⭐⭐⭐⭐⭐ | [查看](./anythingllm.mdx) |
+| RAGFlow | 深度文档RAG | ⭐⭐⭐⭐⭐ | [查看](./ragflow.mdx) |
+
+### 🤖 AI Bot平台
+
+| 平台 | 类型 | 优先级 | 文档 |
+|------|------|--------|------|
+| AstrBot | 多平台AI Bot | ⭐⭐⭐⭐ | [查看](./astrbot.mdx) |
+| LangBot | LangChain Bot | ⭐⭐⭐ | [查看](./langbot.mdx) |
+
+### 🔑 API分发平台
+
+| 平台 | 类型 | 优先级 | 文档 |
+|------|------|--------|------|
+| New API | API聚合分发 | ⭐⭐⭐⭐⭐ | [查看](./newapi.mdx) |
+
+### 🦞 AI助手平台
+
+| 平台 | 类型 | 优先级 | 文档 |
+|------|------|--------|------|
+| OpenClaw | 本地AI Agent | ⭐⭐⭐⭐ | [查看](./openclaw-feishu.mdx) |
+
+## 📈 接入优先级建议
+
+### 第一阶段：核心平台（立即接入）
+
+1. **Dify** - 国内最大LLM应用平台
+2. **New API** - B端渠道商，批量带来用户
+3. **n8n** - 自动化场景，token消耗高
+4. **AnythingLLM** - 知识库场景高频使用
+5. **LobeChat/Cherry Studio/Chatbox** - 客户端三巨头
+6. **Cline/Continue/Claude Code** - 开发者工具
+
+### 第二阶段：快速跟进
+
+- Roo Code / Kilo Code
+- Flowise / Langflow
+- SillyTavern
+- AstrBot
+- RAGFlow
+
+### 第三阶段：持续布局
+
+- OpenCode
+- Monkey Code
+- LangBot
+
+## 🔧 通用接入参数
+
+```yaml
+# OpenAI 兼容格式
+base_url: https://api.qhaigc.net/v1
+api_key: sk-your-api-key
+
+# 支持的模型
+gpt-4o
+gpt-4o-mini
+claude-3-5-sonnet
+claude-3-haiku
+gemini-1.5-pro
+```
+
+## 📞 获取帮助
+
+- **官网**：[https://api.qhaigc.net](https://api.qhaigc.net)
+- **文档更新**：本文档持续更新中
+
+---
+
+*最后更新：2026年3月*

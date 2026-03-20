@@ -1,0 +1,122 @@
+---
+title: LobeChat 接入启航AI教程
+description: 在 LobeChat 中配置启航AI作为模型供应商
+---
+
+# LobeChat 接入启航AI教程
+
+[LobeChat](https://lobehub.com) 是现代化开源 AI 聊天界面，支持多模型，国内最流行 AI 聊天界面之一。本教程介绍如何接入启航AI。
+
+## 前置要求
+
+- LobeChat（[在线版](https://chat.lobehub.com) 或自托管）
+- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+
+## 在线版配置
+
+### 1. 打开设置
+
+点击左下角 **设置** 图标。
+
+### 2. 进入语言模型设置
+
+在设置页面中找到 **语言模型** 或 **Model** 选项。
+
+### 3. 配置 OpenAI 兼容
+
+| 配置项 | 值 |
+|--------|-----|
+| API 地址 | `https://api.qhaigc.net/v1` |
+| API Key | 你的启航AI API Key |
+
+### 4. 选择模型
+
+配置完成后，在模型下拉菜单中选择启航AI提供的模型：
+
+- `gpt-4o`
+- `gpt-4o-mini`
+- `claude-3-5-sonnet`
+- `claude-3-haiku`
+- `gemini-1.5-pro`
+
+### 5. 开始对话
+
+选择模型后即可开始对话。
+
+## 自托管版本配置
+
+### Docker 部署
+
+```bash
+docker run -d -p 3210:3210 \
+  -e OPENAI_PROXY_URL=https://api.qhaigc.net/v1 \
+  -e OPENAI_API_KEY=your-api-key \
+  lobehub/lobe-chat
+```
+
+### 环境变量配置
+
+在 `.env.local` 或 Docker Compose 中配置：
+
+```env
+OPENAI_PROXY_URL=https://api.qhaigc.net/v1
+OPENAI_API_KEY=sk-xxxxxxxxxxxxx
+```
+
+### Vercel 部署
+
+在 Vercel 项目设置中添加环境变量：
+
+| 变量名 | 值 |
+|--------|-----|
+| `OPENAI_PROXY_URL` | `https://api.qhaigc.net/v1` |
+| `OPENAI_API_KEY` | 你的启航AI API Key |
+
+## 功能特性
+
+### 已支持功能
+
+- ✅ 多模型对话
+- ✅ GPT-4 Vision（图片分析）
+- ✅ TTS 语音合成
+- ✅ 文生图（DALL-E 3）
+- ✅ 插件系统
+- ✅ 知识库
+- ✅ 助手市场
+
+### 模型选择建议
+
+| 场景 | 推荐模型 |
+|------|---------|
+| 日常对话 | gpt-4o-mini |
+| 复杂问题 | gpt-4o / claude-3-5-sonnet |
+| 代码编写 | claude-3-5-sonnet |
+| 图片分析 | gpt-4o |
+| 快速摘要 | claude-3-haiku |
+
+## 常见问题
+
+**Q: 配置后无法连接？**
+
+A: 检查：
+- API 地址是否包含 `/v1` 后缀
+- API Key 是否正确
+- 网络能否访问 `api.qhaigc.net`
+
+**Q: 模型列表不显示？**
+
+A: LobeChat 会自动获取可用模型，如果列表为空，手动刷新页面。
+
+**Q: 如何查看用量？**
+
+A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看。
+
+## 相关链接
+
+- [LobeChat 官网](https://lobehub.com)
+- [LobeChat GitHub](https://github.com/lobehub/lobe-chat)
+- [启航AI官网](https://api.qhaigc.net)
+
+---
+
+*最后更新：2026年3月*

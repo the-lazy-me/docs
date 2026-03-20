@@ -1,0 +1,144 @@
+---
+title: SillyTavern 接入启航AI教程
+description: 在 SillyTavern 中配置启航AI，实现AI角色扮演
+---
+
+# SillyTavern 接入启航AI教程
+
+[SillyTavern](https://sillytavern.com) 是 AI 角色扮演/创意写作平台，用户粘性极高，token 消耗量大。本教程介绍如何接入启航AI。
+
+## 前置要求
+
+- SillyTavern（[下载地址](https://sillytavern.com)）
+- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+
+## 配置步骤
+
+### 1. 打开设置
+
+点击左下角 **_settings_（设置）图标，或使用快捷键 `Ctrl/Cmd + ,`。
+
+### 2. 进入 API 设置
+
+在设置页面中找到 **API** 或 **API Configuration**。
+
+### 3. 选择 API 类型
+
+在 **API Type** 或 **API** 下拉框中选择：
+
+- **OpenAI** 或 **OpenAI Compatible**
+- **Claude**（如需使用 Claude 模型）
+
+### 4. 填写配置
+
+#### OpenAI 兼容配置：
+
+| 配置项 | 值 |
+|--------|-----|
+| API Base URL | `https://api.qhaigc.net/v1` |
+| API Key | 你的启航AI API Key |
+
+#### Claude 配置（如使用 Claude 模型）：
+
+| 配置项 | 值 |
+|--------|-----|
+| API Type | Claude (Anthropic) |
+| API Base URL | `https://api.qhaigc.net/v1` |
+| API Key | 你的启航AI API Key |
+
+### 5. 选择模型
+
+在 **Model** 或 **模型** 下拉框中选择：
+
+- `gpt-4o` - 推荐用于角色扮演
+- `gpt-4o-mini` - 快速响应
+- `claude-3-5-sonnet` - 最适合角色扮演
+- `claude-3-haiku` - 快速响应
+
+### 6. 保存并测试
+
+点击 **Save** 保存设置，然后发送测试消息验证连接。
+
+## 功能特性
+
+### 已支持功能
+
+- ✅ 角色卡创建与管理
+- ✅ 角色扮演对话
+- ✅ 世界书（World Info）
+- ✅ 上下文管理
+- ✅ 海湾/分支故事
+- ✅ 导入/导出角色
+- ✅ 文字转语音（TTS）
+- ✅ 语音合成（ElevenLabs 等）
+
+### 模型选择建议
+
+| 场景 | 推荐模型 | 原因 |
+|------|---------|------|
+| 角色扮演 | claude-3-5-sonnet | 性格塑造最强 |
+| 长篇创作 | claude-3-5-sonnet | 长上下文 |
+| 快速互动 | gpt-4o-mini | 响应快 |
+| 多模态 | gpt-4o | 支持图片 |
+
+## 高级配置
+
+### 自定义端点
+
+如果启航AI提供专用端点，可在 **Advanced** 中设置：
+
+```
+https://api.qhaigc.net/v1/chat/completions
+```
+
+### 连接参数
+
+可在设置中调整：
+
+| 参数 | 建议值 | 说明 |
+|------|--------|------|
+| Context Length | 8192 | 上下文长度 |
+| Max Tokens | 2048 | 单次响应上限 |
+| Temperature | 0.8 | 创造性 |
+
+### 多模型配置
+
+可以配置多个 API 提供商，在不同场景切换：
+
+1. 创建多个 API 配置
+2. 在对话中快速切换
+
+## 快捷键
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Ctrl/Cmd + ↑/↓` | 切换历史消息 |
+| `Ctrl/Cmd + /` | 命令面板 |
+| `Ctrl/Cmd + Enter` | 发送消息 |
+
+## 常见问题
+
+**Q: 连接失败？**
+
+A: 检查：
+- API Base URL 是否包含 `/v1`
+- API Key 是否正确
+- 网络能否访问 `api.qhaigc.net`
+
+**Q: Claude 模型不可用？**
+
+A: 确保在 Claude API 类型下配置，或使用 OpenAI 兼容模式调用 Claude 模型。
+
+**Q: 如何减少 Token 消耗？**
+
+A: 在设置中降低 Context Length，或使用更短的角色设定。
+
+## 相关链接
+
+- [SillyTavern 官网](https://sillytavern.com)
+- [SillyTavern GitHub](https://github.com/SillyTavern/SillyTavern)
+- [启航AI官网](https://api.qhaigc.net)
+
+---
+
+*最后更新：2026年3月*

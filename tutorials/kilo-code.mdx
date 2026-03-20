@@ -1,0 +1,172 @@
+---
+title: Kilo Code 接入启航AI教程
+description: 在 VS Code 中使用 Kilo Code 插件接入启航AI
+---
+
+# Kilo Code 接入启航AI教程
+
+[Kilo Code](https://github.com/kilo-ai/kilo-code) 是 VS Code AI 编程插件，Cline 的另一分支。本教程介绍如何接入启航AI。
+
+## 前置要求
+
+- VS Code
+- Kilo Code 插件
+- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+
+## 安装 Kilo Code
+
+### 从 VS Code 扩展市场安装
+
+1. 打开 VS Code
+2. 点击扩展图标（`Ctrl/Cmd + Shift + X`）
+3. 搜索 **Kilo Code**
+4. 点击 **安装**
+
+## 配置步骤
+
+### 1. 打开 Kilo Code 面板
+
+安装完成后，点击左侧 Kilo Code 图标。
+
+### 2. 进入设置
+
+点击面板右上角的 **设置** 图标（齿轮）。
+
+### 3. 选择 API Provider
+
+在 **API Provider** 下拉框中选择 **OpenAI Compatible**。
+
+### 4. 填写配置
+
+| 配置项 | 值 |
+|--------|-----|
+| API Key | 你的启航AI API Key |
+| Base URL | `https://api.qhaigc.net/v1` |
+| Model | 选择模型，如 `gpt-4o` |
+
+### 5. 选择模型
+
+在 **Model** 下拉框中选择启航AI提供的模型：
+
+- `gpt-4o`
+- `gpt-4o-mini`
+- `claude-3-5-sonnet`
+- `claude-3-haiku`
+
+### 6. 保存并开始使用
+
+关闭设置面板，即可开始使用。
+
+## 与 Cline/Roo Code 的区别
+
+Kilo Code 是 Cline 的企业级分支，主要特点：
+
+- ✅ 企业级安全特性
+- ✅ 更好的团队协作功能
+- ✅ 审计日志
+- ✅ 企业 SSO 集成
+
+## 使用方式
+
+### 自然语言编程
+
+在 Kilo Code 面板中输入：
+
+```
+创建一个 Python 脚本，实现一个简单的 Web 服务器
+```
+
+### 代码审查
+
+```
+审查这个 PR 的代码变更
+```
+
+### 生成测试
+
+```
+为这个函数生成单元测试
+```
+
+### 文档生成
+
+```
+为这个模块生成 API 文档
+```
+
+## 企业功能
+
+### 团队共享配置
+
+Kilo Code 支持团队共享 API 配置：
+
+```json
+// .kilo/config.json
+{
+  "apiProvider": "openai-compatible",
+  "apiBase": "https://api.qhaigc.net/v1",
+  "defaultModel": "gpt-4o"
+}
+```
+
+### 审计日志
+
+启用审计日志记录所有 AI 交互：
+
+```json
+{
+  "auditLog": true,
+  "auditLogPath": "./logs/kilo-audit.log"
+}
+```
+
+### 代码审查工作流
+
+集成到 CI/CD 流程：
+
+```yaml
+# .github/workflows/kilo-review.yml
+- name: Kilo Code Review
+  run: kilo review --model claude-3-5-sonnet
+```
+
+## 支持的模型
+
+| 模型 | 特点 |
+|------|------|
+| gpt-4o | 综合能力最强 |
+| gpt-4o-mini | 响应快成本低 |
+| claude-3-5-sonnet | 编程能力最强 |
+| claude-3-haiku | 快速简单任务 |
+
+## 快捷键
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Ctrl/Cmd + Shift + K` | 打开 Kilo Code 面板 |
+| `Ctrl/Cmd + I` | 内联编辑 |
+| `Ctrl/Cmd + Enter` | 发送消息 |
+
+## 常见问题
+
+**Q: 与 Cline/Roo Code 冲突？**
+
+A: 建议只安装其中一个插件。
+
+**Q: 企业功能需要付费？**
+
+A: 部分企业功能需要 Kilo Code Enterprise 许可证。
+
+**Q: 如何查看 Token 消耗？**
+
+A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看。
+
+## 相关链接
+
+- [Kilo Code GitHub](https://github.com/kilo-ai/kilo-code)
+- [Kilo Code 官网](https://kilo.ai)
+- [启航AI官网](https://api.qhaigc.net)
+
+---
+
+*最后更新：2026年3月*

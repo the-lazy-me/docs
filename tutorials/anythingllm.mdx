@@ -1,0 +1,139 @@
+---
+title: AnythingLLM 接入启航AI教程
+description: 在 AnythingLLM 中配置启航AI作为LLM提供商
+---
+
+# AnythingLLM 接入启航AI教程
+
+[AnythingLLM](https://anythingllm.com) 是全能本地 AI 知识库，支持多种文档格式，国内用户量大。本教程介绍如何接入启航AI。
+
+## 前置要求
+
+- AnythingLLM（[下载地址](https://anythingllm.com)）
+- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+
+## 配置步骤
+
+### 1. 打开设置
+
+点击左下角 **设置**（Settings）图标。
+
+### 2. 进入 LLM 偏好设置
+
+在设置页面中找到 **LLM Preference** 或 **大模型偏好**。
+
+### 3. 选择提供商
+
+在 **LLM 提供商** 下拉框中，选择 **Generic OpenAI** 或 **OpenAI 兼容**。
+
+### 4. 填写配置
+
+| 配置项 | 值 |
+|--------|-----|
+| Base URL | `https://api.qhaigc.net/v1` |
+| API Key | 你的启航AI API Key |
+| Chat Model Name | 选择模型，如 `gpt-4o` |
+| Token Limit | 根据模型设置，如 4096 |
+
+### 5. 测试连接
+
+点击 **测试连接** 或 **Test Connection** 验证配置。
+
+### 6. 保存设置
+
+点击 **保存** 或 **Save**。
+
+## 支持的模型
+
+AnythingLLM 支持启航AI的所有模型：
+
+| 模型 | 适用场景 |
+|------|---------|
+| gpt-4o | 复杂问答/多模态 |
+| gpt-4o-mini | 日常知识库查询 |
+| claude-3-5-sonnet | 深度文档分析 |
+| claude-3-haiku | 快速响应 |
+| gemini-1.5-pro | 多语言文档 |
+
+## 知识库使用
+
+### 创建知识库
+
+1. 点击 **新建工作区**（New Workspace）
+2. 命名工作区
+3. 上传文档（PDF、Word、TXT 等）
+4. 选择启航AI模型
+5. 开始对话
+
+### 文档上传
+
+支持的文档格式：
+
+- PDF
+- Word (.doc, .docx)
+- TXT
+- Markdown
+- CSV
+- 网页链接
+
+### 多工作区
+
+可以创建多个工作区，每个工作区：
+- 独立的文档集合
+- 独立的对话历史
+- 可配置不同的模型
+
+## 高级功能
+
+### 嵌入模型配置
+
+AnythingLLM 需要配置嵌入模型（Embedding Model）：
+
+1. 在设置中找到 **Embedder Preference**
+2. 选择 **OpenAI** 或本地嵌入模型
+3. 如选择 OpenAI，使用相同的 API Key 和 Base URL
+
+### 代理模式
+
+支持两种对话模式：
+
+- **聊天模式**：直接对话，不使用知识库
+- **查询模式**：基于知识库回答
+
+### 多用户模式
+
+Docker 版本支持多用户：
+
+```bash
+docker run -d -p 3001:3001 \
+  -e OPEN_AI_KEY=your-api-key \
+  -e OPEN_AI_BASE_PATH=https://api.qhaigc.net/v1 \
+  mintplexlabs/anythingllm
+```
+
+## 常见问题
+
+**Q: 嵌入模型如何配置？**
+
+A: 可以使用 OpenAI 的嵌入模型，配置相同的 Base URL 和 API Key。
+
+**Q: 文档上传后无法回答？**
+
+A: 检查：
+- 嵌入模型是否配置正确
+- 文档是否成功向量化
+- LLM 模型是否连接正常
+
+**Q: 如何查看 Token 消耗？**
+
+A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看用量。
+
+## 相关链接
+
+- [AnythingLLM 官网](https://anythingllm.com)
+- [AnythingLLM GitHub](https://github.com/Mintplex-Labs/anything-llm)
+- [启航AI官网](https://api.qhaigc.net)
+
+---
+
+*最后更新：2026年3月*
