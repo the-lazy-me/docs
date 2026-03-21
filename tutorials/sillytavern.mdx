@@ -1,144 +1,82 @@
 ---
 title: SillyTavern 接入启航AI教程
-description: 在 SillyTavern 中配置启航AI，实现AI角色扮演
+description: 在 SillyTavern 中配置启航AI
 ---
 
 # SillyTavern 接入启航AI教程
 
-[SillyTavern](https://sillytavern.com) 是 AI 角色扮演/创意写作平台，用户粘性极高，token 消耗量大。本教程介绍如何接入启航AI。
+## 教程说明
 
-## 前置要求
+SillyTavern 使用 `Chat Completion` 的 `Custom (OpenAI-compatible)` 接入方式。对于启航AI，这意味着走 OpenAI-compatible 自定义端点，而不是单独的 Claude 接入通道。
 
-- SillyTavern（[下载地址](https://sillytavern.com)）
-- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+## 适用版本或适用形态
 
-## 配置步骤
+- SillyTavern 桌面或自托管部署
+- 支持 Chat Completion 自定义来源的版本
 
-### 1. 打开设置
+## 前置条件
 
-点击左下角 **_settings_（设置）图标，或使用快捷键 `Ctrl/Cmd + ,`。
+- SillyTavern 可用实例
+- 启航AI API Key
+- 启航AI OpenAI-compatible API 地址
 
-### 2. 进入 API 设置
+## 官方支持的接入方式
 
-在设置页面中找到 **API** 或 **API Configuration**。
+- 在 API 设置里选择 `Chat Completion`
+- 将来源设为 `Custom (OpenAI-compatible)`
+- 填写自定义 endpoint URL 和 API Key
+- 如上游支持 `/v1/models`，可自动拉取模型；否则手动填写模型 ID
 
-### 3. 选择 API 类型
+## 逐步配置
 
-在 **API Type** 或 **API** 下拉框中选择：
+### 1. 打开 API 设置
 
-- **OpenAI** 或 **OpenAI Compatible**
-- **Claude**（如需使用 Claude 模型）
+1. 打开 SillyTavern
+2. 进入设置
+3. 打开 API 配置页
 
-### 4. 填写配置
+### 2. 选择接入类型
 
-#### OpenAI 兼容配置：
+1. 选择 `Chat Completion`
+2. 将 `Chat Completion Source` 设为 `Custom (OpenAI-compatible)`
 
-| 配置项 | 值 |
-|--------|-----|
-| API Base URL | `https://api.qhaigc.net/v1` |
-| API Key | 你的启航AI API Key |
+### 3. 填写启航AI信息
 
-#### Claude 配置（如使用 Claude 模型）：
+1. 填写 `Custom endpoint URL`
+2. 填写 `API key`
+3. 保存配置
 
-| 配置项 | 值 |
-|--------|-----|
-| API Type | Claude (Anthropic) |
-| API Base URL | `https://api.qhaigc.net/v1` |
-| API Key | 你的启航AI API Key |
+### 4. 选择模型
 
-### 5. 选择模型
+1. 如果客户端能够从 `/v1/models` 拉取模型，直接选择可用模型
+2. 如果列表为空，手动输入模型 ID
+3. 重新加载后开始对话
 
-在 **Model** 或 **模型** 下拉框中选择：
+## 验证是否接入成功
 
-- `gpt-4o` - 推荐用于角色扮演
-- `gpt-4o-mini` - 快速响应
-- `claude-3-5-sonnet` - 最适合角色扮演
-- `claude-3-haiku` - 快速响应
-
-### 6. 保存并测试
-
-点击 **Save** 保存设置，然后发送测试消息验证连接。
-
-## 功能特性
-
-### 已支持功能
-
-- ✅ 角色卡创建与管理
-- ✅ 角色扮演对话
-- ✅ 世界书（World Info）
-- ✅ 上下文管理
-- ✅ 海湾/分支故事
-- ✅ 导入/导出角色
-- ✅ 文字转语音（TTS）
-- ✅ 语音合成（ElevenLabs 等）
-
-### 模型选择建议
-
-| 场景 | 推荐模型 | 原因 |
-|------|---------|------|
-| 角色扮演 | claude-3-5-sonnet | 性格塑造最强 |
-| 长篇创作 | claude-3-5-sonnet | 长上下文 |
-| 快速互动 | gpt-4o-mini | 响应快 |
-| 多模态 | gpt-4o | 支持图片 |
-
-## 高级配置
-
-### 自定义端点
-
-如果启航AI提供专用端点，可在 **Advanced** 中设置：
-
-```
-https://api.qhaigc.net/v1/chat/completions
-```
-
-### 连接参数
-
-可在设置中调整：
-
-| 参数 | 建议值 | 说明 |
-|------|--------|------|
-| Context Length | 8192 | 上下文长度 |
-| Max Tokens | 2048 | 单次响应上限 |
-| Temperature | 0.8 | 创造性 |
-
-### 多模型配置
-
-可以配置多个 API 提供商，在不同场景切换：
-
-1. 创建多个 API 配置
-2. 在对话中快速切换
-
-## 快捷键
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Ctrl/Cmd + ↑/↓` | 切换历史消息 |
-| `Ctrl/Cmd + /` | 命令面板 |
-| `Ctrl/Cmd + Enter` | 发送消息 |
+- 发送一条测试消息
+- 如果机器人能正常回复，说明接入成功
+- 如果模型不可见，优先检查 endpoint 是否填写到基础地址层级
 
 ## 常见问题
 
-**Q: 连接失败？**
+**Q: 为什么不写 Claude 单独通道？**
 
-A: 检查：
-- API Base URL 是否包含 `/v1`
-- API Key 是否正确
-- 网络能否访问 `api.qhaigc.net`
+A: 启航AI这里按官方可核实的 OpenAI-compatible 自定义端点来接，不混写另一套接入流程。
 
-**Q: Claude 模型不可用？**
+**Q: endpoint 要不要写到 `/chat/completions`？**
 
-A: 确保在 Claude API 类型下配置，或使用 OpenAI 兼容模式调用 Claude 模型。
+A: 不要。只填写基础端点即可，必要时在基础地址层级补 `/v1`。
 
-**Q: 如何减少 Token 消耗？**
+**Q: 模型看不到怎么办？**
 
-A: 在设置中降低 Context Length，或使用更短的角色设定。
+A: 先确认上游是否提供 `/v1/models`，没有就手动输入模型 ID。
 
-## 相关链接
+## 官方参考链接
 
-- [SillyTavern 官网](https://sillytavern.com)
-- [SillyTavern GitHub](https://github.com/SillyTavern/SillyTavern)
-- [启航AI官网](https://api.qhaigc.net)
+- [SillyTavern OpenAI-compatible 文档](https://docs.sillytavern.app/usage/api-connections/openai/)
+- [SillyTavern Quick Start](https://docs.sillytavern.app/usage/quick-start/)
 
----
+## 最后更新时间
 
-*最后更新：2026年3月*
+2026-03-21

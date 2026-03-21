@@ -1,165 +1,64 @@
 ---
 title: Roo Code 接入启航AI教程
-description: 在 VS Code 中使用 Roo Code 插件接入启航AI
+description: 在 Roo Code 中配置启航AI的 OpenAI Compatible 接入
 ---
 
 # Roo Code 接入启航AI教程
 
-[Roo Code](https://github.com/RooVetGit/Roo-Code) 是 VS Code AI 编程插件，Cline 的分支版本。本教程介绍如何接入启航AI。
+## 教程说明
 
-## 前置要求
+本教程介绍如何在 Roo Code 中接入启航AI。Roo Code 支持 OpenAI-compatible 接口，但公开资料对部分 UI 字段的描述不够统一，因此本文只写可确认的配置方向。
+
+## 适用版本或适用形态
+
+- VS Code 中安装的 Roo Code 扩展
+- 能在设置中选择 provider 的 Roo Code 版本
+
+## 前置条件
 
 - VS Code
-- Roo Code 插件
-- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+- 已安装 Roo Code
+- 启航AI API Key
 
-## 安装 Roo Code
+## 官方支持的接入方式
 
-### 从 VS Code 扩展市场安装
+Roo Code 可在 provider 设置中使用 OpenAI-compatible 接口。可确认的配置项包括：
 
-1. 打开 VS Code
-2. 点击扩展图标（`Ctrl/Cmd + Shift + X`）
-3. 搜索 **Roo Code**
-4. 点击 **安装**
+- `API Provider`
+- `Base URL`
+- `API Key`
+- `Model`
 
-## 配置步骤
+## 逐步配置
 
-### 1. 打开 Roo Code 面板
+1. 打开 Roo Code 面板。
+2. 进入设置页面。
+3. 选择 OpenAI-compatible 相关 provider。
+4. 填写启航AI的 `Base URL` 与 `API Key`。
+5. 选择或手动填写要使用的模型名。
+6. 保存配置后重新打开会话。
 
-安装完成后，点击左侧 Roo Code 图标。
+## 验证是否接入成功
 
-### 2. 进入设置
-
-点击面板右上角的 **设置** 图标（齿轮）。
-
-### 3. 选择 API Provider
-
-在 **API Provider** 下拉框中选择 **OpenAI Compatible**。
-
-### 4. 填写配置
-
-| 配置项 | 值 |
-|--------|-----|
-| API Key | 你的启航AI API Key |
-| Base URL | `https://api.qhaigc.net/v1` |
-| Model | 选择模型，如 `gpt-4o` |
-
-### 5. 选择模型
-
-在 **Model** 下拉框中选择启航AI提供的模型：
-
-- `gpt-4o`
-- `gpt-4o-mini`
-- `claude-3-5-sonnet`
-- `claude-3-haiku`
-
-### 6. 保存并开始使用
-
-关闭设置面板，即可开始使用。
-
-## 与 Cline 的区别
-
-Roo Code 是 Cline 的分支，主要区别：
-
-- ✅ 更多自定义选项
-- ✅ 更好的代码审查功能
-- ✅ 支持更多模型参数调整
-- ✅ 改进的 UI 界面
-
-## 使用方式
-
-### 自然语言编程
-
-在 Roo Code 面板中输入：
-
-```
-创建一个 React 组件，实现一个带搜索功能的用户列表
-```
-
-### 代码审查
-
-```
-审查这个文件中的潜在安全问题
-```
-
-### 重构代码
-
-```
-重构这个函数，使其更易于测试
-```
-
-### 添加注释
-
-```
-为这个类添加详细的文档注释
-```
-
-## 高级功能
-
-### 自定义系统提示词
-
-在设置中可以自定义系统提示词：
-
-```
-你是一个专业的 TypeScript 开发者，注重代码质量和类型安全。
-```
-
-### 多模型切换
-
-可以在对话中快速切换模型：
-
-- **复杂任务**：claude-3-5-sonnet
-- **快速原型**：gpt-4o-mini
-- **综合开发**：gpt-4o
-
-### 代码片段管理
-
-Roo Code 支持保存常用代码片段：
-
-1. 选中代码
-2. 点击 **保存片段**
-3. 在后续对话中引用
-
-## 支持的模型
-
-| 模型 | 特点 |
-|------|------|
-| gpt-4o | 综合能力最强 |
-| gpt-4o-mini | 响应快成本低 |
-| claude-3-5-sonnet | 编程能力最强 |
-| claude-3-haiku | 快速简单任务 |
-
-## 快捷键
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Ctrl/Cmd + Shift + L` | 打开 Roo Code 面板 |
-| `Ctrl/Cmd + I` | 内联编辑 |
-| `Ctrl/Cmd + Enter` | 发送消息 |
+- Roo Code 可以正常保存配置
+- 面板中可以发起对话
+- 返回内容来自启航AI，而不是报认证或连接错误
 
 ## 常见问题
 
-**Q: 与 Cline 冲突？**
+**Q: 具体字段名和入口和 Cline 一样吗？**
 
-A: 建议只安装其中一个插件，避免快捷键冲突。
+A: 不强行假设完全一致。只按 Roo Code 当前可见的 provider 设置填写，字段名以实际 UI 为准。
 
-**Q: 连接失败？**
+**Q: 模型为什么没有自动显示？**
 
-A: 检查：
-- Base URL 是否包含 `/v1`
-- API Key 是否正确
-- 网络连接是否正常
+A: 先按 `Base URL` 和 `API Key` 验证连接，再手动填写模型名。
 
-**Q: 如何查看 Token 消耗？**
+## 官方参考链接
 
-A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看。
+- [Roo Code 官方文档](https://docs.roocode.com/)
+- [Roo Code 官方仓库](https://github.com/RooCodeInc/Roo-Code)
 
-## 相关链接
+## 最后更新时间
 
-- [Roo Code GitHub](https://github.com/RooVetGit/Roo-Code)
-- [Roo Code VS Code 市场](https://marketplace.visualstudio.com/items?itemName=RooVeterinaryInc.roo-cline)
-- [启航AI官网](https://api.qhaigc.net)
-
----
-
-*最后更新：2026年3月*
+2026-03-21

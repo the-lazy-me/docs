@@ -1,139 +1,90 @@
 ---
 title: AnythingLLM 接入启航AI教程
-description: 在 AnythingLLM 中配置启航AI作为LLM提供商
+description: 在 AnythingLLM 中配置启航AI的 Generic OpenAI 提供商
 ---
 
 # AnythingLLM 接入启航AI教程
 
-[AnythingLLM](https://anythingllm.com) 是全能本地 AI 知识库，支持多种文档格式，国内用户量大。本教程介绍如何接入启航AI。
+## 教程说明
 
-## 前置要求
+[AnythingLLM](https://anythingllm.com) 支持 `Generic OpenAI` 提供商。本教程只写官方源码和界面中已经能核实的字段。
 
-- AnythingLLM（[下载地址](https://anythingllm.com)）
-- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+## 适用形态
 
-## 配置步骤
+- AnythingLLM 桌面端
+- AnythingLLM 自托管实例
+- 需要同时配置 LLM 和 Embedding 的知识库场景
+
+## 前置条件
+
+- 可访问的 AnythingLLM 控制台
+- 启航AI API Key
+- 一个可用的 OpenAI-compatible API 地址
+
+## 官方支持的接入方式
+
+AnythingLLM 的 LLM 和 Embedding 都可以单独选择 `Generic OpenAI`。官方源码和设置页都能对应到 `Base URL`、`API Key`、`Chat Model Name`、`Model context window`、`Max Tokens`、`Embedding Model` 等字段。
+
+## 逐步配置
 
 ### 1. 打开设置
 
-点击左下角 **设置**（Settings）图标。
+进入 AnythingLLM 的 `Settings` 页面，找到 `LLM Preference`。
 
-### 2. 进入 LLM 偏好设置
+### 2. 选择 `Generic OpenAI`
 
-在设置页面中找到 **LLM Preference** 或 **大模型偏好**。
+在 LLM 提供商列表中选择 `Generic OpenAI`。
 
-### 3. 选择提供商
+### 3. 填写 LLM 字段
 
-在 **LLM 提供商** 下拉框中，选择 **Generic OpenAI** 或 **OpenAI 兼容**。
+按页面要求填写以下内容：
 
-### 4. 填写配置
+- `Base URL`
+- `API Key`
+- `Chat Model Name`
+- `Model context window`
+- `Max Tokens`
 
-| 配置项 | 值 |
-|--------|-----|
-| Base URL | `https://api.qhaigc.net/v1` |
-| API Key | 你的启航AI API Key |
-| Chat Model Name | 选择模型，如 `gpt-4o` |
-| Token Limit | 根据模型设置，如 4096 |
+### 4. 配置 Embedding
 
-### 5. 测试连接
+进入 embedding 相关设置，选择同样的 `Generic OpenAI` 方案，并填写：
 
-点击 **测试连接** 或 **Test Connection** 验证配置。
+- `Base URL`
+- `Embedding Model`
+- `API Key`（如果页面要求或允许填写）
 
-### 6. 保存设置
+### 5. 保存并测试
 
-点击 **保存** 或 **Save**。
+保存配置后，执行一次测试连接或新建工作区测试回复。
 
-## 支持的模型
+## 验证是否接入成功
 
-AnythingLLM 支持启航AI的所有模型：
-
-| 模型 | 适用场景 |
-|------|---------|
-| gpt-4o | 复杂问答/多模态 |
-| gpt-4o-mini | 日常知识库查询 |
-| claude-3-5-sonnet | 深度文档分析 |
-| claude-3-haiku | 快速响应 |
-| gemini-1.5-pro | 多语言文档 |
-
-## 知识库使用
-
-### 创建知识库
-
-1. 点击 **新建工作区**（New Workspace）
-2. 命名工作区
-3. 上传文档（PDF、Word、TXT 等）
-4. 选择启航AI模型
-5. 开始对话
-
-### 文档上传
-
-支持的文档格式：
-
-- PDF
-- Word (.doc, .docx)
-- TXT
-- Markdown
-- CSV
-- 网页链接
-
-### 多工作区
-
-可以创建多个工作区，每个工作区：
-- 独立的文档集合
-- 独立的对话历史
-- 可配置不同的模型
-
-## 高级功能
-
-### 嵌入模型配置
-
-AnythingLLM 需要配置嵌入模型（Embedding Model）：
-
-1. 在设置中找到 **Embedder Preference**
-2. 选择 **OpenAI** 或本地嵌入模型
-3. 如选择 OpenAI，使用相同的 API Key 和 Base URL
-
-### 代理模式
-
-支持两种对话模式：
-
-- **聊天模式**：直接对话，不使用知识库
-- **查询模式**：基于知识库回答
-
-### 多用户模式
-
-Docker 版本支持多用户：
-
-```bash
-docker run -d -p 3001:3001 \
-  -e OPEN_AI_KEY=your-api-key \
-  -e OPEN_AI_BASE_PATH=https://api.qhaigc.net/v1 \
-  mintplexlabs/anythingllm
-```
+- LLM 配置能正常保存
+- Embedding 配置能正常保存
+- 新建工作区后可以上传文档并正常对话
 
 ## 常见问题
 
-**Q: 嵌入模型如何配置？**
+**Q: 为什么要把 LLM 和 Embedding 分开配？**
 
-A: 可以使用 OpenAI 的嵌入模型，配置相同的 Base URL 和 API Key。
+A: AnythingLLM 的源码和界面都把这两部分拆开了，知识库场景必须两边都正常。
 
-**Q: 文档上传后无法回答？**
+**Q: 为什么不写固定模型列表？**
 
-A: 检查：
-- 嵌入模型是否配置正确
-- 文档是否成功向量化
-- LLM 模型是否连接正常
+A: AnythingLLM 允许手动指定模型名，具体可用模型取决于你实际接入的 provider，若无强证据不写死。
 
-**Q: 如何查看 Token 消耗？**
+**Q: Token Limit 和 Max Tokens 是什么关系？**
 
-A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看用量。
+A: 官方界面区分了模型上下文窗口和输出上限，不要把它们混成一个字段。
 
-## 相关链接
+## 官方参考链接
 
 - [AnythingLLM 官网](https://anythingllm.com)
 - [AnythingLLM GitHub](https://github.com/Mintplex-Labs/anything-llm)
-- [启航AI官网](https://api.qhaigc.net)
+- [Generic OpenAI LLM 配置源码](https://github.com/Mintplex-Labs/anything-llm/blob/master/frontend/src/components/LLMSelection/GenericOpenAiOptions/index.jsx)
+- [Generic OpenAI Embedding 配置源码](https://github.com/Mintplex-Labs/anything-llm/blob/master/frontend/src/components/EmbeddingSelection/GenericOpenAiOptions/index.jsx)
+- [LLM Preference 设置页源码](https://github.com/Mintplex-Labs/anything-llm/blob/master/frontend/src/pages/GeneralSettings/LLMPreference/index.jsx)
 
----
+## 最后更新时间
 
-*最后更新：2026年3月*
+2026-03-21

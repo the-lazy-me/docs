@@ -1,200 +1,78 @@
 ---
 title: OpenCode 接入启航AI教程
-description: 在终端中使用 OpenCode 接入启航AI
+description: 在 OpenCode 中通过 /connect 和 opencode.json 接入启航AI
 ---
 
 # OpenCode 接入启航AI教程
 
-[OpenCode](https://github.com/opencode-ai/opencode) 是终端 AI 编程助手，类 Claude Code，开源。本教程介绍如何接入启航AI。
+## 教程说明
 
-## 前置要求
+本教程介绍如何在 OpenCode 中接入启航AI。OpenCode 的主流程是先执行 `/connect`，再通过 `opencode.json` 配置 provider，因此不再使用简单的环境变量直连写法作为主教程。
 
-- Node.js 18+
+## 适用版本或适用形态
+
 - OpenCode CLI
-- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+- 用户级或项目级 `opencode.json`
 
-## 安装 OpenCode
+## 前置条件
 
-```bash
-npm install -g @opencode-ai/opencode
-```
+- Node.js 和 OpenCode CLI
+- 启航AI API Key
+- 可编辑 `opencode.json`
 
-## 配置步骤
+## 官方支持的接入方式
 
-### 1. 设置环境变量
+OpenCode 使用 provider 配置接入兼容接口。可确认的核心要素包括：
 
-#### macOS/Linux
+- `/connect`
+- `opencode.json`
+- `provider`
+- `options.baseURL`
 
-```bash
-export OPENAI_API_KEY="your-api-key"
-export OPENAI_BASE_URL="https://api.qhaigc.net/v1"
-```
+## 逐步配置
 
-添加到 `~/.zshrc` 或 `~/.bashrc`：
+1. 在 OpenCode 中执行 `/connect` 完成基础连接流程。
+2. 打开或创建 `opencode.json`。
+3. 在 provider 配置中使用 OpenAI-compatible 对应条目。
+4. 填写启航AI的 `baseURL` 和 `apiKey`。
+5. 保存配置后重新启动或刷新会话。
 
-```bash
-echo 'export OPENAI_API_KEY="your-api-key"' >> ~/.zshrc
-echo 'export OPENAI_BASE_URL="https://api.qhaigc.net/v1"' >> ~/.zshrc
-source ~/.zshrc
-```
-
-#### Windows (PowerShell)
-
-```powershell
-$env:OPENAI_API_KEY = "your-api-key"
-$env:OPENAI_BASE_URL = "https://api.qhaigc.net/v1"
-```
-
-### 2. 验证配置
-
-```bash
-opencode --version
-```
-
-### 3. 启动 OpenCode
-
-在项目目录中：
-
-```bash
-opencode
-```
-
-## 使用方式
-
-### 自然语言编程
-
-```
-> 创建一个 Express.js 服务器，包含用户认证和 CRUD API
-```
-
-OpenCode 会自动：
-1. 分析需求
-2. 创建文件
-3. 编写代码
-4. 安装依赖
-5. 运行测试
-
-### 代码解释
-
-```
-> 解释这个函数的作用
-```
-
-### 代码优化
-
-```
-> 优化这个文件，提高性能
-```
-
-### 调试
-
-```
-> 这个测试失败了，帮我找出原因
-```
-
-### Git 操作
-
-```
-> 提交所有更改，写一个描述性的提交信息
-```
-
-## 支持的模型
-
-OpenCode 支持启航AI的所有模型：
-
-| 模型 | 配置方式 |
-|------|---------|
-| gpt-4o | 默认 |
-| gpt-4o-mini | `--model gpt-4o-mini` |
-| claude-3-5-sonnet | `--model claude-3-5-sonnet` |
-| claude-3-haiku | `--model claude-3-haiku` |
-
-## 高级用法
-
-### 指定模型
-
-```bash
-opencode --model claude-3-5-sonnet
-```
-
-### 配置文件
-
-创建 `~/.opencode/config.json`：
+示例：
 
 ```json
 {
-  "apiKey": "your-api-key",
-  "baseUrl": "https://api.qhaigc.net/v1",
-  "defaultModel": "gpt-4o",
-  "maxTokens": 4096
+  "provider": {
+    "name": "@ai-sdk/openai-compatible",
+    "options": {
+      "baseURL": "https://api.qhaigc.net/v1",
+      "apiKey": "your-api-key"
+    }
+  }
 }
 ```
 
-### 项目级配置
+## 验证是否接入成功
 
-在项目根目录创建 `.opencode.json`：
-
-```json
-{
-  "model": "claude-3-5-sonnet",
-  "systemPrompt": "你是一个专业的 Python 开发者"
-}
-```
-
-### 禁用工具
-
-```bash
-opencode --no-tools
-```
-
-### 仅对话模式
-
-```bash
-opencode --chat
-```
-
-## 快捷键
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Ctrl + C` | 中断当前操作 |
-| `Ctrl + D` | 退出 |
-| `↑/↓` | 浏览历史 |
-| `Tab` | 自动补全 |
-
-## 功能特性
-
-- ✅ 自然语言编程
-- ✅ 自动文件操作
-- ✅ 终端命令执行
-- ✅ 代码解释
-- ✅ 代码重构
-- ✅ 调试辅助
-- ✅ Git 集成
-- ✅ 多模型支持
+- `/connect` 流程可以完成
+- OpenCode 能正常读取 `opencode.json`
+- 发起对话时可以收到启航AI的回复
 
 ## 常见问题
 
-**Q: 提示 "API key not found"？**
+**Q: 为什么不再主推 `OPENAI_API_KEY` 和 `OPENAI_BASE_URL`？**
 
-A: 确保环境变量已正确设置，或检查配置文件。
+A: OpenCode 官方主流程是 provider 配置和 `opencode.json`，不是只靠环境变量。
 
-**Q: 连接失败？**
+**Q: 如果上游不支持自动获取模型怎么办？**
 
-A: 检查：
-- `OPENAI_BASE_URL` 是否包含 `/v1`
-- API Key 是否有效
-- 网络连接是否正常
+A: 先确保 provider 和 `baseURL` 配置正确，再按 OpenCode 的实际 UI 或配置项手动指定模型。
 
-**Q: 如何查看 Token 消耗？**
+## 官方参考链接
 
-A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看。
+- [OpenCode Providers 文档](https://opencode.ai/docs/providers/)
+- [OpenCode Config 文档](https://opencode.ai/docs/config/)
+- [OpenCode 官方仓库](https://github.com/opencode-ai/opencode)
 
-## 相关链接
+## 最后更新时间
 
-- [OpenCode GitHub](https://github.com/opencode-ai/opencode)
-- [启航AI官网](https://api.qhaigc.net)
-
----
-
-*最后更新：2026年3月*
+2026-03-21

@@ -1,122 +1,78 @@
 ---
 title: Dify 接入启航AI教程
-description: 在 Dify 中配置启航AI API，实现低门槛接入全网AI大模型
+description: 在 Dify 中配置启航AI模型提供商
 ---
 
 # Dify 接入启航AI教程
 
-[Dify](https://dify.ai) 是国内最流行的开源 LLM 应用开发平台，支持 RAG、Agent、工作流编排。本教程介绍如何在 Dify 中接入启航AI API。
+## 教程说明
 
-## 前置要求
+[Dify](https://dify.ai) 的模型接入已经转向模型提供商插件体系。本教程只写当前可核实的接入方式：通过已安装的模型 provider 插件接入 OpenAI-compatible 服务。
 
-- Dify 账号（社区版/云版均可）
-- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+## 适用形态
 
-## 配置步骤
+- Dify 云版
+- Dify 自托管实例
+- 已启用对应模型 provider 插件的环境
 
-### 1. 登录 Dify
+## 前置条件
 
-访问 [Dify 控制台](https://cloud.dify.ai) 或本地部署的 Dify 实例。
+- 可访问的 Dify 控制台
+- 启航AI API Key
+- 一个可用的 OpenAI-compatible provider 插件，或 Dify 当前版本中对应的 OpenAI 模型提供商插件
 
-### 2. 进入模型设置
+## 官方支持的接入方式
 
-点击右上角头像 → **设置** → **模型供应商**。
+Dify 的模型配置以 provider 插件为中心，而不是固定的旧式“模型供应商”页面。官方文档提到的模型设计规则中包含 `fetch-from-remote` 模式，适合通过 provider 凭证统一拉取模型。
 
-### 3. 添加 OpenAI 兼容模型
+## 逐步配置
 
-在模型供应商列表中找到 **OpenAI**（或 **OpenAI Compatible**），点击 **配置**。
+### 1. 打开模型提供商配置
 
-### 4. 填写启航AI配置
+进入 Dify 控制台，找到模型提供商或模型设置入口，添加对应的 OpenAI 模型 provider 插件。
 
-| 配置项 | 值 |
-|--------|-----|
-| 模型名称 | 自定义，如 `启航AI` |
-| API Key | 你的启航AI API Key |
-| API Base URL | `https://api.qhaigc.net/v1` |
+### 2. 填写 provider 凭证
 
-### 5. 选择模型
+按当前插件页面要求填写启航AI的 API Key，以及插件要求的 API 地址或 Base URL。
 
-配置完成后，在模型列表中可以看到启航AI提供的模型：
+### 3. 拉取或选择模型
 
-- `gpt-4o` - 最强多模态模型
-- `gpt-4o-mini` - 高性价比
-- `claude-3-5-sonnet` - Claude最强模型
-- `claude-3-haiku` - Claude快速模型
-- `gemini-pro` - Google模型
-- 以及更多...
+如果插件支持远程拉取模型，先同步模型列表；如果需要手动配置模型，则按插件页面要求填写模型 ID。
 
-### 6. 测试连接
+### 4. 在应用中选择该模型
 
-点击 **测试** 按钮，验证配置是否成功。
+在聊天应用、Agent 或工作流的模型选择位置，选择刚才配置好的 provider 模型。
 
-## 在应用中使用
+### 5. 保存并测试
 
-### 创建聊天应用
+保存配置后，用一个最小请求验证应用是否能正常生成回复。
 
-1. 点击 **创建空白应用** → 选择 **聊天助手**
-2. 在 **编排** 页面，选择 **模型** 下拉框
-3. 选择已配置的启航AI模型
-4. 开始对话测试
+## 验证是否接入成功
 
-### 创建 Agent 应用
-
-1. 创建 **Agent** 类型应用
-2. 在 **模型** 设置中选择启航AI模型
-3. 配置工具、知识库等
-4. 发布使用
-
-### 创建工作流
-
-1. 创建 **工作流** 类型应用
-2. 在 LLM 节点中选择启航AI模型
-3. 编排你的工作流逻辑
-
-## 高级配置
-
-### 自定义模型列表
-
-如需显示特定模型，可在配置时指定模型名称列表：
-
-```
-gpt-4o
-gpt-4o-mini
-claude-3-5-sonnet-20241022
-claude-3-haiku-20240307
-gemini-1.5-pro
-```
-
-### 多模型对比
-
-Dify 支持同时配置多个启航AI模型，方便在不同场景下选择：
-
-- **复杂任务**：gpt-4o / claude-3-5-sonnet
-- **快速响应**：gpt-4o-mini / claude-3-haiku
-- **代码任务**：claude-3-5-sonnet
-- **多语言**：gemini-pro
+- 模型提供商页面能正常保存
+- 应用侧可以选到该模型
+- 测试对话能返回正常响应
 
 ## 常见问题
 
-**Q: 连接测试失败怎么办？**
+**Q: 找不到“OpenAI Compatible”入口怎么办？**
 
-A: 检查以下几点：
-- API Key 是否正确（不要包含空格）
-- API Base URL 是否完整（需包含 `/v1`）
-- 网络是否能访问 `api.qhaigc.net`
+A: Dify 当前是插件化 provider 架构，不同版本的入口名称可能不同。优先查找模型提供商插件，而不是沿用旧版菜单名称。
 
-**Q: 模型列表不显示？**
+**Q: 为什么不直接写固定模型列表？**
 
-A: 确保在配置时启用了 **自定义模型** 选项，并手动输入模型名称。
+A: 具体可见模型取决于 provider 插件和当前版本配置，若无强证据不写死。
 
-**Q: 如何查看用量和余额？**
+**Q: 需要把 Base URL 一定写成 `/v1` 吗？**
 
-A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看实时用量和余额。
+A: 只在当前插件或官方文档明确要求时这样写；否则按插件字段要求填写 API 地址即可。
 
-## 相关链接
+## 官方参考链接
 
-- [Dify 官方文档](https://docs.dify.ai)
-- [启航AI官网](https://api.qhaigc.net)
-- [获取 API Key](https://api.qhaigc.net)
+- [Dify 插件通用规范](https://docs.dify.ai/ja/develop-plugin/features-and-specs/plugin-types/general-specifications)
+- [Dify 模型设计规则](https://docs.dify.ai/plugins/schema-definition/model/model-designing-rules)
+- [Dify 模型供应商插件说明](https://docs.dify.ai/zh/develop-plugin/dev-guides-and-walkthroughs/creating-new-model-provider)
 
----
+## 最后更新时间
 
-*最后更新：2026年3月*
+2026-03-21

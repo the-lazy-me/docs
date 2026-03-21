@@ -1,122 +1,75 @@
 ---
 title: LobeChat 接入启航AI教程
-description: 在 LobeChat 中配置启航AI作为模型供应商
+description: 在 LobeChat 中配置启航AI
 ---
 
 # LobeChat 接入启航AI教程
 
-[LobeChat](https://lobehub.com) 是现代化开源 AI 聊天界面，支持多模型，国内最流行 AI 聊天界面之一。本教程介绍如何接入启航AI。
+## 教程说明
 
-## 前置要求
+本教程区分两种场景：在线版或桌面端的用户侧配置，以及自托管场景的环境变量配置。前者走 LobeChat 的 OpenAI provider，后者走官方支持的自托管变量。
 
-- LobeChat（[在线版](https://chat.lobehub.com) 或自托管）
-- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+## 适用版本或适用形态
 
-## 在线版配置
+- LobeChat 在线版
+- LobeChat 桌面端或网页端
+- LobeChat 自托管部署
 
-### 1. 打开设置
+## 前置条件
 
-点击左下角 **设置** 图标。
+- 可访问的 LobeChat
+- 启航AI API Key
+- 自托管场景下可修改部署环境变量
 
-### 2. 进入语言模型设置
+## 官方支持的接入方式
 
-在设置页面中找到 **语言模型** 或 **Model** 选项。
+- 在线版或桌面端：在设置中选择 `OpenAI` provider，填写 API Key
+- 自托管：配置 `OPENAI_API_KEY` 和 `OPENAI_PROXY_URL`
+- 如果你不是自托管，不要假设一定存在任意自定义 Base URL 输入框
 
-### 3. 配置 OpenAI 兼容
+## 逐步配置
 
-| 配置项 | 值 |
-|--------|-----|
-| API 地址 | `https://api.qhaigc.net/v1` |
-| API Key | 你的启航AI API Key |
+### 1. 在线版或桌面端
 
-### 4. 选择模型
+1. 打开 LobeChat 设置
+2. 进入语言模型或 `Model` 设置页
+3. 选择 `OpenAI` provider
+4. 填写启航AI API Key
+5. 保存配置
+6. 返回对话页并选择可用模型
 
-配置完成后，在模型下拉菜单中选择启航AI提供的模型：
+### 2. 自托管部署
 
-- `gpt-4o`
-- `gpt-4o-mini`
-- `claude-3-5-sonnet`
-- `claude-3-haiku`
-- `gemini-1.5-pro`
+1. 在部署环境中设置 `OPENAI_API_KEY`
+2. 设置 `OPENAI_PROXY_URL=https://api.qhaigc.net/v1`
+3. 重启服务或重新部署
+4. 打开 LobeChat 并进入模型设置页确认配置已生效
 
-### 5. 开始对话
+## 验证是否接入成功
 
-选择模型后即可开始对话。
-
-## 自托管版本配置
-
-### Docker 部署
-
-```bash
-docker run -d -p 3210:3210 \
-  -e OPENAI_PROXY_URL=https://api.qhaigc.net/v1 \
-  -e OPENAI_API_KEY=your-api-key \
-  lobehub/lobe-chat
-```
-
-### 环境变量配置
-
-在 `.env.local` 或 Docker Compose 中配置：
-
-```env
-OPENAI_PROXY_URL=https://api.qhaigc.net/v1
-OPENAI_API_KEY=sk-xxxxxxxxxxxxx
-```
-
-### Vercel 部署
-
-在 Vercel 项目设置中添加环境变量：
-
-| 变量名 | 值 |
-|--------|-----|
-| `OPENAI_PROXY_URL` | `https://api.qhaigc.net/v1` |
-| `OPENAI_API_KEY` | 你的启航AI API Key |
-
-## 功能特性
-
-### 已支持功能
-
-- ✅ 多模型对话
-- ✅ GPT-4 Vision（图片分析）
-- ✅ TTS 语音合成
-- ✅ 文生图（DALL-E 3）
-- ✅ 插件系统
-- ✅ 知识库
-- ✅ 助手市场
-
-### 模型选择建议
-
-| 场景 | 推荐模型 |
-|------|---------|
-| 日常对话 | gpt-4o-mini |
-| 复杂问题 | gpt-4o / claude-3-5-sonnet |
-| 代码编写 | claude-3-5-sonnet |
-| 图片分析 | gpt-4o |
-| 快速摘要 | claude-3-haiku |
+- 新建一条对话并发送消息
+- 如果能收到启航AI回复，说明接入成功
+- 如果自托管场景仍不可用，优先检查环境变量是否被实例实际读取
 
 ## 常见问题
 
-**Q: 配置后无法连接？**
+**Q: 为什么在线版没有自定义 Base URL？**
 
-A: 检查：
-- API 地址是否包含 `/v1` 后缀
-- API Key 是否正确
-- 网络能否访问 `api.qhaigc.net`
+A: 本页不把在线版写成可任意填网关地址的通用接入流程。若你是自托管，再使用 `OPENAI_PROXY_URL`。
 
-**Q: 模型列表不显示？**
+**Q: 模型列表为空怎么办？**
 
-A: LobeChat 会自动获取可用模型，如果列表为空，手动刷新页面。
+A: 先确认 `OpenAI` provider 已保存并刷新页面，再检查上游是否可用。
 
-**Q: 如何查看用量？**
+**Q: 连接失败怎么办？**
 
-A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看。
+A: 检查 API Key、网络可达性，以及自托管环境变量是否已生效。
 
-## 相关链接
+## 官方参考链接
 
-- [LobeChat 官网](https://lobehub.com)
-- [LobeChat GitHub](https://github.com/lobehub/lobe-chat)
-- [启航AI官网](https://api.qhaigc.net)
+- [LobeChat OpenAI provider 文档](https://lobehub.com/es/docs/usage/providers/openai)
+- [LobeChat 官方仓库](https://github.com/lobehub/lobe-chat)
 
----
+## 最后更新时间
 
-*最后更新：2026年3月*
+2026-03-21

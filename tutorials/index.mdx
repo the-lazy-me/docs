@@ -1,124 +1,88 @@
 ---
-title: 启航AI 生态接入文档索引
-description: 启航AI与各大平台的接入教程汇总
+title: 启航AI 教程索引
+description: 已核实接入教程、专项教程与待核实页面的统一入口
 ---
 
-# 启航AI 生态接入文档索引
+# 启航AI 教程索引
 
-欢迎来到启航AI生态接入文档中心。本文档汇总了启航AI与各大主流平台的接入教程。
+## 说明
 
-## 🚀 快速开始
+本页只汇总两类内容：
 
-所有平台接入都需要：
+- 已按官方文档或官方仓库核对过的接入教程
+- 尚未补齐字段级证据、因此暂缓更新的高风险页面
 
-1. **获取 API Key**：[https://api.qhaigc.net](https://api.qhaigc.net)
-2. **配置 Base URL**：`https://api.qhaigc.net/v1`
-3. **选择模型**：gpt-4o / claude-3-5-sonnet 等
+如果某个平台当前官方资料不足，或暂时无法确认其是否支持 OpenAI-compatible 自定义地址，本索引不会把它继续放在“可直接接入”区域。
 
-## 📊 平台分类
+## 通用前提
 
-### 🔧 AI工作流平台
+大多数教程都会用到以下信息：
 
-| 平台 | 类型 | 优先级 | 文档 |
-|------|------|--------|------|
-| Dify | LLM应用开发平台 | ⭐⭐⭐⭐⭐ | [查看](./dify.mdx) |
-| n8n | 自动化工作流 | ⭐⭐⭐⭐⭐ | [查看](./n8n.mdx) |
-| Flowise | 低代码LLM工作流 | ⭐⭐⭐⭐ | [查看](./flowise.mdx) |
-| Langflow | LangChain工作流 | ⭐⭐⭐⭐ | [查看](./langflow.mdx) |
-| Botpress | 对话机器人平台 | ⭐⭐⭐⭐ | [查看](./botpress.mdx) |
+- 启航AI API Key：[前往控制台创建](https://www.qhaigc.net/console/apikeys)
+- OpenAI 兼容地址：`https://api.qhaigc.net/v1`
 
-### 💻 编程工具
+<Info>
+  是否需要填写 <code>/v1</code> 取决于平台自身字段定义。正文中若没有写死，表示该平台的官方资料没有给出绝对规则。
+</Info>
 
-| 平台 | 类型 | 优先级 | 文档 |
-|------|------|--------|------|
-| Cline | VS Code AI编程 | ⭐⭐⭐⭐⭐ | [查看](./cline.mdx) |
-| Continue | VS Code/JetBrains AI助手 | ⭐⭐⭐⭐⭐ | [查看](./continue.mdx) |
-| Claude Code | 终端AI编程 | ⭐⭐⭐⭐⭐ | [查看](./claude-code.mdx) |
-| Roo Code | VS Code AI编程(Cline分支) | ⭐⭐⭐⭐ | [查看](./roo-code.mdx) |
-| Kilo Code | VS Code AI编程(Cline分支) | ⭐⭐⭐⭐ | [查看](./kilo-code.mdx) |
-| OpenCode | 终端AI编程 | ⭐⭐⭐ | [查看](./opencode.mdx) |
-| Monkey Code | 国产AI编程工具 | ⭐⭐⭐ | [查看](./monkey-code.mdx) |
+## 已核实并可用
 
-### 💬 AI聊天客户端
+### 工作流 / RAG
 
-| 平台 | 类型 | 优先级 | 文档 |
-|------|------|--------|------|
-| LobeChat | 开源AI聊天界面 | ⭐⭐⭐⭐⭐ | [查看](./lobechat.mdx) |
-| Cherry Studio | 国产AI桌面客户端 | ⭐⭐⭐⭐⭐ | [查看](./cherry-studio.mdx) |
-| Chatbox | 跨平台AI客户端 | ⭐⭐⭐⭐⭐ | [查看](./chatbox.mdx) |
-| SillyTavern | AI角色扮演 | ⭐⭐⭐⭐⭐ | [查看](./sillytavern.mdx) |
+| 平台 | 说明 | 文档 |
+|------|------|------|
+| Dify | 按当前模型提供商插件体系整理，适合云版或自托管实例 | [查看](./dify.mdx) |
+| Flowise | 已按 `ChatOpenAI` / `ChatOpenAI Custom` 与 embedding 配置重写 | [查看](./flowise.mdx) |
+| Langflow | 按 OpenAI bundle 组件整理，区分文本模型与 embedding | [查看](./langflow.mdx) |
+| AnythingLLM | 已补齐 LLM 与 Embedding 两侧配置要点 | [查看](./anythingllm.mdx) |
 
-### 📚 知识库/RAG
+### 编程工具
 
-| 平台 | 类型 | 优先级 | 文档 |
-|------|------|--------|------|
-| AnythingLLM | 本地AI知识库 | ⭐⭐⭐⭐⭐ | [查看](./anythingllm.mdx) |
-| RAGFlow | 深度文档RAG | ⭐⭐⭐⭐⭐ | [查看](./ragflow.mdx) |
+| 平台 | 说明 | 文档 |
+|------|------|------|
+| Cline | 按 `OpenAI Compatible` provider 重写 | [查看](./cline.mdx) |
+| Continue | 按当前 `config.yaml` 主线重写 | [查看](./continue.mdx) |
+| Roo Code | 按当前多 provider / profile 模式保守整理 | [查看](./roo-code.mdx) |
+| Kilo Code | 区分官方自带 provider 与 `OpenAI Compatible` 接入 | [查看](./kilo-code.mdx) |
+| OpenCode | 按 `/connect` 与 `opencode.json` 主线整理 | [查看](./opencode.mdx) |
 
-### 🤖 AI Bot平台
+### 聊天客户端 / Bot / 分发
 
-| 平台 | 类型 | 优先级 | 文档 |
-|------|------|--------|------|
-| AstrBot | 多平台AI Bot | ⭐⭐⭐⭐ | [查看](./astrbot.mdx) |
-| LangBot | LangChain Bot | ⭐⭐⭐ | [查看](./langbot.mdx) |
+| 平台 | 说明 | 文档 |
+|------|------|------|
+| LobeChat | 区分用户端 OpenAI provider 与自托管代理变量 | [查看](./lobechat.mdx) |
+| Cherry Studio | 按 `Model Services` 与自定义 provider 重写 | [查看](./cherry-studio.mdx) |
+| Chatbox | 按 `Model Provider -> OpenAI` 路径保守整理 | [查看](./chatbox.mdx) |
+| SillyTavern | 按 `Custom (OpenAI-compatible)` 方式重写 | [查看](./sillytavern.mdx) |
+| AstrBot | 按当前控制台 `Service Providers` 流程重写 | [查看](./astrbot.mdx) |
+| LangBot | 按当前模型配置页面与 UI 流程重写 | [查看](./langbot.mdx) |
+| New API | 按当前 `Channels` 管理术语重写 | [查看](./newapi.mdx) |
 
-### 🔑 API分发平台
+## 已更新待补图
 
-| 平台 | 类型 | 优先级 | 文档 |
-|------|------|--------|------|
-| New API | API聚合分发 | ⭐⭐⭐⭐⭐ | [查看](./newapi.mdx) |
+目前本组仅保留专项教程：
 
-### 🦞 AI助手平台
+| 平台 | 说明 | 文档 |
+|------|------|------|
+| OpenClaw + 飞书 | 已有独立图文教程，本轮未改动 | [查看](./openclaw-feishu.mdx) |
 
-| 平台 | 类型 | 优先级 | 文档 |
-|------|------|--------|------|
-| OpenClaw | 本地AI Agent | ⭐⭐⭐⭐ | [查看](./openclaw-feishu.mdx) |
+## 待核实 / 暂缓更新
 
-## 📈 接入优先级建议
+以下页面在本轮没有继续按“可直接接入教程”方式改写，因为当前官方资料不足以支撑字段级步骤，或官方支持边界与旧文案明显冲突：
 
-### 第一阶段：核心平台（立即接入）
+| 平台 | 当前状态 |
+|------|------|
+| n8n | 官方资料不足以支持“直接填写自定义 OpenAI Base URL”这一路径，需后续改为替代方案或完成实测 |
+| Botpress | 未找到足够官方依据证明当前云版或自托管支持自定义 OpenAI-compatible 上游 |
+| RAGFlow | 能确认有模型提供商体系，但字段级 UI 证据不足，需补实测 |
+| Claude Code | 官方主路径不是 OpenAI-compatible 直连，需改为单独说明文 |
+| Monkey Code | 公开资料更偏私有化与离线能力，当前不适合保留为通用兼容接入教程 |
 
-1. **Dify** - 国内最大LLM应用平台
-2. **New API** - B端渠道商，批量带来用户
-3. **n8n** - 自动化场景，token消耗高
-4. **AnythingLLM** - 知识库场景高频使用
-5. **LobeChat/Cherry Studio/Chatbox** - 客户端三巨头
-6. **Cline/Continue/Claude Code** - 开发者工具
+## 使用建议
 
-### 第二阶段：快速跟进
-
-- Roo Code / Kilo Code
-- Flowise / Langflow
-- SillyTavern
-- AstrBot
-- RAGFlow
-
-### 第三阶段：持续布局
-
-- OpenCode
-- Monkey Code
-- LangBot
-
-## 🔧 通用接入参数
-
-```yaml
-# OpenAI 兼容格式
-base_url: https://api.qhaigc.net/v1
-api_key: sk-your-api-key
-
-# 支持的模型
-gpt-4o
-gpt-4o-mini
-claude-3-5-sonnet
-claude-3-haiku
-gemini-1.5-pro
-```
-
-## 📞 获取帮助
-
-- **官网**：[https://api.qhaigc.net](https://api.qhaigc.net)
-- **文档更新**：本文档持续更新中
+- 如果你要快速完成 OpenAI-compatible 接入，优先从本页“已核实并可用”部分选择平台。
+- 如果你需要接入高风险页里的平台，先不要参考旧教程正文，等补齐官方证据或实测后再使用。
 
 ---
 
-*最后更新：2026年3月*
+*最后更新：2026年3月21日*

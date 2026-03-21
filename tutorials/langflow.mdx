@@ -1,185 +1,82 @@
 ---
 title: Langflow 接入启航AI教程
-description: 在 Langflow 中配置启航AI作为OpenAI组件
+description: 在 Langflow 中配置 OpenAI bundle 组件接入启航AI
 ---
 
 # Langflow 接入启航AI教程
 
-[Langflow](https://langflow.org) 是可视化 LangChain 工作流构建工具。本教程介绍如何接入启航AI。
+## 教程说明
 
-## 前置要求
+[Langflow](https://langflow.org) 的 OpenAI 组件以 bundle 形式提供。本教程只写官方文档明确列出的字段，不把未核实的 Base URL 入口写成固定事实。
 
-- Langflow（pip 或 Docker 安装）
-- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+## 适用形态
 
-## 安装 Langflow
+- Langflow 本地部署
+- Langflow Docker 部署
+- Langflow 自托管实例
 
-### pip 安装
+## 前置条件
 
-```bash
-pip install langflow
-langflow run
-```
+- 可访问的 Langflow 控制台
+- 启航AI API Key
+- 如果要做 RAG，还需要单独配置 embedding 组件
 
-### Docker 安装
+## 官方支持的接入方式
 
-```bash
-docker run -d -p 7860:7860 \
-  -e OPENAI_API_KEY=your-api-key \
-  langflowai/langflow:latest
-```
+官方文档列出了 OpenAI bundle 的组件参数。文本生成组件可配置 `api_key`、`model`、`max_tokens`、`temperature` 等；embedding 组件则明确列出 `OpenAI API Base`、`Model`、`OpenAI API Key` 等字段。
 
-## 配置步骤
+## 逐步配置
 
 ### 1. 打开 Langflow
 
-访问 `http://localhost:7860`。
+进入 Langflow 控制台，新建一个 flow。
 
-### 2. 创建新项目
+### 2. 添加 OpenAI bundle 里的文本组件
 
-点击 **New Project** 或 **+**。
+从组件库中拖入 OpenAI bundle 的文本生成组件，作为主要对话节点。
 
-### 3. 添加 OpenAI 组件
+### 3. 填写文本组件参数
 
-从左侧组件库中，拖入 **OpenAI** 组件到画布。
+按当前版本页面填写 `api_key`、`model`、`temperature`、`max_tokens` 等字段。
 
-### 4. 配置组件
+### 4. 如果要做 RAG，再添加 embedding 组件
 
-点击组件，在右侧配置面板中设置：
+拖入 `OpenAI Embeddings` 组件，并填写 `OpenAI API Base`、`Model`、`OpenAI API Key`。
 
-| 配置项 | 值 |
-|--------|-----|
-| API Key | 你的启航AI API Key |
-| Base URL | `https://api.qhaigc.net/v1` |
-| Model | `gpt-4o` 或其他模型 |
-| Temperature | 0.7 |
-| Max Tokens | 2048 |
+### 5. 连接输入和输出组件
 
-### 5. 连接工作流
-
-连接输入组件（如 Prompt）和输出组件（如 Chat Output）。
+把 Prompt、Memory、Vector Store 或 Chat Output 等节点连接到主模型节点。
 
 ### 6. 运行测试
 
-点击 **Run** 或 **Play** 按钮测试工作流。
+执行一次最小 flow，确认可以返回正常结果。
 
-## 支持的模型
+## 验证是否接入成功
 
-Langflow 支持启航AI的所有模型：
-
-| 模型 | 配置值 |
-|------|--------|
-| GPT-4o | `gpt-4o` |
-| GPT-4o-mini | `gpt-4o-mini` |
-| Claude 3.5 Sonnet | `claude-3-5-sonnet` |
-| Claude 3 Haiku | `claude-3-haiku` |
-
-## 常用工作流
-
-### 简单对话
-
-```
-[Chat Input] → [Prompt] → [OpenAI] → [Chat Output]
-```
-
-### RAG 问答
-
-```
-[Chat Input] → [Vector Store] → [Prompt] → [OpenAI] → [Chat Output]
-```
-
-### 多代理系统
-
-```
-[Supervisor]
-    ├── [Agent 1]
-    ├── [Agent 2]
-    └── [Agent 3]
-```
-
-## 高级功能
-
-### 自定义提示词模板
-
-使用 **Prompt** 组件创建可复用的提示词：
-
-```
-你是一个专业的{role}，请回答以下问题：
-
-{question}
-```
-
-### 工具调用
-
-使用 **Tool Calling** 组件实现函数调用：
-
-1. 添加 **Tool** 组件定义工具
-2. 在 OpenAI 组件中启用工具调用
-3. 连接工具执行节点
-
-### 记忆管理
-
-使用 **Memory** 组件实现对话历史：
-
-- **Buffer Memory**：简单缓冲
-- **Window Memory**：滑动窗口
-- **Summary Memory**：摘要记忆
-
-## 导出和部署
-
-### 导出工作流
-
-点击 **Export** 导出为 JSON 文件。
-
-### 部署为 API
-
-1. 点击 **Deploy**
-2. 选择 **API**
-3. 复制 API 端点
-
-```bash
-curl -X POST http://localhost:7860/api/v1/run/your-flow-id \
-  -H "Content-Type: application/json" \
-  -d '{"input": "你好"}'
-```
-
-### 部署为聊天界面
-
-点击 **Deploy** → **Chat Widget**，获取嵌入代码。
-
-## 环境变量配置
-
-可以在启动时通过环境变量配置：
-
-```bash
-export OPENAI_API_KEY="your-api-key"
-export OPENAI_BASE_URL="https://api.qhaigc.net/v1"
-langflow run
-```
+- 文本生成组件可以正常运行
+- 如果配置了 embedding，向量化和检索步骤可以正常通过
+- 运行结果能返回启航AI的正常回复
 
 ## 常见问题
 
-**Q: 组件显示红色？**
+**Q: 为什么这篇不强行写文本组件的 Base URL？**
 
-A: 检查必填参数是否填写，API Key 是否正确。
+A: 官方公开页面对文本生成组件列出的字段是 `api_key`、`model`、`max_tokens`、`temperature`；没有强证据时，不把 Base URL 写成固定前提。
 
-**Q: 模型连接失败？**
+**Q: 做 RAG 时为什么还要单独配 embedding？**
 
-A: 检查：
-- Base URL 是否包含 `/v1`
-- API Key 是否有效
-- 网络连接是否正常
+A: Langflow 的知识库和检索链路需要独立的 embedding 组件，不能只靠文本生成组件。
 
-**Q: 如何查看 Token 消耗？**
+**Q: 组件名称为什么要区分 bundle 和 embedding？**
 
-A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看。
+A: 官方文档就是按组件类型分别列字段，混写会让用户误以为所有字段都在同一个面板里。
 
-## 相关链接
+## 官方参考链接
 
 - [Langflow 官网](https://langflow.org)
 - [Langflow GitHub](https://github.com/langflow-ai/langflow)
-- [启航AI官网](https://api.qhaigc.net)
+- [Langflow OpenAI bundle](https://docs.langflow.org/bundles-openai)
 
----
+## 最后更新时间
 
-*最后更新：2026年3月*
+2026-03-21

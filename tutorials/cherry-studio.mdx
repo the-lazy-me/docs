@@ -1,110 +1,84 @@
 ---
 title: Cherry Studio 接入启航AI教程
-description: 在 Cherry Studio 中配置启航AI API
+description: 在 Cherry Studio 中配置启航AI
 ---
 
 # Cherry Studio 接入启航AI教程
 
-[Cherry Studio](https://cherry-ai.com) 是国产多模型 AI 桌面客户端，本土化强，增长快。本教程介绍如何接入启航AI。
+## 教程说明
 
-## 前置要求
+Cherry Studio 通过自定义 provider 接入启航AI。官方当前要求在 `Model Services` 中新增 provider，再在 `Model management` 里手动维护模型列表。
 
-- Cherry Studio 客户端（[下载地址](https://cherry-ai.com)）
-- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+## 适用版本或适用形态
 
-## 配置步骤
+- Cherry Studio 桌面端
+- 已支持自定义模型服务的版本
 
-### 1. 打开设置
+## 前置条件
 
-点击右上角 **设置** 图标（齿轮）。
+- Cherry Studio 客户端
+- 启航AI API Key
+- 启航AI可访问的 API 地址
 
-### 2. 进入模型服务
+## 官方支持的接入方式
 
-在设置页面中选择 **模型服务** 或 **Model Service**。
+- 在 `Model Services` 中新增自定义 provider
+- `Provider Type` 选择 `OpenAI`
+- 在 `Model management` 中手动添加模型 ID
+- 使用 API Key 右侧的校验能力确认连通性
 
-### 3. 添加自定义服务商
+## 逐步配置
 
-点击 **添加** 或 **+** 按钮，选择 **OpenAI 兼容**。
+### 1. 打开模型服务设置
 
-### 4. 填写启航AI配置
+1. 打开 Cherry Studio
+2. 进入设置
+3. 打开 `Model Services`
 
-| 配置项 | 值 |
-|--------|-----|
-| 名称 | 启航AI |
-| API 地址 | `https://api.qhaigc.net/v1` |
-| API Key | 你的启航AI API Key |
-| 模型 | 可选填，留空则自动获取 |
+### 2. 新增 provider
 
-### 5. 保存并测试
+1. 点击 `Add` 或 `+`
+2. 填写 `Provider Name`
+3. 将 `Provider Type` 设为 `OpenAI`
 
-点击 **保存**，然后点击 **测试连接** 验证配置。
+### 3. 填写启航AI信息
 
-### 6. 选择模型
+1. 填写 `API Key`
+2. 填写 `API address`
+3. 如界面显示 `Model management`，先保留为空，后续单独维护模型 ID
+4. 保存 provider
 
-在对话页面，点击模型选择下拉框，选择启航AI提供的模型。
+### 4. 维护模型列表
 
-## 支持的模型
+1. 进入 `Model management`
+2. 手动添加需要使用的模型 ID
+3. 保存后回到对话页选择该 provider
 
-Cherry Studio 支持启航AI的所有模型：
+## 验证是否接入成功
 
-| 模型 | 特点 |
-|------|------|
-| gpt-4o | 最强多模态 |
-| gpt-4o-mini | 高性价比 |
-| claude-3-5-sonnet | 最强推理 |
-| claude-3-haiku | 快速响应 |
-| gemini-1.5-pro | Google模型 |
-
-## 高级功能
-
-### 助手配置
-
-可以创建不同助手，绑定不同模型：
-
-1. 点击左侧 **助手**
-2. 点击 **创建助手**
-3. 选择启航AI的特定模型
-4. 设置系统提示词
-
-### 知识库
-
-Cherry Studio 支持本地知识库：
-
-1. 点击 **知识库**
-2. 上传文档
-3. 在对话时选择知识库
-
-### 多模型对比
-
-可以同时开启多个对话窗口，使用不同模型对比回答。
-
-## 快捷键
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Ctrl/Cmd + N` | 新建对话 |
-| `Ctrl/Cmd + Shift + N` | 新建助手 |
-| `Ctrl/Cmd + ,` | 打开设置 |
+- 点击 API Key 右侧的校验按钮确认配置可用
+- 发送一条测试对话，确认能够返回启航AI回复
+- 如果模型列表为空，先检查是否已在 `Model management` 中手动添加
 
 ## 常见问题
 
-**Q: 连接测试失败？**
+**Q: 为什么模型不会自动出现？**
 
-A: 检查 API 地址是否包含 `/v1`，API Key 是否正确。
+A: Cherry Studio 这类自定义 provider 通常要在 `Model management` 里手动维护模型 ID。
 
-**Q: 模型列表为空？**
+**Q: 连接测试失败怎么办？**
 
-A: 点击刷新按钮，或手动输入模型名称。
+A: 检查 API Key、API address 和 provider 类型是否都按 `OpenAI` 配置。
 
-**Q: 如何更新模型列表？**
+**Q: 为什么看不到同一套模型？**
 
-A: 在模型服务设置中点击 **刷新模型列表**。
+A: 不同版本的界面文案可能略有差异，但核心仍是自定义 provider 和手动维护模型列表。
 
-## 相关链接
+## 官方参考链接
 
-- [Cherry Studio 官网](https://cherry-ai.com)
-- [启航AI官网](https://api.qhaigc.net)
+- [Cherry Studio 自定义服务商文档](https://docs.cherry-ai.com/docs/en-us/pre-basic/providers/zi-ding-yi-fu-wu-shang)
+- [Cherry Studio OpenAI Provider 文档](https://docs.cherry-ai.com/docs/en-us/pre-basic/providers/openai)
 
----
+## 最后更新时间
 
-*最后更新：2026年3月*
+2026-03-21

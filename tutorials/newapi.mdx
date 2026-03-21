@@ -1,131 +1,95 @@
 ---
 title: New API 接入启航AI教程
-description: 在 New API 中配置启航AI作为上游渠道，实现API分发
+description: 在 New API 中配置启航AI作为上游渠道
 ---
 
 # New API 接入启航AI教程
 
-[New API](https://github.com/Calcy-II/next-chatgpt-api) 是 One-API 的分支版本，AI API 聚合管理分发系统。本教程介绍如何将启航AI接入 New API 作为上游渠道。
+## 教程说明
 
-## 前置要求
+New API 是聚合分发网关。本教程只写当前 `Channels` 和渠道管理的真实接入路径，不沿用旧项目名或旧字段名。
 
-- 已部署 New API（本地/Docker/云服务器）
-- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+## 适用版本或适用形态
 
-## 配置步骤
+- New API 管理后台
+- 已部署的聚合分发实例
 
-### 1. 登录 New API 管理后台
+## 前置条件
 
-访问你的 New API 部署地址，使用管理员账号登录。
+- 已部署 New API
+- 管理员账号
+- 启航AI API Key
+- 启航AI API 地址
 
-### 2. 进入渠道管理
+## 官方支持的接入方式
 
-在左侧菜单中找到 **渠道管理**（或 **渠道**），点击进入。
+- 在 `Channels` 或 `渠道管理` 中新增渠道
+- 渠道类型选择 OpenAI-compatible 相关类型
+- 填写渠道名称、API Key、API 地址、模型、分组、权重和状态
+- 通过 New API 自身的 `/v1` 接口向下游分发
 
-### 3. 添加新渠道
+## 逐步配置
 
-点击 **添加渠道** 按钮。
+### 1. 进入渠道管理
 
-### 4. 填写启航AI配置
+1. 登录 New API 管理后台
+2. 打开 `Channels`
+
+### 2. 新增渠道
+
+1. 点击 `Add channel` 或 `添加渠道`
+2. 选择与你的上游一致的 OpenAI-compatible 渠道类型
+3. 填写启航AI信息
 
 | 配置项 | 值 |
-|--------|-----|
-| 渠道类型 | **OpenAI 兼容** |
-| 名称 | 启航AI |
-| API Key | 你的启航AI API Key |
-| 代理地址 | `https://api.qhaigc.net/v1` |
-| 模型 | 支持以下模型：<br>`gpt-4o`<br>`gpt-4o-mini`<br>`claude-3-5-sonnet`<br>`claude-3-haiku`<br>`gemini-1.5-pro` |
-| 分组 | 可选，如 `default` |
-| 权重 | 1000（默认最高优先级） |
-| 状态 | ✅ 启用 |
+|---|---|
+| 渠道名称 | 启航AI |
+| API Key | 启航AI API Key |
+| API 地址 | 启航AI API 地址 |
+| 模型 | 需要暴露给下游的模型 ID |
+| 分组 | 例如 `default` |
+| 权重 | 按你的路由策略设置 |
+| 状态 | 启用 |
 
-### 5. 保存配置
+4. 保存渠道
 
-点击 **确定** 或 **保存** 按钮。
+### 3. 配置模型映射
 
-### 6. 验证渠道
+1. 如果你需要把上游模型映射成统一名称，进入模型映射相关页面
+2. 配置映射后保存
 
-- 在 **渠道管理** 中查看状态是否显示 **正常**
-- 可以点击 **测试** 按钮发送测试请求
+### 4. 下游使用
 
-## 多渠道配置（可选）
+1. 创建下游令牌
+2. 将 New API 的 `/v1` 地址和令牌提供给下游
+3. 下游按 OpenAI 接口方式请求即可
 
-如果有多个 API 上游，可以配置多个渠道并设置不同权重：
+## 验证是否接入成功
 
-```
-启航AI（权重1000）- 主用渠道
-其他API（权重500）- 备用渠道
-```
-
-### 权重分配建议
-
-| 场景 | 权重配置 |
-|------|---------|
-| 仅使用启航AI | 1000 |
-| 启航AI为主，其他备用 | 启航AI:1000，其他:100 |
-| 负载均衡 | 多个渠道设为相同权重 |
-
-## 分发下游
-
-### 创建令牌
-
-1. 进入 **令牌管理**
-2. 点击 **创建令牌**
-3. 设置令牌名称和配额
-4. 复制生成的 API Key 分发给下游用户
-
-### 下游使用方法
-
-下游用户使用 New API 的地址 + 令牌访问：
-
-```bash
-curl https://your-newapi-domain.com/v1/chat/completions \
-  -H "Authorization: Bearer sk-xxxxx" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "gpt-4o",
-    "messages": [{"role": "user", "content": "你好"}]
-  }'
-```
-
-## 高级配置
-
-### 模型映射
-
-如需自定义模型名称，可在 **模型管理** 中配置映射：
-
-| 原始模型 | 映射名称 |
-|---------|---------|
-| gpt-4o | gpt-4o |
-| claude-3-5-sonnet | claude-sonnet |
-
-### 渠道健康检查
-
-New API 支持自动健康检查，可在设置中配置检查间隔和失败阈值。
+- 渠道状态显示正常
+- 通过测试请求成功返回
+- 下游调用 `chat/completions` 时能命中启航AI渠道
 
 ## 常见问题
 
-**Q: 渠道显示离线怎么办？**
+**Q: 渠道离线怎么办？**
 
-A: 检查：
-- API Key 是否正确
-- 代理地址是否包含 `/v1`
-- 网络是否能访问 `api.qhaigc.net`
+A: 先检查 API Key、API 地址和网络连通性，再确认渠道类型是否选对。
 
-**Q: 如何查看渠道用量？**
+**Q: 下游为什么没有走到启航AI？**
 
-A: 在 **渠道管理** 中点击对应渠道，查看请求统计和用量数据。
+A: 检查权重、分组和模型映射是否生效。
 
-**Q: 下游用户如何使用特定模型？**
+**Q: 需要把启航AI写成旧项目名吗？**
 
-A: 在请求中指定模型名称即可，New API 会自动路由到启航AI渠道。
+A: 不需要。本页只按当前 `New API` 和 `Channels` 术语书写。
 
-## 相关链接
+## 官方参考链接
 
-- [New API GitHub](https://github.com/Calcy-II/next-chatgpt-api)
-- [启航AI官网](https://api.qhaigc.net)
-- [获取 API Key](https://api.qhaigc.net)
+- [New API 官方文档](https://docs.newapi.ai/en/docs/guide/console/channel-management)
+- [New API 项目介绍](https://docs.newapi.ai/en/docs/guide/wiki/basic-concepts/project-introduction)
+- [New API 官方仓库](https://github.com/QuantumNous/new-api)
 
----
+## 最后更新时间
 
-*最后更新：2026年3月*
+2026-03-21

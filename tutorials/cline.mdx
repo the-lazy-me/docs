@@ -1,155 +1,64 @@
 ---
 title: Cline 接入启航AI教程
-description: 在 VS Code 中使用 Cline 插件接入启航AI
+description: 在 Cline 中配置启航AI的 OpenAI Compatible 接入
 ---
 
 # Cline 接入启航AI教程
 
-[Cline](https://github.com/cline/cline) 是 VS Code AI 编程插件，支持自主完成复杂编程任务。本教程介绍如何接入启航AI。
+## 教程说明
 
-## 前置要求
+本教程介绍如何在 Cline 中接入启航AI。Cline 官方支持 `OpenAI Compatible` provider，因此可以按兼容 OpenAI 的方式填写启航AI接口信息。
+
+## 适用版本或适用形态
+
+- VS Code 中安装的 Cline 扩展
+- Cline 面板中可进入 provider 设置的版本
+
+## 前置条件
 
 - VS Code
-- Cline 插件（从 VS Code 扩展市场安装）
-- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+- 已安装 Cline
+- 启航AI API Key
 
-## 安装 Cline
+## 官方支持的接入方式
 
-### 从 VS Code 扩展市场安装
+在 Cline 的 provider 设置中选择 `OpenAI Compatible`，然后填写兼容接口所需信息：
 
-1. 打开 VS Code
-2. 点击左侧扩展图标（或按 `Ctrl/Cmd + Shift + X`）
-3. 搜索 **Cline**
-4. 点击 **安装**
+- `API Provider`: `OpenAI Compatible`
+- `Base URL`
+- `API Key`
+- `Model ID`
 
-## 配置步骤
+## 逐步配置
 
-### 1. 打开 Cline 面板
+1. 打开 VS Code 中的 Cline 面板。
+2. 点击设置入口，进入 provider 配置。
+3. 将 `API Provider` 选为 `OpenAI Compatible`。
+4. 填入启航AI的 `Base URL` 和 `API Key`。
+5. 填入要使用的 `Model ID`，例如你在启航AI控制台中可用的模型名。
+6. 使用 Cline 的校验功能验证配置。
 
-安装完成后，点击左侧 Cline 图标打开面板。
+## 验证是否接入成功
 
-### 2. 进入设置
-
-点击面板右上角的 **设置** 图标（齿轮）。
-
-### 3. 选择 API Provider
-
-在 **API Provider** 下拉框中选择：
-
-- **OpenAI Compatible**（推荐）
-- 或 **OpenAI**
-
-### 4. 填写配置
-
-| 配置项 | 值 |
-|--------|-----|
-| API Key | 你的启航AI API Key |
-| Base URL | `https://api.qhaigc.net/v1` |
-| Model | 选择模型，如 `gpt-4o` |
-
-### 5. 选择模型
-
-在 **Model** 下拉框中选择启航AI提供的模型：
-
-- `gpt-4o` - 最强编程能力
-- `gpt-4o-mini` - 快速响应
-- `claude-3-5-sonnet` - 推荐用于复杂编程
-- `claude-3-haiku` - 快速简单任务
-
-### 6. 保存并开始使用
-
-关闭设置面板，即可开始使用 Cline。
-
-## 使用方式
-
-### 自然语言编程
-
-在 Cline 面板中输入自然语言描述：
-
-```
-创建一个 React 组件，包含一个表单，可以添加和删除待办事项
-```
-
-Cline 会自动：
-1. 分析需求
-2. 创建/修改文件
-3. 编写代码
-4. 运行命令
-
-### 代码解释
-
-选中代码，输入：
-
-```
-解释这段代码的作用
-```
-
-### 代码优化
-
-选中代码，输入：
-
-```
-优化这段代码的性能
-```
-
-### 修复 Bug
-
-输入：
-
-```
-修复这个文件中的错误
-```
-
-## 功能特性
-
-- ✅ 自然语言编程
-- ✅ 自动文件操作
-- ✅ 终端命令执行
-- ✅ 代码解释
-- ✅ 代码重构
-- ✅ 调试辅助
-- ✅ 多文件编辑
-
-## 模型选择建议
-
-| 场景 | 推荐模型 | 原因 |
-|------|---------|------|
-| 复杂编程任务 | claude-3-5-sonnet | 推理能力最强 |
-| 代码审查 | claude-3-5-sonnet | 分析能力强 |
-| 快速原型 | gpt-4o-mini | 响应快成本低 |
-| 全栈开发 | gpt-4o | 综合能力好 |
-
-## 快捷键
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Ctrl/Cmd + Shift + P` | 打开命令面板 |
-| `Ctrl/Cmd + L` | 打开 Cline 面板 |
-| `Ctrl/Cmd + I` | 内联编辑 |
+- 能够在 Cline 面板中正常发起对话或任务
+- 校验配置时不再报认证错误
+- 发送一个简单指令后，Cline 能返回启航AI的模型回复
 
 ## 常见问题
 
-**Q: 无法连接 API？**
+**Q: 连接失败怎么办？**
 
-A: 检查：
-- Base URL 是否包含 `/v1`
-- API Key 是否正确
-- 网络能否访问 `api.qhaigc.net`
+A: 先检查 `API Key`、`Base URL` 和 `Model ID` 是否填写正确，再确认网络可以访问启航AI接口。
 
-**Q: 模型列表为空？**
+**Q: 模型列表没有自动出现怎么办？**
 
-A: 手动输入模型名称，如 `gpt-4o` 或 `claude-3-5-sonnet`。
+A: 直接按 Cline 的 provider 设置手动填写 `Model ID`。不要依赖未确认的自动拉取行为。
 
-**Q: 如何查看 Token 消耗？**
+## 官方参考链接
 
-A: 登录 [启航AI控制台](https://api.qhaigc.net) 查看。
+- [Cline 安装文档](https://docs.cline.bot/getting-started/installing-cline)
+- [Cline OpenAI Compatible 文档](https://docs.cline.bot/provider-config/openai-compatible)
 
-## 相关链接
+## 最后更新时间
 
-- [Cline GitHub](https://github.com/cline/cline)
-- [Cline VS Code 市场](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev)
-- [启航AI官网](https://api.qhaigc.net)
-
----
-
-*最后更新：2026年3月*
+2026-03-21

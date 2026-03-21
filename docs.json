@@ -162,7 +162,7 @@
           },
           {
             "group": "AI工作流平台",
-            "icon": "workflow",
+            "icon": "diagram-project",
             "pages": [
               "tutorials/dify",
               "tutorials/n8n",
@@ -186,7 +186,7 @@
           },
           {
             "group": "AI聊天客户端",
-            "icon": "message-circle",
+            "icon": "comment-dots",
             "pages": [
               "tutorials/lobechat",
               "tutorials/cherry-studio",
@@ -204,7 +204,7 @@
           },
           {
             "group": "AI Bot平台",
-            "icon": "bot",
+            "icon": "robot",
             "pages": [
               "tutorials/astrbot",
               "tutorials/langbot"
@@ -219,7 +219,7 @@
           },
           {
             "group": "其他工具",
-            "icon": "tool",
+            "icon": "wrench",
             "pages": [
               "tutorials/openclaw-feishu"
             ]

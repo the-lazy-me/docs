@@ -1,114 +1,80 @@
 ---
 title: Chatbox 接入启航AI教程
-description: 在 Chatbox 中配置启航AI作为AI服务商
+description: 在 Chatbox 中配置启航AI
 ---
 
 # Chatbox 接入启航AI教程
 
-[Chatbox](https://chatboxai.com) 是国内最早流行的跨平台 AI 桌面客户端，用户基数大。本教程介绍如何接入启航AI。
+## 教程说明
 
-## 前置要求
+Chatbox 通过 `OpenAI` provider 接入启航AI。官方当前提供的是 `API Host` 和 API Key 这类字段，而不是一套固定的模型网关模板。
 
-- Chatbox 客户端（[下载地址](https://chatboxai.com)）
-- 启航AI API Key（[获取地址](https://api.qhaigc.net)）
+## 适用版本或适用形态
 
-## 配置步骤
+- Chatbox 桌面端
+- 支持自定义 API Host 的版本
+
+## 前置条件
+
+- Chatbox 客户端
+- 启航AI API Key
+- 启航AI可访问的 API Host
+
+## 官方支持的接入方式
+
+- 在 `Settings` 中选择 `OpenAI` provider
+- 填写 `API Host`
+- 填写 API Key
+- 由上游服务决定是否可见模型列表
+
+## 逐步配置
 
 ### 1. 打开设置
 
-点击左下角 **设置** 图标，或使用快捷键 `Ctrl/Cmd + ,`。
+1. 启动 Chatbox
+2. 打开设置页
 
-### 2. 选择AI服务商
+### 2. 选择 provider
 
-在设置页面的 **AI 服务商** 或 **Provider** 选项中，选择 **OpenAI**。
+1. 在 `AI Provider` 或 `Provider` 中选择 `OpenAI`
+2. 进入对应配置页
 
-### 3. 填写配置
+### 3. 填写启航AI信息
 
-| 配置项 | 值 |
-|--------|-----|
-| API 域名 | `https://api.qhaigc.net` |
-| API Key | 你的启航AI API Key |
+1. 填写 `API Host`
+2. 填写 `API Key`
+3. 保存设置
 
-> ⚠️ 注意：Chatbox 的 API 域名不需要填写 `/v1`，只需填写到域名级别。
+### 4. 开始使用
 
-### 4. 选择模型
+1. 新建对话
+2. 选择可用模型
+3. 开始测试
 
-在模型下拉框中选择启航AI提供的模型：
+## 验证是否接入成功
 
-- `gpt-4o`
-- `gpt-4o-mini`
-- `claude-3-5-sonnet`
-- `claude-3-haiku`
-- `gemini-1.5-pro`
-
-### 5. 保存设置
-
-点击 **保存** 或 **Apply**，配置生效。
-
-## 功能特性
-
-### 已支持功能
-
-- ✅ 多模型切换
-- ✅ 对话历史管理
-- ✅ 提示词模板
-- ✅ 代码高亮
-- ✅ 暗色主题
-- ✅ 快捷键支持
-- ✅ 数据本地存储
-
-### 模型对比
-
-| 模型 | 适用场景 | 价格 |
-|------|---------|------|
-| gpt-4o | 复杂任务/多模态 | 中高 |
-| gpt-4o-mini | 日常对话 | 低 |
-| claude-3-5-sonnet | 编程/长文本 | 中高 |
-| claude-3-haiku | 快速响应 | 低 |
-| gemini-1.5-pro | 多语言/长上下文 | 中 |
-
-## 使用技巧
-
-### 快捷键
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Ctrl/Cmd + N` | 新对话 |
-| `Ctrl/Cmd + Shift + O` | 切换模型 |
-| `Ctrl/Cmd + /` | 打开命令面板 |
-
-### 提示词模板
-
-可以在设置中创建常用提示词模板：
-
-1. 点击 **模板** 或 **Prompts**
-2. 点击 **添加模板**
-3. 设置名称和提示词内容
-4. 在对话中快速调用
+- 发送一条测试消息
+- 如果能收到回复，说明连接成功
+- 如果模型列表为空，先确认上游和 API Host 配置是否正确
 
 ## 常见问题
 
-**Q: API 域名应该填什么？**
+**Q: API Host 应该填到什么层级？**
 
-A: 只填域名，不包含路径：`https://api.qhaigc.net`
+A: 按 Chatbox 当前版本的 `API Host` 字段填写；如果你的上游网关有自己的路径规范，以网关规范为准，不要写到具体的 completions 路径。
 
-**Q: 连接失败？**
+**Q: 连接失败怎么办？**
 
-A: 检查：
-- API Key 是否正确
-- 网络能否访问 `api.qhaigc.net`
-- 是否选择了正确的服务商类型
+A: 检查 API Key、API Host 和网络可达性。
 
-**Q: 模型列表为空？**
+**Q: 为什么没有自动显示模型？**
 
-A: Chatbox 可能会自动获取模型列表，如未显示，可手动输入模型名称。
+A: 模型可见性取决于上游返回和当前客户端版本。
 
-## 相关链接
+## 官方参考链接
 
-- [Chatbox 官网](https://chatboxai.com)
-- [Chatbox GitHub](https://github.com/Bin-Huang/chatbox)
-- [启航AI官网](https://api.qhaigc.net)
+- [Chatbox 官方仓库](https://github.com/Bin-Huang/chatbox)
 
----
+## 最后更新时间
 
-*最后更新：2026年3月*
+2026-03-21
