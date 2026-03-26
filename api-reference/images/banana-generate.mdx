@@ -1,0 +1,243 @@
+---
+title: "香蕉绘图(Image 格式)"
+description: "使用 Nano Banana 2 生成和参考图驱动图像"
+openapi: "POST /v1/images/generations"
+---
+
+## 功能说明
+
+使用启航 AI 兼容 OpenAI 的 `/v1/images/generations` 接口调用 `nano-banana-2` 生成图片。除标准 `prompt` 和 `size` 外，还支持通过 `extra_fields` 传入参考图、原生分辨率和宽高比等高级参数。
+
+## 支持的模型
+
+<CardGroup cols={2}>
+  <Card title="Nano Banana 2" icon="wand-magic-sparkles">
+    **模型 ID**: `nano-banana-2`
+
+    Google 图像生成模型，支持参考图、多图融合、原生 2K 分辨率和 4K 超分。
+  </Card>
+
+  <Card title="Nano Banana Pro" icon="crown">
+    **模型 ID**: `nano-banana-pro`
+
+    适合需要更强角色一致性和复杂图像理解的场景。
+  </Card>
+</CardGroup>
+
+[查看所有绘图模型](/models#图像生成模型)
+
+## 前置条件
+
+- 渠道需支持图片生成能力
+- 如需返回可访问图片 URL，服务端需正确配置图片代理或上传能力
+- 模型需支持图片输出，推荐使用 `nano-banana-2`
+
+## 基础用法
+
+最简单的调用方式与 OpenAI Images API 保持一致：
+
+<CodeGroup>
+
+```python Python
+import openai
+
+client = openai.OpenAI(
+    api_key="sk-your-api-key-here",
+    base_url="https://api.qhaigc.net/v1"
+)
+
+response = client.images.generate(
+    model="nano-banana-2",
+    prompt="一根放在木质餐桌上的新鲜香蕉，写实风格，柔和自然光，高细节",
+    size="1024x1024"
+)
+
+print(response.data[0].url)
+```
+
+```javascript JavaScript
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: 'sk-your-api-key-here',
+  baseURL: 'https://api.qhaigc.net/v1'
+});
+
+const response = await client.images.generate({
+  model: 'nano-banana-2',
+  prompt: '一根放在木质餐桌上的新鲜香蕉，写实风格，柔和自然光，高细节',
+  size: '1024x1024'
+});
+
+console.log(response.data[0].url);
+```
+
+```bash cURL
+curl -X POST https://api.qhaigc.net/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -d '{
+    "model": "nano-banana-2",
+    "prompt": "一根放在木质餐桌上的新鲜香蕉，写实风格，柔和自然光，高细节",
+    "size": "1024x1024"
+  }'
+```
+
+</CodeGroup>
+
+## 尺寸与分辨率
+
+除 OpenAI 标准 `size` 外，还支持 Nano Banana 原生分辨率值。
+
+| size | image_size | aspect_ratio | 说明 |
+|------|------------|--------------|------|
+| `256x256` | `512` | `1:1` | OpenAI 标准 |
+| `512x512` | `512` | `1:1` | OpenAI 标准 |
+| `1024x1024` | `1K` | `1:1` | OpenAI 标准默认值 |
+| `1024x1792` | `1K` | `9:16` | OpenAI 标准竖图 |
+| `1792x1024` | `1K` | `16:9` | OpenAI 标准横图 |
+| `512` | `512` | - | 原生分辨率 |
+| `1K` | `1K` | - | 原生分辨率 |
+| `2K` | `2K` | - | 原生分辨率 |
+| `4K` | `4K` | - | 原生分辨率 |
+
+<Tip>
+  如果 `size` 不在映射表内，例如 `800x600`，服务端会优雅降级，由模型使用默认分辨率。
+</Tip>
+
+## 高级参数
+
+通过 `extra_fields` 传入 Nano Banana 特有能力：
+
+| 参数 | 类型 | 说明 |
+|------|------|------|
+| `reference_images` | `string[]` | 参考图片列表，支持图片 URL 和 base64 data URI |
+| `temperature` | `number` | 生成温度，控制随机性，通常范围 `0.0` 到 `2.0` |
+| `image_size` | `string` | 覆盖 `size` 推导出的分辨率，可选 `512`、`1K`、`2K`、`4K` |
+| `aspect_ratio` | `string` | 覆盖 `size` 推导出的宽高比，如 `1:1`、`16:9`、`9:16`、`3:4` |
+
+参数优先级如下：
+
+- `extra_fields.image_size` 优先于 `size`
+- `extra_fields.aspect_ratio` 优先于 `size`
+
+## 使用示例
+
+### 指定原生 2K 和宽高比
+
+```bash
+curl -X POST https://api.qhaigc.net/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -d '{
+    "model": "nano-banana-2",
+    "prompt": "一串挂在树上的香蕉，纪录片摄影风格，细节清晰",
+    "size": "2K",
+    "extra_fields": {
+      "aspect_ratio": "16:9",
+      "temperature": 0.8
+    }
+  }'
+```
+
+### 使用参考图 URL
+
+```bash
+curl -X POST https://api.qhaigc.net/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -d '{
+    "model": "nano-banana-2",
+    "prompt": "参考图片的构图和配色，生成一张香蕉产品海报",
+    "size": "1024x1024",
+    "extra_fields": {
+      "reference_images": [
+        "https://example.com/reference-poster.jpg"
+      ],
+      "temperature": 0.7
+    }
+  }'
+```
+
+### 使用 base64 参考图并覆盖分辨率
+
+```bash
+curl -X POST https://api.qhaigc.net/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -d '{
+    "model": "nano-banana-2",
+    "prompt": "将这张香蕉线稿转换为 3D 卡通风格",
+    "size": "1024x1024",
+    "extra_fields": {
+      "reference_images": [
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUg..."
+      ],
+      "image_size": "4K",
+      "aspect_ratio": "1:1",
+      "temperature": 0.5
+    }
+  }'
+```
+
+这里 `extra_fields.image_size` 和 `extra_fields.aspect_ratio` 会覆盖 `size: "1024x1024"` 原本映射出的 `1K` 和 `1:1`。
+
+### 多张参考图融合
+
+```bash
+curl -X POST https://api.qhaigc.net/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-your-api-key-here" \
+  -d '{
+    "model": "nano-banana-2",
+    "prompt": "融合两张参考图的风格，生成一张极简香蕉品牌 KV",
+    "size": "2K",
+    "extra_fields": {
+      "reference_images": [
+        "https://example.com/style-1.jpg",
+        "https://example.com/style-2.jpg"
+      ]
+    }
+  }'
+```
+
+## 返回结果
+
+```json
+{
+  "created": 1742515200,
+  "data": [
+    {
+      "url": "https://proxy.example.com/images/abc123.png"
+    }
+  ]
+}
+```
+
+## 降级行为
+
+| 场景 | 行为 |
+|------|------|
+| `size` 不在映射表中 | 不设置分辨率映射，模型使用默认值 |
+| `extra_fields` 未传 | 仅使用 `prompt` 和 `size`，保持 OpenAI 兼容 |
+| `extra_fields` 中字段无效 | 忽略无效字段，继续按默认逻辑生成 |
+| 参考图 URL 不可访问 | URL 原样传递给模型，由模型侧返回错误或降级处理 |
+
+## 常见错误
+
+| 错误 | 说明 |
+|------|------|
+| `no base64 image found in response` | 模型未返回图片，检查 prompt 或模型是否支持生图 |
+| `failed to upload image` | 图片上传到代理服务器失败，检查服务端图片代理配置 |
+| `chat response contains no choices` | 模型返回空响应，可能被安全策略过滤 |
+
+## 相关接口
+
+<CardGroup cols={2}>
+  <Card title="绘图(Image 格式)" icon="image" href="/api-reference/images/generate">
+    查看通用图片生成接口说明
+  </Card>
+  <Card title="改图(Image 格式)" icon="wand-magic-sparkles" href="/api-reference/images/edit">
+    基于原图和提示词修改图像
+  </Card>
+</CardGroup>
